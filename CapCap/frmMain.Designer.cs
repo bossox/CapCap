@@ -1,6 +1,6 @@
 ﻿namespace CapCap
 {
-    partial class fMain
+    partial class frmMain
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.FBD = new System.Windows.Forms.FolderBrowserDialog();
             this.NOTI = new System.Windows.Forms.NotifyIcon(this.components);
             this.CMS = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.打开文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.panelAbout = new System.Windows.Forms.Panel();
             this.panelInnerAbout = new System.Windows.Forms.Panel();
             this.btnCloseAboutPanel = new System.Windows.Forms.Button();
@@ -43,10 +43,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tslabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.LV = new System.Windows.Forms.ListView();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.ss = new System.Windows.Forms.StatusStrip();
+            this.tslabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ts = new System.Windows.Forms.ToolStrip();
             this.tsbtnCursor = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbtnNotification = new System.Windows.Forms.ToolStripButton();
@@ -65,8 +65,8 @@
             this.panelAbout.SuspendLayout();
             this.panelInnerAbout.SuspendLayout();
             this.panelMain.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            this.ss.SuspendLayout();
+            this.ts.SuspendLayout();
             this.SuspendLayout();
             // 
             // NOTI
@@ -79,30 +79,30 @@
             // CMS
             // 
             this.CMS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.打开文件夹ToolStripMenuItem,
+            this.cmsmiOpenFolder,
             this.toolStripSeparator4,
-            this.退出ToolStripMenuItem});
+            this.cmsmiExit});
             this.CMS.Name = "CMS";
             this.CMS.Size = new System.Drawing.Size(148, 54);
             // 
-            // 打开文件夹ToolStripMenuItem
+            // cmsmiOpenFolder
             // 
-            this.打开文件夹ToolStripMenuItem.Name = "打开文件夹ToolStripMenuItem";
-            this.打开文件夹ToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.打开文件夹ToolStripMenuItem.Text = "Open folder";
-            this.打开文件夹ToolStripMenuItem.Click += new System.EventHandler(this.打开文件夹ToolStripMenuItem_Click);
+            this.cmsmiOpenFolder.Name = "cmsmiOpenFolder";
+            this.cmsmiOpenFolder.Size = new System.Drawing.Size(147, 22);
+            this.cmsmiOpenFolder.Text = "Open folder";
+            this.cmsmiOpenFolder.Click += new System.EventHandler(this.cmsmiOpenFolder_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(144, 6);
             // 
-            // 退出ToolStripMenuItem
+            // cmsmiExit
             // 
-            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.退出ToolStripMenuItem.Text = "Exit";
-            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            this.cmsmiExit.Name = "cmsmiExit";
+            this.cmsmiExit.Size = new System.Drawing.Size(147, 22);
+            this.cmsmiExit.Text = "Exit";
+            this.cmsmiExit.Click += new System.EventHandler(this.cmsmiExit_Click);
             // 
             // panelAbout
             // 
@@ -142,7 +142,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(183, 17);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Boss Ox / 2017.09.28 / Beijing";
+            this.label2.Text = "Boss Ox / 2017.10.02 / Beijing";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label1
@@ -170,28 +170,12 @@
             // panelMain
             // 
             this.panelMain.Controls.Add(this.LV);
-            this.panelMain.Controls.Add(this.statusStrip1);
-            this.panelMain.Controls.Add(this.toolStrip1);
+            this.panelMain.Controls.Add(this.ss);
+            this.panelMain.Controls.Add(this.ts);
             this.panelMain.Location = new System.Drawing.Point(12, 12);
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(526, 269);
             this.panelMain.TabIndex = 12;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tslabel_Status});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 247);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(526, 22);
-            this.statusStrip1.TabIndex = 13;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // tslabel_Status
-            // 
-            this.tslabel_Status.Name = "tslabel_Status";
-            this.tslabel_Status.Size = new System.Drawing.Size(44, 17);
-            this.tslabel_Status.Text = "Ready";
             // 
             // LV
             // 
@@ -206,10 +190,26 @@
             this.LV.SelectedIndexChanged += new System.EventHandler(this.LV_SelectedIndexChanged);
             this.LV.DoubleClick += new System.EventHandler(this.LV_DoubleClick);
             // 
-            // toolStrip1
+            // ss
             // 
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ss.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tslabel_Status});
+            this.ss.Location = new System.Drawing.Point(0, 247);
+            this.ss.Name = "ss";
+            this.ss.Size = new System.Drawing.Size(526, 22);
+            this.ss.TabIndex = 13;
+            this.ss.Text = "statusStrip1";
+            // 
+            // tslabel_Status
+            // 
+            this.tslabel_Status.Name = "tslabel_Status";
+            this.tslabel_Status.Size = new System.Drawing.Size(44, 17);
+            this.tslabel_Status.Text = "Ready";
+            // 
+            // ts
+            // 
+            this.ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.ts.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbtnCursor,
             this.toolStripSeparator1,
             this.tsbtnNotification,
@@ -220,11 +220,11 @@
             this.toolStripLabel1,
             this.tsbtnFolder,
             this.tsbtnMainMenu});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(526, 25);
-            this.toolStrip1.TabIndex = 11;
-            this.toolStrip1.Text = "toolStrip1";
+            this.ts.Location = new System.Drawing.Point(0, 0);
+            this.ts.Name = "ts";
+            this.ts.Size = new System.Drawing.Size(526, 25);
+            this.ts.TabIndex = 11;
+            this.ts.Text = "toolStrip1";
             // 
             // tsbtnCursor
             // 
@@ -278,6 +278,7 @@
             this.tstbPrefix.Size = new System.Drawing.Size(100, 25);
             this.tstbPrefix.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tstbPrefix.ToolTipText = "File name prefix";
+            this.tstbPrefix.TextChanged += new System.EventHandler(this.tstbPrefix_TextChanged);
             // 
             // tstbNumber
             // 
@@ -286,6 +287,7 @@
             this.tstbNumber.Size = new System.Drawing.Size(30, 25);
             this.tstbNumber.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tstbNumber.ToolTipText = "File name next number";
+            this.tstbNumber.TextChanged += new System.EventHandler(this.tstbNumber_TextChanged);
             // 
             // toolStripLabel1
             // 
@@ -322,30 +324,30 @@
             // tsmiOpenFolder
             // 
             this.tsmiOpenFolder.Name = "tsmiOpenFolder";
-            this.tsmiOpenFolder.Size = new System.Drawing.Size(147, 22);
+            this.tsmiOpenFolder.Size = new System.Drawing.Size(152, 22);
             this.tsmiOpenFolder.Text = "Open folder";
             this.tsmiOpenFolder.Click += new System.EventHandler(this.tsmiOpenFolder_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(144, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
             // 
             // tsmiAbout
             // 
             this.tsmiAbout.Name = "tsmiAbout";
-            this.tsmiAbout.Size = new System.Drawing.Size(147, 22);
+            this.tsmiAbout.Size = new System.Drawing.Size(152, 22);
             this.tsmiAbout.Text = "About";
-            this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click_1);
+            this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
             // 
             // tsmiExit
             // 
             this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(147, 22);
+            this.tsmiExit.Size = new System.Drawing.Size(152, 22);
             this.tsmiExit.Text = "Exit";
-            this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click_1);
+            this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
-            // fMain
+            // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -354,22 +356,22 @@
             this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(600, 400);
-            this.Name = "fMain";
+            this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CapCap";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.fMain_FormClosing);
-            this.Load += new System.EventHandler(this.fMain_Load);
-            this.Resize += new System.EventHandler(this.fMain_Resize);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
+            this.Load += new System.EventHandler(this.frmMain_Load);
+            this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.CMS.ResumeLayout(false);
             this.panelAbout.ResumeLayout(false);
             this.panelInnerAbout.ResumeLayout(false);
             this.panelInnerAbout.PerformLayout();
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.ss.ResumeLayout(false);
+            this.ss.PerformLayout();
+            this.ts.ResumeLayout(false);
+            this.ts.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -378,8 +380,8 @@
         private System.Windows.Forms.FolderBrowserDialog FBD;
         private System.Windows.Forms.NotifyIcon NOTI;
         private System.Windows.Forms.ContextMenuStrip CMS;
-        private System.Windows.Forms.ToolStripMenuItem 打开文件夹ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cmsmiOpenFolder;
+        private System.Windows.Forms.ToolStripMenuItem cmsmiExit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.Panel panelAbout;
         private System.Windows.Forms.Panel panelInnerAbout;
@@ -389,7 +391,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.ListView LV;
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip ts;
         private System.Windows.Forms.ToolStripButton tsbtnCursor;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton tsbtnNotification;
@@ -404,7 +406,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem tsmiAbout;
         private System.Windows.Forms.ToolStripMenuItem tsmiExit;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip ss;
         private System.Windows.Forms.ToolStripStatusLabel tslabel_Status;
     }
 }
