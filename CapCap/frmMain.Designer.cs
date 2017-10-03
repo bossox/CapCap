@@ -78,9 +78,10 @@
             this.panelRUC80 = new System.Windows.Forms.Panel();
             this.picRUC80 = new System.Windows.Forms.PictureBox();
             this.panelHelp = new System.Windows.Forms.Panel();
-            this.webHelp = new System.Windows.Forms.WebBrowser();
             this.tsHelp = new System.Windows.Forms.ToolStrip();
             this.tsReturnToMainPanel = new System.Windows.Forms.ToolStripButton();
+            this.label_Version = new System.Windows.Forms.Label();
+            this.webHelp = new System.Windows.Forms.WebBrowser();
             this.CMS.SuspendLayout();
             this.panelAbout.SuspendLayout();
             this.panelInnerAbout.SuspendLayout();
@@ -138,6 +139,7 @@
             // 
             // panelInnerAbout
             // 
+            this.panelInnerAbout.Controls.Add(this.label_Version);
             this.panelInnerAbout.Controls.Add(this.lnkRUC80);
             this.panelInnerAbout.Controls.Add(this.lnkWeibo);
             this.panelInnerAbout.Controls.Add(this.btnCloseAboutPanel);
@@ -522,17 +524,6 @@
             this.panelHelp.Size = new System.Drawing.Size(200, 100);
             this.panelHelp.TabIndex = 14;
             // 
-            // webHelp
-            // 
-            this.webHelp.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webHelp.IsWebBrowserContextMenuEnabled = false;
-            this.webHelp.Location = new System.Drawing.Point(25, 0);
-            this.webHelp.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webHelp.Name = "webHelp";
-            this.webHelp.Size = new System.Drawing.Size(175, 100);
-            this.webHelp.TabIndex = 0;
-            this.webHelp.WebBrowserShortcutsEnabled = false;
-            // 
             // tsHelp
             // 
             this.tsHelp.BackColor = System.Drawing.Color.White;
@@ -553,10 +544,31 @@
             this.tsReturnToMainPanel.Image = ((System.Drawing.Image)(resources.GetObject("tsReturnToMainPanel.Image")));
             this.tsReturnToMainPanel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsReturnToMainPanel.Name = "tsReturnToMainPanel";
-            this.tsReturnToMainPanel.Size = new System.Drawing.Size(29, 21);
+            this.tsReturnToMainPanel.Size = new System.Drawing.Size(22, 21);
             this.tsReturnToMainPanel.Text = "←";
             this.tsReturnToMainPanel.ToolTipText = "Return";
             this.tsReturnToMainPanel.Click += new System.EventHandler(this.tsReturnToMainPanel_Click);
+            // 
+            // label_Version
+            // 
+            this.label_Version.AutoSize = true;
+            this.label_Version.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_Version.Location = new System.Drawing.Point(255, 40);
+            this.label_Version.Name = "label_Version";
+            this.label_Version.Size = new System.Drawing.Size(39, 20);
+            this.label_Version.TabIndex = 10;
+            this.label_Version.Text = "Beta";
+            // 
+            // webHelp
+            // 
+            this.webHelp.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webHelp.IsWebBrowserContextMenuEnabled = false;
+            this.webHelp.Location = new System.Drawing.Point(25, 0);
+            this.webHelp.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webHelp.Name = "webHelp";
+            this.webHelp.Size = new System.Drawing.Size(175, 100);
+            this.webHelp.TabIndex = 0;
+            this.webHelp.WebBrowserShortcutsEnabled = false;
             // 
             // frmMain
             // 
@@ -647,6 +659,7 @@
         private System.Windows.Forms.WebBrowser webHelp;
         private System.Windows.Forms.ToolStrip tsHelp;
         private System.Windows.Forms.ToolStripButton tsReturnToMainPanel;
+        private System.Windows.Forms.Label label_Version;
     }
 }
 
