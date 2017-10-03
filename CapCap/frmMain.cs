@@ -78,7 +78,7 @@ namespace CapCap
             LV.Dock = DockStyle.Fill;
 
             // tstb
-            tstbNamePattern.Text = "CapImg_<year>-<month>-<day>_<#>";
+            tstbNamePattern.Text = "CapImg_<year>-<month>-<day>_<hour>-<minute>-<second>_<#>";
             tstbNumber.Text = nPattern.Number.ToString();
             loadSettings();
 
