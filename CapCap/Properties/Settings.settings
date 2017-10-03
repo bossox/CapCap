@@ -11,5 +11,8 @@
     <Setting Name="play_sound" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="image_format" Type="System.String" Scope="User">
+      <Value Profile="(Default)">JPEG</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -38,6 +38,8 @@
             this.cmsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.panelAbout = new System.Windows.Forms.Panel();
             this.panelInnerAbout = new System.Windows.Forms.Panel();
+            this.lnkRUC80 = new System.Windows.Forms.Label();
+            this.lnkWeibo = new System.Windows.Forms.LinkLabel();
             this.btnCloseAboutPanel = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -45,28 +47,50 @@
             this.panelMain = new System.Windows.Forms.Panel();
             this.LV = new System.Windows.Forms.ListView();
             this.ss = new System.Windows.Forms.StatusStrip();
+            this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
+            this.settings_Cursor = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.settings_Notification = new System.Windows.Forms.ToolStripMenuItem();
+            this.settings_Sound = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.settingsBMP = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsGIF = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsJPEG = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsPNG = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsTIFF = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tslabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.ts = new System.Windows.Forms.ToolStrip();
-            this.tsbtnCursor = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbtnNotification = new System.Windows.Forms.ToolStripButton();
-            this.tsbtnSound = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tstbPrefix = new System.Windows.Forms.ToolStripTextBox();
-            this.tstbNumber = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tsbtnFolder = new System.Windows.Forms.ToolStripButton();
+            this.tstbNamePattern = new System.Windows.Forms.ToolStripTextBox();
+            this.tslImageFormat = new System.Windows.Forms.ToolStripLabel();
             this.tsbtnMainMenu = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemTest = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsSeparatorOfNumber = new System.Windows.Forms.ToolStripSeparator();
+            this.tslNumber = new System.Windows.Forms.ToolStripLabel();
+            this.tstbNumber = new System.Windows.Forms.ToolStripTextBox();
+            this.panelRUC80 = new System.Windows.Forms.Panel();
+            this.picRUC80 = new System.Windows.Forms.PictureBox();
+            this.panelHelp = new System.Windows.Forms.Panel();
+            this.webHelp = new System.Windows.Forms.WebBrowser();
+            this.tsHelp = new System.Windows.Forms.ToolStrip();
+            this.tsReturnToMainPanel = new System.Windows.Forms.ToolStripButton();
             this.CMS.SuspendLayout();
             this.panelAbout.SuspendLayout();
             this.panelInnerAbout.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.ss.SuspendLayout();
             this.ts.SuspendLayout();
+            this.panelRUC80.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picRUC80)).BeginInit();
+            this.panelHelp.SuspendLayout();
+            this.tsHelp.SuspendLayout();
             this.SuspendLayout();
             // 
             // NOTI
@@ -107,13 +131,15 @@
             // panelAbout
             // 
             this.panelAbout.Controls.Add(this.panelInnerAbout);
-            this.panelAbout.Location = new System.Drawing.Point(167, 75);
+            this.panelAbout.Location = new System.Drawing.Point(218, 144);
             this.panelAbout.Name = "panelAbout";
-            this.panelAbout.Size = new System.Drawing.Size(405, 274);
+            this.panelAbout.Size = new System.Drawing.Size(354, 205);
             this.panelAbout.TabIndex = 11;
             // 
             // panelInnerAbout
             // 
+            this.panelInnerAbout.Controls.Add(this.lnkRUC80);
+            this.panelInnerAbout.Controls.Add(this.lnkWeibo);
             this.panelInnerAbout.Controls.Add(this.btnCloseAboutPanel);
             this.panelInnerAbout.Controls.Add(this.label2);
             this.panelInnerAbout.Controls.Add(this.label1);
@@ -123,10 +149,35 @@
             this.panelInnerAbout.Size = new System.Drawing.Size(377, 239);
             this.panelInnerAbout.TabIndex = 4;
             // 
+            // lnkRUC80
+            // 
+            this.lnkRUC80.AutoSize = true;
+            this.lnkRUC80.BackColor = System.Drawing.Color.Crimson;
+            this.lnkRUC80.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lnkRUC80.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lnkRUC80.ForeColor = System.Drawing.Color.White;
+            this.lnkRUC80.Location = new System.Drawing.Point(280, 133);
+            this.lnkRUC80.Name = "lnkRUC80";
+            this.lnkRUC80.Size = new System.Drawing.Size(55, 17);
+            this.lnkRUC80.TabIndex = 9;
+            this.lnkRUC80.Text = "#RUC80";
+            this.lnkRUC80.Click += new System.EventHandler(this.lnkRUC80_Click);
+            // 
+            // lnkWeibo
+            // 
+            this.lnkWeibo.Location = new System.Drawing.Point(3, 150);
+            this.lnkWeibo.Name = "lnkWeibo";
+            this.lnkWeibo.Size = new System.Drawing.Size(371, 22);
+            this.lnkWeibo.TabIndex = 8;
+            this.lnkWeibo.TabStop = true;
+            this.lnkWeibo.Text = "@BO-SoftwareService";
+            this.lnkWeibo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lnkWeibo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkWeibo_LinkClicked);
+            // 
             // btnCloseAboutPanel
             // 
             this.btnCloseAboutPanel.AutoSize = true;
-            this.btnCloseAboutPanel.Location = new System.Drawing.Point(144, 188);
+            this.btnCloseAboutPanel.Location = new System.Drawing.Point(152, 187);
             this.btnCloseAboutPanel.Name = "btnCloseAboutPanel";
             this.btnCloseAboutPanel.Size = new System.Drawing.Size(75, 23);
             this.btnCloseAboutPanel.TabIndex = 7;
@@ -138,7 +189,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(91, 146);
+            this.label2.Location = new System.Drawing.Point(91, 133);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(183, 17);
             this.label2.TabIndex = 5;
@@ -149,7 +200,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(127, 31);
+            this.label1.Location = new System.Drawing.Point(130, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(119, 36);
             this.label1.TabIndex = 4;
@@ -160,7 +211,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(53, 88);
+            this.label3.Location = new System.Drawing.Point(52, 79);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(275, 42);
             this.label3.TabIndex = 6;
@@ -174,7 +225,7 @@
             this.panelMain.Controls.Add(this.ts);
             this.panelMain.Location = new System.Drawing.Point(12, 12);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(526, 269);
+            this.panelMain.Size = new System.Drawing.Size(441, 123);
             this.panelMain.TabIndex = 12;
             // 
             // LV
@@ -183,7 +234,7 @@
             this.LV.Location = new System.Drawing.Point(14, 43);
             this.LV.MultiSelect = false;
             this.LV.Name = "LV";
-            this.LV.Size = new System.Drawing.Size(109, 125);
+            this.LV.Size = new System.Drawing.Size(109, 37);
             this.LV.TabIndex = 12;
             this.LV.UseCompatibleStateImageBehavior = false;
             this.LV.View = System.Windows.Forms.View.Details;
@@ -193,107 +244,138 @@
             // ss
             // 
             this.ss.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsddbSettings,
+            this.toolStripSeparator6,
             this.tslabel_Status});
-            this.ss.Location = new System.Drawing.Point(0, 247);
+            this.ss.Location = new System.Drawing.Point(0, 100);
             this.ss.Name = "ss";
-            this.ss.Size = new System.Drawing.Size(526, 22);
+            this.ss.Size = new System.Drawing.Size(441, 23);
             this.ss.TabIndex = 13;
             this.ss.Text = "statusStrip1";
+            // 
+            // tsddbSettings
+            // 
+            this.tsddbSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsddbSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settings_Cursor,
+            this.toolStripSeparator5,
+            this.settings_Notification,
+            this.settings_Sound,
+            this.toolStripSeparator1,
+            this.settingsBMP,
+            this.settingsGIF,
+            this.settingsJPEG,
+            this.settingsPNG,
+            this.settingsTIFF});
+            this.tsddbSettings.Image = ((System.Drawing.Image)(resources.GetObject("tsddbSettings.Image")));
+            this.tsddbSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsddbSettings.Name = "tsddbSettings";
+            this.tsddbSettings.Size = new System.Drawing.Size(67, 21);
+            this.tsddbSettings.Text = "Settings";
+            // 
+            // settings_Cursor
+            // 
+            this.settings_Cursor.CheckOnClick = true;
+            this.settings_Cursor.Name = "settings_Cursor";
+            this.settings_Cursor.Size = new System.Drawing.Size(148, 22);
+            this.settings_Cursor.Text = "Cursor";
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(145, 6);
+            // 
+            // settings_Notification
+            // 
+            this.settings_Notification.CheckOnClick = true;
+            this.settings_Notification.Name = "settings_Notification";
+            this.settings_Notification.Size = new System.Drawing.Size(148, 22);
+            this.settings_Notification.Text = "Notification";
+            // 
+            // settings_Sound
+            // 
+            this.settings_Sound.CheckOnClick = true;
+            this.settings_Sound.Name = "settings_Sound";
+            this.settings_Sound.Size = new System.Drawing.Size(148, 22);
+            this.settings_Sound.Text = "Sound";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
+            // 
+            // settingsBMP
+            // 
+            this.settingsBMP.CheckOnClick = true;
+            this.settingsBMP.Name = "settingsBMP";
+            this.settingsBMP.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
+            this.settingsBMP.Size = new System.Drawing.Size(148, 22);
+            this.settingsBMP.Text = "BMP";
+            this.settingsBMP.Click += new System.EventHandler(this.settingsImageFormat_Clicked);
+            // 
+            // settingsGIF
+            // 
+            this.settingsGIF.CheckOnClick = true;
+            this.settingsGIF.Name = "settingsGIF";
+            this.settingsGIF.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
+            this.settingsGIF.Size = new System.Drawing.Size(148, 22);
+            this.settingsGIF.Text = "GIF";
+            this.settingsGIF.Click += new System.EventHandler(this.settingsImageFormat_Clicked);
+            // 
+            // settingsJPEG
+            // 
+            this.settingsJPEG.CheckOnClick = true;
+            this.settingsJPEG.Name = "settingsJPEG";
+            this.settingsJPEG.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
+            this.settingsJPEG.Size = new System.Drawing.Size(148, 22);
+            this.settingsJPEG.Text = "JPEG";
+            this.settingsJPEG.Click += new System.EventHandler(this.settingsImageFormat_Clicked);
+            // 
+            // settingsPNG
+            // 
+            this.settingsPNG.CheckOnClick = true;
+            this.settingsPNG.Name = "settingsPNG";
+            this.settingsPNG.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
+            this.settingsPNG.Size = new System.Drawing.Size(148, 22);
+            this.settingsPNG.Text = "PNG";
+            this.settingsPNG.Click += new System.EventHandler(this.settingsImageFormat_Clicked);
+            // 
+            // settingsTIFF
+            // 
+            this.settingsTIFF.CheckOnClick = true;
+            this.settingsTIFF.Name = "settingsTIFF";
+            this.settingsTIFF.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
+            this.settingsTIFF.Size = new System.Drawing.Size(148, 22);
+            this.settingsTIFF.Text = "TIFF";
+            this.settingsTIFF.Click += new System.EventHandler(this.settingsImageFormat_Clicked);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 23);
             // 
             // tslabel_Status
             // 
             this.tslabel_Status.Name = "tslabel_Status";
-            this.tslabel_Status.Size = new System.Drawing.Size(44, 17);
+            this.tslabel_Status.Size = new System.Drawing.Size(44, 18);
             this.tslabel_Status.Text = "Ready";
             // 
             // ts
             // 
             this.ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.ts.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbtnCursor,
-            this.toolStripSeparator1,
-            this.tsbtnNotification,
-            this.tsbtnSound,
-            this.toolStripSeparator2,
-            this.tstbPrefix,
-            this.tstbNumber,
-            this.toolStripLabel1,
             this.tsbtnFolder,
-            this.tsbtnMainMenu});
+            this.tstbNamePattern,
+            this.tslImageFormat,
+            this.tsbtnMainMenu,
+            this.tsSeparatorOfNumber,
+            this.tslNumber,
+            this.tstbNumber});
             this.ts.Location = new System.Drawing.Point(0, 0);
             this.ts.Name = "ts";
-            this.ts.Size = new System.Drawing.Size(526, 25);
+            this.ts.Size = new System.Drawing.Size(441, 25);
             this.ts.TabIndex = 11;
             this.ts.Text = "toolStrip1";
-            // 
-            // tsbtnCursor
-            // 
-            this.tsbtnCursor.CheckOnClick = true;
-            this.tsbtnCursor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbtnCursor.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnCursor.Image")));
-            this.tsbtnCursor.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnCursor.Name = "tsbtnCursor";
-            this.tsbtnCursor.Size = new System.Drawing.Size(51, 22);
-            this.tsbtnCursor.Text = "Cursor";
-            this.tsbtnCursor.ToolTipText = "Capture cursor";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tsbtnNotification
-            // 
-            this.tsbtnNotification.CheckOnClick = true;
-            this.tsbtnNotification.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbtnNotification.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnNotification.Image")));
-            this.tsbtnNotification.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnNotification.Name = "tsbtnNotification";
-            this.tsbtnNotification.Size = new System.Drawing.Size(79, 22);
-            this.tsbtnNotification.Text = "Notification";
-            this.tsbtnNotification.ToolTipText = "Show notification after capture";
-            // 
-            // tsbtnSound
-            // 
-            this.tsbtnSound.Checked = true;
-            this.tsbtnSound.CheckOnClick = true;
-            this.tsbtnSound.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsbtnSound.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbtnSound.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnSound.Image")));
-            this.tsbtnSound.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnSound.Name = "tsbtnSound";
-            this.tsbtnSound.Size = new System.Drawing.Size(49, 22);
-            this.tsbtnSound.Text = "Sound";
-            this.tsbtnSound.ToolTipText = "Play sound after capture";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tstbPrefix
-            // 
-            this.tstbPrefix.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tstbPrefix.Name = "tstbPrefix";
-            this.tstbPrefix.Size = new System.Drawing.Size(100, 25);
-            this.tstbPrefix.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tstbPrefix.ToolTipText = "File name prefix";
-            this.tstbPrefix.TextChanged += new System.EventHandler(this.tstbPrefix_TextChanged);
-            // 
-            // tstbNumber
-            // 
-            this.tstbNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tstbNumber.Name = "tstbNumber";
-            this.tstbNumber.Size = new System.Drawing.Size(30, 25);
-            this.tstbNumber.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tstbNumber.ToolTipText = "File name next number";
-            this.tstbNumber.TextChanged += new System.EventHandler(this.tstbNumber_TextChanged);
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(48, 22);
-            this.toolStripLabel1.Text = ".JPG @";
             // 
             // tsbtnFolder
             // 
@@ -306,6 +388,20 @@
             this.tsbtnFolder.ToolTipText = "Save images to this folder";
             this.tsbtnFolder.Click += new System.EventHandler(this.tsbtnFolder_Click);
             // 
+            // tstbNamePattern
+            // 
+            this.tstbNamePattern.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tstbNamePattern.Name = "tstbNamePattern";
+            this.tstbNamePattern.Size = new System.Drawing.Size(200, 25);
+            this.tstbNamePattern.ToolTipText = "File name prefix";
+            this.tstbNamePattern.TextChanged += new System.EventHandler(this.tstbPrefix_TextChanged);
+            // 
+            // tslImageFormat
+            // 
+            this.tslImageFormat.Name = "tslImageFormat";
+            this.tslImageFormat.Size = new System.Drawing.Size(32, 22);
+            this.tslImageFormat.Text = ".JPG";
+            // 
             // tsbtnMainMenu
             // 
             this.tsbtnMainMenu.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -313,8 +409,11 @@
             this.tsbtnMainMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiOpenFolder,
             this.toolStripSeparator3,
+            this.tsmiHelp,
             this.tsmiAbout,
-            this.tsmiExit});
+            this.toolStripSeparator2,
+            this.tsmiExit,
+            this.MenuItemTest});
             this.tsbtnMainMenu.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnMainMenu.Image")));
             this.tsbtnMainMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtnMainMenu.Name = "tsbtnMainMenu";
@@ -324,36 +423,150 @@
             // tsmiOpenFolder
             // 
             this.tsmiOpenFolder.Name = "tsmiOpenFolder";
-            this.tsmiOpenFolder.Size = new System.Drawing.Size(152, 22);
-            this.tsmiOpenFolder.Text = "Open folder";
+            this.tsmiOpenFolder.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.tsmiOpenFolder.Size = new System.Drawing.Size(256, 22);
+            this.tsmiOpenFolder.Text = "Open folder(&D)";
             this.tsmiOpenFolder.Click += new System.EventHandler(this.tsmiOpenFolder_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(253, 6);
+            // 
+            // tsmiHelp
+            // 
+            this.tsmiHelp.Name = "tsmiHelp";
+            this.tsmiHelp.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this.tsmiHelp.Size = new System.Drawing.Size(256, 22);
+            this.tsmiHelp.Text = "Help(&H)";
+            this.tsmiHelp.Click += new System.EventHandler(this.tsmiHelp_Click);
             // 
             // tsmiAbout
             // 
             this.tsmiAbout.Name = "tsmiAbout";
-            this.tsmiAbout.Size = new System.Drawing.Size(152, 22);
-            this.tsmiAbout.Text = "About";
+            this.tsmiAbout.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.A)));
+            this.tsmiAbout.Size = new System.Drawing.Size(256, 22);
+            this.tsmiAbout.Text = "About CapCap(&A)";
             this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(253, 6);
             // 
             // tsmiExit
             // 
             this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(152, 22);
-            this.tsmiExit.Text = "Exit";
+            this.tsmiExit.ShortcutKeyDisplayString = "";
+            this.tsmiExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this.tsmiExit.Size = new System.Drawing.Size(256, 22);
+            this.tsmiExit.Text = "Exit(&X)";
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
+            // 
+            // MenuItemTest
+            // 
+            this.MenuItemTest.Name = "MenuItemTest";
+            this.MenuItemTest.Size = new System.Drawing.Size(256, 22);
+            this.MenuItemTest.Text = "(test)";
+            this.MenuItemTest.Visible = false;
+            this.MenuItemTest.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
+            // tsSeparatorOfNumber
+            // 
+            this.tsSeparatorOfNumber.Name = "tsSeparatorOfNumber";
+            this.tsSeparatorOfNumber.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tslNumber
+            // 
+            this.tslNumber.Name = "tslNumber";
+            this.tslNumber.Size = new System.Drawing.Size(16, 22);
+            this.tslNumber.Text = "#";
+            // 
+            // tstbNumber
+            // 
+            this.tstbNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tstbNumber.Name = "tstbNumber";
+            this.tstbNumber.Size = new System.Drawing.Size(40, 25);
+            this.tstbNumber.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tstbNumber.ToolTipText = "File name next number";
+            this.tstbNumber.TextChanged += new System.EventHandler(this.tstbNumber_TextChanged);
+            // 
+            // panelRUC80
+            // 
+            this.panelRUC80.BackColor = System.Drawing.Color.White;
+            this.panelRUC80.Controls.Add(this.picRUC80);
+            this.panelRUC80.Location = new System.Drawing.Point(12, 141);
+            this.panelRUC80.Name = "panelRUC80";
+            this.panelRUC80.Size = new System.Drawing.Size(159, 94);
+            this.panelRUC80.TabIndex = 13;
+            this.panelRUC80.Click += new System.EventHandler(this.RUC80_Click);
+            // 
+            // picRUC80
+            // 
+            this.picRUC80.Image = ((System.Drawing.Image)(resources.GetObject("picRUC80.Image")));
+            this.picRUC80.Location = new System.Drawing.Point(14, 3);
+            this.picRUC80.Name = "picRUC80";
+            this.picRUC80.Size = new System.Drawing.Size(174, 271);
+            this.picRUC80.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picRUC80.TabIndex = 0;
+            this.picRUC80.TabStop = false;
+            this.picRUC80.Click += new System.EventHandler(this.RUC80_Click);
+            // 
+            // panelHelp
+            // 
+            this.panelHelp.Controls.Add(this.webHelp);
+            this.panelHelp.Controls.Add(this.tsHelp);
+            this.panelHelp.Location = new System.Drawing.Point(12, 249);
+            this.panelHelp.Name = "panelHelp";
+            this.panelHelp.Size = new System.Drawing.Size(200, 100);
+            this.panelHelp.TabIndex = 14;
+            // 
+            // webHelp
+            // 
+            this.webHelp.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webHelp.IsWebBrowserContextMenuEnabled = false;
+            this.webHelp.Location = new System.Drawing.Point(25, 0);
+            this.webHelp.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webHelp.Name = "webHelp";
+            this.webHelp.Size = new System.Drawing.Size(175, 100);
+            this.webHelp.TabIndex = 0;
+            this.webHelp.WebBrowserShortcutsEnabled = false;
+            // 
+            // tsHelp
+            // 
+            this.tsHelp.BackColor = System.Drawing.Color.White;
+            this.tsHelp.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tsHelp.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.tsHelp.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsReturnToMainPanel});
+            this.tsHelp.Location = new System.Drawing.Point(0, 0);
+            this.tsHelp.Name = "tsHelp";
+            this.tsHelp.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.tsHelp.Size = new System.Drawing.Size(25, 100);
+            this.tsHelp.TabIndex = 1;
+            this.tsHelp.Text = "toolStrip1";
+            // 
+            // tsReturnToMainPanel
+            // 
+            this.tsReturnToMainPanel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsReturnToMainPanel.Image = ((System.Drawing.Image)(resources.GetObject("tsReturnToMainPanel.Image")));
+            this.tsReturnToMainPanel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsReturnToMainPanel.Name = "tsReturnToMainPanel";
+            this.tsReturnToMainPanel.Size = new System.Drawing.Size(29, 21);
+            this.tsReturnToMainPanel.Text = "←";
+            this.tsReturnToMainPanel.ToolTipText = "Return";
+            this.tsReturnToMainPanel.Click += new System.EventHandler(this.tsReturnToMainPanel_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.panelHelp);
             this.Controls.Add(this.panelAbout);
             this.Controls.Add(this.panelMain);
+            this.Controls.Add(this.panelRUC80);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "frmMain";
@@ -372,6 +585,12 @@
             this.ss.PerformLayout();
             this.ts.ResumeLayout(false);
             this.ts.PerformLayout();
+            this.panelRUC80.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picRUC80)).EndInit();
+            this.panelHelp.ResumeLayout(false);
+            this.panelHelp.PerformLayout();
+            this.tsHelp.ResumeLayout(false);
+            this.tsHelp.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -392,14 +611,9 @@
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.ListView LV;
         private System.Windows.Forms.ToolStrip ts;
-        private System.Windows.Forms.ToolStripButton tsbtnCursor;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton tsbtnNotification;
-        private System.Windows.Forms.ToolStripButton tsbtnSound;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripTextBox tstbPrefix;
+        private System.Windows.Forms.ToolStripTextBox tstbNamePattern;
         private System.Windows.Forms.ToolStripTextBox tstbNumber;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripLabel tslImageFormat;
         private System.Windows.Forms.ToolStripButton tsbtnFolder;
         private System.Windows.Forms.ToolStripDropDownButton tsbtnMainMenu;
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenFolder;
@@ -408,6 +622,31 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiExit;
         private System.Windows.Forms.StatusStrip ss;
         private System.Windows.Forms.ToolStripStatusLabel tslabel_Status;
+        private System.Windows.Forms.LinkLabel lnkWeibo;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemTest;
+        private System.Windows.Forms.ToolStripDropDownButton tsddbSettings;
+        private System.Windows.Forms.ToolStripMenuItem settings_Cursor;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem settings_Sound;
+        private System.Windows.Forms.ToolStripMenuItem settings_Notification;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem settingsBMP;
+        private System.Windows.Forms.ToolStripMenuItem settingsGIF;
+        private System.Windows.Forms.ToolStripMenuItem settingsJPEG;
+        private System.Windows.Forms.ToolStripMenuItem settingsPNG;
+        private System.Windows.Forms.ToolStripMenuItem settingsTIFF;
+        private System.Windows.Forms.ToolStripSeparator tsSeparatorOfNumber;
+        private System.Windows.Forms.ToolStripLabel tslNumber;
+        private System.Windows.Forms.Panel panelRUC80;
+        private System.Windows.Forms.PictureBox picRUC80;
+        private System.Windows.Forms.Label lnkRUC80;
+        private System.Windows.Forms.ToolStripMenuItem tsmiHelp;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.Panel panelHelp;
+        private System.Windows.Forms.WebBrowser webHelp;
+        private System.Windows.Forms.ToolStrip tsHelp;
+        private System.Windows.Forms.ToolStripButton tsReturnToMainPanel;
     }
 }
 

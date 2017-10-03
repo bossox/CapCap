@@ -58,5 +58,17 @@ namespace CapCap.Properties {
                 this["play_sound"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("JPEG")]
+        public string image_format {
+            get {
+                return ((string)(this["image_format"]));
+            }
+            set {
+                this["image_format"] = value;
+            }
+        }
     }
 }

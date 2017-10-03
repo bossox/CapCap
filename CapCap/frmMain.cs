@@ -5,24 +5,38 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using HotKeys;
 
 namespace CapCap
 {
     public partial class frmMain : Form
     {
-        #region WinAPI
-        [DllImport("user32.dll")]
-        private static extern bool GetCursorInfo(out CursorInfo pci);
-        private const Int32 CURSOR_SHOWING = 0x00000001;
-        private struct CursorInfo
+        // Debug: Show (test) menu item.
+        private bool _isDebugMode = false;
+        public bool isDebugMode
         {
-            public Int32 cbSize;
-            public Int32 flags;
-            public IntPtr hCursor;
-            public Point ptScreenPos;
+            get
+            {
+                return _isDebugMode;
+            }
+            set
+            {
+                _isDebugMode = value;
+                MenuItemTest.Visible = value;
+            }
         }
-        #endregion
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            nPattern.Number = int.Parse(tstbNumber.Text);
+            MessageBox.Show(nPattern.Convert(tstbNamePattern.Text));
+        }
+        ////////////////////////////////////////////////////////////////////////////////
+
+        private delegate void ScreenShotEventHandler(ScreenShotInfo info);
+        private event ScreenShotEventHandler OnScreenShotCaptured;
 
         private delegate bool LegalTest(string value);
 
@@ -30,9 +44,18 @@ namespace CapCap
 
         private bool isFolderSelected = false;
         private bool isExiting = false;
-        private int vTotalNumber = 1;
+        private int vTotalNumber = 1;   // total number of history items.
         private int vSameTimeNumber = 1;
         private string vLastNow = string.Empty;
+        private int vNextNumber = 1;    // next number.
+
+        private System.Media.SoundPlayer soundplayer = new System.Media.SoundPlayer();
+
+        private NamePattern nPattern = new NamePattern();
+
+        private List<Task> vTasks = new List<Task>();
+
+        private bool isWelcomeScreen = true;
 
         public frmMain()
         {
@@ -55,9 +78,16 @@ namespace CapCap
             LV.Dock = DockStyle.Fill;
 
             // tstb
-            tstbPrefix.Text = "CapCap_Image_";
-            tstbNumber.Text = "1";
+            tstbNamePattern.Text = "CapImg_<year>-<month>-<day>_<#>";
+            tstbNumber.Text = nPattern.Number.ToString();
             loadSettings();
+
+            tstbNamePattern.Visible = false;
+            tstbNumber.Visible = false;
+            tslImageFormat.Visible = false;
+
+            tsSeparatorOfNumber.Visible = false;
+            tslNumber.Visible = false;
 
             // panelMain
             panelMain.Dock = DockStyle.Fill;
@@ -71,14 +101,32 @@ namespace CapCap
             hotkey.OnPressed += hotkey_OnPressed;
 
             // About
+            panelAbout.Dock = DockStyle.Fill;
+
             label1.Left = (panelInnerAbout.Width - label1.Width) / 2;
             label2.Left = (panelInnerAbout.Width - label2.Width) / 2;
             label3.Left = (panelInnerAbout.Width - label3.Width) / 2;
+            lnkWeibo.Left = (panelInnerAbout.Width - lnkWeibo.Width) / 2;
             btnCloseAboutPanel.Left = (panelInnerAbout.Width - btnCloseAboutPanel.Width) / 2;
+
+            lnkRUC80.Left = label2.Right + 5;
 
             centralizePanelInnerAbout();
 
-            panelAbout.Dock = DockStyle.Fill;
+            // Help
+            panelHelp.Dock = DockStyle.Fill;
+
+
+            // RUC80
+            panelRUC80.Dock = DockStyle.Fill;
+            picRUC80.Left = (panelRUC80.Width - picRUC80.Width) / 2;
+            picRUC80.Top = (panelRUC80.Height - picRUC80.Height) / 2;
+
+            // Parallel
+            OnScreenShotCaptured += ScreenShot_OnScreenShotCaptured;
+
+            // RUC 80 Auto show.
+            showRUC80();
         }
 
         private void NOTI_MouseClick(object sender, MouseEventArgs e)
@@ -104,6 +152,8 @@ namespace CapCap
         private void tstbNumber_TextChanged(object sender, EventArgs e)
         {
             check_tstb_TextLegal((ToolStripTextBox)sender, isNextNumberLegal);
+            if (vTasks.Count == 0 && isNextNumberLegal(tstbNumber.Text))
+                vNextNumber = int.Parse(tstbNumber.Text);
         }
 
         private void LV_SelectedIndexChanged(object sender, EventArgs e)
@@ -127,6 +177,7 @@ namespace CapCap
         private void frmMain_Resize(object sender, EventArgs e)
         {
             centralizePanelInnerAbout();
+            centralizePanelRUC80();
         }
 
         private void tsmiExit_Click(object sender, EventArgs e)
@@ -144,13 +195,19 @@ namespace CapCap
             var result = FBD.ShowDialog();
             if (result == DialogResult.OK)
             {
-                tsbtnFolder.Text = getFolderName(FBD.SelectedPath);
+                tsbtnFolder.Text = getFolderName(FBD.SelectedPath) + "\\";
                 isFolderSelected = true;
 
                 if (!Directory.Exists(FBD.SelectedPath))
                     tsbtnFolder.ForeColor = Color.Red;
                 else
                     tsbtnFolder.ForeColor = Color.Black;
+
+                tstbNamePattern.Visible = true;
+                tstbNumber.Visible = true;
+                tslImageFormat.Visible = true;
+                tsSeparatorOfNumber.Visible = true;
+                tslNumber.Visible = true;
             }
         }
 
@@ -166,10 +223,9 @@ namespace CapCap
 
         private void hotkey_OnPressed(object sender, HotKeyEventArgs e)
         {
+            panelMain.BringToFront();
             takeTheBloodyShot();
         }
-
-
 
         private void LV_DoubleClick(object sender, EventArgs e)
         {
@@ -208,20 +264,76 @@ namespace CapCap
             openFolder();
         }
 
+        private void lnkWeibo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://weibo.com/BOSoftwareService");
+        }
+
         #region Custom Method: Auxiliary
+        private void showRUC80()
+        {
+            if (DateTime.Now.Year == 2017 && DateTime.Now.Month == 10 && DateTime.Now.Day <= 15)
+                panelRUC80.BringToFront();
+        }
+
         private void loadSettings()
         {
-            tsbtnCursor.Checked = Properties.Settings.Default.capture_cursor;
-            tsbtnNotification.Checked = Properties.Settings.Default.notify;
-            tsbtnSound.Checked = Properties.Settings.Default.play_sound;
+            settings_Cursor.Checked = Properties.Settings.Default.capture_cursor;
+            settings_Notification.Checked = Properties.Settings.Default.notify;
+            settings_Sound.Checked = Properties.Settings.Default.play_sound;
+            convertCode2ImageFormat(Properties.Settings.Default.image_format);
+            tslImageFormat.Text = $".{convertImageFormat2Code()}";
         }
 
         private void saveSettings()
         {
-            Properties.Settings.Default.capture_cursor = tsbtnCursor.Checked;
-            Properties.Settings.Default.notify = tsbtnNotification.Checked;
-            Properties.Settings.Default.play_sound = tsbtnSound.Checked;
+            Properties.Settings.Default.capture_cursor = settings_Cursor.Checked;
+            Properties.Settings.Default.notify = settings_Notification.Checked;
+            Properties.Settings.Default.play_sound = settings_Sound.Checked;
+            Properties.Settings.Default.image_format = convertImageFormat2Code();
             Properties.Settings.Default.Save();
+        }
+
+        private void convertCode2ImageFormat(string code)
+        {
+            switch (code)
+            {
+                case "BMP":
+                    settingsBMP.Checked = true;
+                    break;
+                case "GIF":
+                    settingsGIF.Checked = true;
+                    break;
+                case "JPEG":
+                    settingsJPEG.Checked = true;
+                    break;
+                case "PNG":
+                    settingsPNG.Checked = true;
+                    break;
+                case "TIFF":
+                    settingsTIFF.Checked = true;
+                    break;
+            }
+        }
+
+        private string convertImageFormat2Code()
+        {
+            if (settingsBMP.Checked)
+                return "BMP";
+
+            if (settingsGIF.Checked)
+                return "GIF";
+
+            if (settingsJPEG.Checked)
+                return "JPEG";
+
+            if (settingsPNG.Checked)
+                return "PNG";
+
+            if (settingsTIFF.Checked)
+                return "TIFF";
+
+            return "JPEG";
         }
 
         private string getFolderName(string path)
@@ -237,6 +349,12 @@ namespace CapCap
             panelInnerAbout.Top = (panelAbout.Height - panelInnerAbout.Height) / 2;
         }
 
+        private void centralizePanelRUC80()
+        {
+            picRUC80.Left = (panelRUC80.Width - picRUC80.Width) / 2;
+            picRUC80.Top = (panelRUC80.Height - picRUC80.Height) / 2;
+        }
+
         private void showAbout()
         {
             centralizePanelInnerAbout();
@@ -248,7 +366,7 @@ namespace CapCap
             if (!System.IO.Directory.Exists(Application.StartupPath + @"\Autosave"))
                 System.IO.Directory.CreateDirectory(Application.StartupPath + @"\Autosave");
 
-            tsbtnFolder.Text = "Autosave";
+            tsbtnFolder.Text = "Save to (Autosave)...";
             FBD.SelectedPath = Application.StartupPath + @"\Autosave";
         }
 
@@ -261,7 +379,7 @@ namespace CapCap
         private bool isPrefixLegal(string value)
         {
             // Check if is available filename.
-            return (Regex.Matches(value, "[\\/:*?\"<>|]").Count == 0) && (value != "") ? true : false;
+            return nPattern.Verify(value);
         }
 
         private void check_tstb_TextLegal(ToolStripTextBox textbox, LegalTest lt)
@@ -277,8 +395,6 @@ namespace CapCap
             {
                 textbox.BackColor = Color.Crimson;
                 textbox.ForeColor = Color.White;
-                textbox.SelectAll();
-                textbox.Focus();
             }
         }
 
@@ -298,36 +414,41 @@ namespace CapCap
         {
             return path.Substring(path.LastIndexOf('\\') + 1);
         }
+
+        private void switchImageFormat(string code)
+        {
+            settingsBMP.Checked = settingsBMP.Text == code;
+            settingsGIF.Checked = settingsGIF.Text == code;
+            settingsJPEG.Checked = settingsJPEG.Text == code;
+            settingsPNG.Checked = settingsPNG.Text == code;
+            settingsTIFF.Checked = settingsTIFF.Text == code;
+            tslImageFormat.Text = $".{code}";
+        }
         #endregion
 
         #region Custom Method: Screen Capturing
         // Method name quoted from madam M in 007 movies, "Take the bloody shot!".
         private void takeTheBloodyShot()
         {
-            if (!checkEverythingIsRight())
+            if (!isSettingsCorrect())
             {
-                playSound(false);
+                MessageBox.Show("There's something wrong in settings.", "CapCap", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
+            // ImageFormat
+            ImageFormat format = getImageFormat();
+
             // Take screen shot.
-            Image img = captureScreen();
-            var filename = saveImage(img);
-            bool success = filename == "?" ? false : true;
-            if (success)
-                addRecord(filename, true);
-            else
-                addRecord(string.Empty, false);
+            var task = new Task(() => captureScreen(settings_Cursor.Checked, FBD.SelectedPath, tstbNamePattern.Text, vNextNumber++.ToString(), format));
+            task.Start();
 
-            incrementNextNumber();
-
-            // Notification.
-            notify(filename, success);
+            vTasks.Add(task);
         }
 
-        private bool checkEverythingIsRight()
+        private bool isSettingsCorrect()
         {
-            if (!isPrefixLegal(tstbPrefix.Text))
+            if (!isPrefixLegal(tstbNamePattern.Text))
             {
                 addRecord("[Error: Invalid prefix.]", false);
                 return false;
@@ -348,63 +469,43 @@ namespace CapCap
             return true;
         }
 
-        private Image captureScreen()
+        private ImageFormat getImageFormat()
         {
-            // Capture screen.
-            Image img = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-            Graphics graphic = Graphics.FromImage(img);
-            graphic.CopyFromScreen(new Point(0, 0), new Point(0, 0), Screen.AllScreens[0].Bounds.Size);
+            if (settingsBMP.Checked)
+                return ImageFormat.Bmp;
 
-            if (tsbtnCursor.Checked)
-            {
-                CursorInfo ci;
-                ci.cbSize = Marshal.SizeOf(typeof(CursorInfo));
-                GetCursorInfo(out ci);
-                Cursor cursor = new Cursor(ci.hCursor);
-                cursor.Draw(graphic, new Rectangle(ci.ptScreenPos.X, ci.ptScreenPos.Y, cursor.Size.Width, cursor.Size.Height));
-            }
-            graphic.Dispose();
-            return img;
+            if (settingsGIF.Checked)
+                return ImageFormat.Gif;
+
+            if (settingsJPEG.Checked)
+                return ImageFormat.Jpeg;
+
+            if (settingsPNG.Checked)
+                return ImageFormat.Png;
+
+            if (settingsTIFF.Checked)
+                return ImageFormat.Tiff;
+
+            return ImageFormat.Jpeg;
         }
 
-        private string saveImage(Image img)
+        private void captureScreen(bool cursor, string folder, string pattern, string number, ImageFormat format)
         {
-            try
-            {
-                string filename = getNextFullname();
-                img.Save(filename, ImageFormat.Png);
-                img.Dispose();
-                return filename;
-            }
-            catch (Exception exp)
-            {
-                return "?";
-            }
-        }
-
-        private string getNextFullname()
-        {
-            if (isFolderSelected)
-                return string.Format(@"{0}\{1}{2}.jpg", FBD.SelectedPath, tstbPrefix.Text, tstbNumber.Text);
+            var screenshot = new ScreenShot(cursor, folder, pattern, number, format);
+            if (InvokeRequired)
+                Invoke(OnScreenShotCaptured, screenshot.CaptureAndSave());
             else
-            {
-                string postfix = string.Empty;
-                string now = DateTime.Now.ToString();
+                OnScreenShotCaptured(screenshot.CaptureAndSave());
+        }
 
-                if (now == vLastNow)
-                {
-                    vSameTimeNumber += 1;
-                    postfix = $"({vSameTimeNumber.ToString()})";
-                }
-                else
-                {
-                    vSameTimeNumber = 1;
-                    vLastNow = now;
-                }
+        private void ScreenShot_OnScreenShotCaptured(ScreenShotInfo info)
+        {
+            addRecord(info.FullName, info.Success);
+            incrementNextNumber();
+            notify(info.FileName, info.Success);
 
-                return string.Format(@"{0}\{1}{2}.jpg", FBD.SelectedPath, DateTime.Now.ToString()
-                    .Replace(':', '-'), postfix);
-            }
+            if (vTasks.Count > 0)
+                vTasks.Remove(vTasks[0]);
         }
 
         private void addRecord(string filename, bool success)
@@ -414,30 +515,30 @@ namespace CapCap
             LV.Items[LV.Items.Count - 1].SubItems.Add(string.Format("{0}", DateTime.Now));
             LV.Items[LV.Items.Count - 1].SubItems.Add(success ? "Saved" : "Failed");
             vTotalNumber += 1;
+            LV.TopItem = LV.Items[LV.Items.Count - 1];
         }
 
         private void incrementNextNumber()
         {
             tstbNumber.Text = (int.Parse(tstbNumber.Text) + 1).ToString();
+            nPattern.IncrementNumber();
         }
 
         private void notify(string filename, bool success)
         {
-            if (tsbtnSound.Checked)
+            if (settings_Sound.Checked)
                 playSound(success);
 
-            if (tsbtnNotification.Checked)
+            if (settings_Notification.Checked)
             {
-                filename = getFileName(filename); // C:\a\a.jpg >> a.jpg
                 sendNotification(filename, success);
             }
         }
 
         private void playSound(bool success)
         {
-            System.Media.SoundPlayer sp;
-            sp = new System.Media.SoundPlayer(success ? Resource.yes : Resource.no);
-            sp.Play();
+            soundplayer.Stream = success ? Resource.yes : Resource.no;
+            soundplayer.Play();
         }
 
         private void sendNotification(string filename, bool success)
@@ -446,5 +547,44 @@ namespace CapCap
             NOTI.ShowBalloonTip(2000, "CapCap", string.Format("{0}", info), success ? ToolTipIcon.Info : ToolTipIcon.Error);
         }
         #endregion
+
+        private void settingsImageFormat_Clicked(object sender, EventArgs e)
+        {
+            var mi = (ToolStripMenuItem)sender;
+            switchImageFormat(mi.Text);
+        }
+
+        private void lnkRUC80_Click(object sender, EventArgs e)
+        {
+            panelRUC80.BringToFront();
+        }
+
+        private void RUC80_Click(object sender, EventArgs e)
+        {
+            if (isWelcomeScreen)
+            {
+                panelMain.BringToFront();
+                isWelcomeScreen = false;
+            }
+            else
+                panelAbout.BringToFront();
+        }
+
+        private void tsmiHelp_Click(object sender, EventArgs e)
+        {
+            if (!File.Exists(Application.StartupPath + "\\Readme.html"))
+            {
+                MessageBox.Show("Readme.html file is missing.", "CapCap", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            webHelp.Navigate(Application.StartupPath + "\\Readme.html");
+            panelHelp.BringToFront();
+        }
+
+        private void tsReturnToMainPanel_Click(object sender, EventArgs e)
+        {
+            panelMain.BringToFront();
+        }
     }
 }
