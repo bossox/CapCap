@@ -100,5 +100,13 @@ namespace CapCap
         }
 
         public void IncrementNumber() { Number++; OnNumberIncremented?.Invoke(this, new EventArgs()); }
+
+        public HashSet<string> GetVariables()
+        {
+            var has = new HashSet<string>();
+            foreach (var pair in dicCodeTable)
+                has.Add(pair.Key);
+            return has;
+        }
     }
 }

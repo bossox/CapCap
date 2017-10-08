@@ -38,6 +38,7 @@
             this.cmsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.panelAbout = new System.Windows.Forms.Panel();
             this.panelInnerAbout = new System.Windows.Forms.Panel();
+            this.label_Version = new System.Windows.Forms.Label();
             this.lnkRUC80 = new System.Windows.Forms.Label();
             this.lnkWeibo = new System.Windows.Forms.LinkLabel();
             this.btnCloseAboutPanel = new System.Windows.Forms.Button();
@@ -48,6 +49,8 @@
             this.LV = new System.Windows.Forms.ListView();
             this.ss = new System.Windows.Forms.StatusStrip();
             this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
+            this.tsmiShowAds = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.settings_Cursor = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.settings_Notification = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,11 +61,14 @@
             this.settingsJPEG = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsPNG = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsTIFF = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbtnNewHotKey = new System.Windows.Forms.ToolStripButton();
+            this.tsSeparatorBeforeStatus = new System.Windows.Forms.ToolStripSeparator();
             this.tslabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.ts = new System.Windows.Forms.ToolStrip();
             this.tsbtnFolder = new System.Windows.Forms.ToolStripButton();
             this.tstbNamePattern = new System.Windows.Forms.ToolStripTextBox();
+            this.tsbtnInsertVariable = new System.Windows.Forms.ToolStripDropDownButton();
             this.tslImageFormat = new System.Windows.Forms.ToolStripLabel();
             this.tsbtnMainMenu = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,10 +84,11 @@
             this.panelRUC80 = new System.Windows.Forms.Panel();
             this.picRUC80 = new System.Windows.Forms.PictureBox();
             this.panelHelp = new System.Windows.Forms.Panel();
+            this.webHelp = new System.Windows.Forms.WebBrowser();
             this.tsHelp = new System.Windows.Forms.ToolStrip();
             this.tsReturnToMainPanel = new System.Windows.Forms.ToolStripButton();
-            this.label_Version = new System.Windows.Forms.Label();
-            this.webHelp = new System.Windows.Forms.WebBrowser();
+            this.panelHotKey = new System.Windows.Forms.Panel();
+            this.labNewHotKey = new System.Windows.Forms.Label();
             this.CMS.SuspendLayout();
             this.panelAbout.SuspendLayout();
             this.panelInnerAbout.SuspendLayout();
@@ -92,6 +99,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.picRUC80)).BeginInit();
             this.panelHelp.SuspendLayout();
             this.tsHelp.SuspendLayout();
+            this.panelHotKey.SuspendLayout();
             this.SuspendLayout();
             // 
             // NOTI
@@ -132,7 +140,7 @@
             // panelAbout
             // 
             this.panelAbout.Controls.Add(this.panelInnerAbout);
-            this.panelAbout.Location = new System.Drawing.Point(218, 144);
+            this.panelAbout.Location = new System.Drawing.Point(410, 144);
             this.panelAbout.Name = "panelAbout";
             this.panelAbout.Size = new System.Drawing.Size(354, 205);
             this.panelAbout.TabIndex = 11;
@@ -150,6 +158,16 @@
             this.panelInnerAbout.Name = "panelInnerAbout";
             this.panelInnerAbout.Size = new System.Drawing.Size(377, 239);
             this.panelInnerAbout.TabIndex = 4;
+            // 
+            // label_Version
+            // 
+            this.label_Version.AutoSize = true;
+            this.label_Version.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_Version.Location = new System.Drawing.Point(255, 40);
+            this.label_Version.Name = "label_Version";
+            this.label_Version.Size = new System.Drawing.Size(39, 20);
+            this.label_Version.TabIndex = 10;
+            this.label_Version.Text = "Beta";
             // 
             // lnkRUC80
             // 
@@ -195,7 +213,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(183, 17);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Boss Ox / 2017.10.02 / Beijing";
+            this.label2.Text = "Boss Ox / 2017.10.03 / Beijing";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label1
@@ -247,7 +265,9 @@
             // 
             this.ss.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsddbSettings,
-            this.toolStripSeparator6,
+            this.toolStripSeparator8,
+            this.tsbtnNewHotKey,
+            this.tsSeparatorBeforeStatus,
             this.tslabel_Status});
             this.ss.Location = new System.Drawing.Point(0, 100);
             this.ss.Name = "ss";
@@ -259,6 +279,8 @@
             // 
             this.tsddbSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsddbSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiShowAds,
+            this.toolStripSeparator7,
             this.settings_Cursor,
             this.toolStripSeparator5,
             this.settings_Notification,
@@ -275,43 +297,55 @@
             this.tsddbSettings.Size = new System.Drawing.Size(67, 21);
             this.tsddbSettings.Text = "Settings";
             // 
+            // tsmiShowAds
+            // 
+            this.tsmiShowAds.CheckOnClick = true;
+            this.tsmiShowAds.Name = "tsmiShowAds";
+            this.tsmiShowAds.Size = new System.Drawing.Size(170, 22);
+            this.tsmiShowAds.Text = "RUC80 welcome";
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(167, 6);
+            // 
             // settings_Cursor
             // 
             this.settings_Cursor.CheckOnClick = true;
             this.settings_Cursor.Name = "settings_Cursor";
-            this.settings_Cursor.Size = new System.Drawing.Size(148, 22);
+            this.settings_Cursor.Size = new System.Drawing.Size(170, 22);
             this.settings_Cursor.Text = "Cursor";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(167, 6);
             // 
             // settings_Notification
             // 
             this.settings_Notification.CheckOnClick = true;
             this.settings_Notification.Name = "settings_Notification";
-            this.settings_Notification.Size = new System.Drawing.Size(148, 22);
+            this.settings_Notification.Size = new System.Drawing.Size(170, 22);
             this.settings_Notification.Text = "Notification";
             // 
             // settings_Sound
             // 
             this.settings_Sound.CheckOnClick = true;
             this.settings_Sound.Name = "settings_Sound";
-            this.settings_Sound.Size = new System.Drawing.Size(148, 22);
+            this.settings_Sound.Size = new System.Drawing.Size(170, 22);
             this.settings_Sound.Text = "Sound";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(167, 6);
             // 
             // settingsBMP
             // 
             this.settingsBMP.CheckOnClick = true;
             this.settingsBMP.Name = "settingsBMP";
             this.settingsBMP.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
-            this.settingsBMP.Size = new System.Drawing.Size(148, 22);
+            this.settingsBMP.Size = new System.Drawing.Size(170, 22);
             this.settingsBMP.Text = "BMP";
             this.settingsBMP.Click += new System.EventHandler(this.settingsImageFormat_Clicked);
             // 
@@ -320,7 +354,7 @@
             this.settingsGIF.CheckOnClick = true;
             this.settingsGIF.Name = "settingsGIF";
             this.settingsGIF.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
-            this.settingsGIF.Size = new System.Drawing.Size(148, 22);
+            this.settingsGIF.Size = new System.Drawing.Size(170, 22);
             this.settingsGIF.Text = "GIF";
             this.settingsGIF.Click += new System.EventHandler(this.settingsImageFormat_Clicked);
             // 
@@ -329,7 +363,7 @@
             this.settingsJPEG.CheckOnClick = true;
             this.settingsJPEG.Name = "settingsJPEG";
             this.settingsJPEG.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
-            this.settingsJPEG.Size = new System.Drawing.Size(148, 22);
+            this.settingsJPEG.Size = new System.Drawing.Size(170, 22);
             this.settingsJPEG.Text = "JPEG";
             this.settingsJPEG.Click += new System.EventHandler(this.settingsImageFormat_Clicked);
             // 
@@ -338,7 +372,7 @@
             this.settingsPNG.CheckOnClick = true;
             this.settingsPNG.Name = "settingsPNG";
             this.settingsPNG.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
-            this.settingsPNG.Size = new System.Drawing.Size(148, 22);
+            this.settingsPNG.Size = new System.Drawing.Size(170, 22);
             this.settingsPNG.Text = "PNG";
             this.settingsPNG.Click += new System.EventHandler(this.settingsImageFormat_Clicked);
             // 
@@ -347,20 +381,36 @@
             this.settingsTIFF.CheckOnClick = true;
             this.settingsTIFF.Name = "settingsTIFF";
             this.settingsTIFF.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
-            this.settingsTIFF.Size = new System.Drawing.Size(148, 22);
+            this.settingsTIFF.Size = new System.Drawing.Size(170, 22);
             this.settingsTIFF.Text = "TIFF";
             this.settingsTIFF.Click += new System.EventHandler(this.settingsImageFormat_Clicked);
             // 
-            // toolStripSeparator6
+            // toolStripSeparator8
             // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 23);
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 23);
+            // 
+            // tsbtnNewHotKey
+            // 
+            this.tsbtnNewHotKey.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbtnNewHotKey.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnNewHotKey.Image")));
+            this.tsbtnNewHotKey.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnNewHotKey.Name = "tsbtnNewHotKey";
+            this.tsbtnNewHotKey.Size = new System.Drawing.Size(54, 21);
+            this.tsbtnNewHotKey.Text = "HotKey";
+            this.tsbtnNewHotKey.ToolTipText = "Click here to customize Hotkey";
+            this.tsbtnNewHotKey.Click += new System.EventHandler(this.tsbtnNewHotKey_Click);
+            // 
+            // tsSeparatorBeforeStatus
+            // 
+            this.tsSeparatorBeforeStatus.Name = "tsSeparatorBeforeStatus";
+            this.tsSeparatorBeforeStatus.Size = new System.Drawing.Size(6, 23);
             // 
             // tslabel_Status
             // 
             this.tslabel_Status.Name = "tslabel_Status";
-            this.tslabel_Status.Size = new System.Drawing.Size(44, 18);
-            this.tslabel_Status.Text = "Ready";
+            this.tslabel_Status.Size = new System.Drawing.Size(47, 18);
+            this.tslabel_Status.Text = "Ready.";
             // 
             // ts
             // 
@@ -368,6 +418,7 @@
             this.ts.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbtnFolder,
             this.tstbNamePattern,
+            this.tsbtnInsertVariable,
             this.tslImageFormat,
             this.tsbtnMainMenu,
             this.tsSeparatorOfNumber,
@@ -398,6 +449,14 @@
             this.tstbNamePattern.ToolTipText = "File name prefix";
             this.tstbNamePattern.TextChanged += new System.EventHandler(this.tstbPrefix_TextChanged);
             // 
+            // tsbtnInsertVariable
+            // 
+            this.tsbtnInsertVariable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbtnInsertVariable.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnInsertVariable.Image")));
+            this.tsbtnInsertVariable.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnInsertVariable.Name = "tsbtnInsertVariable";
+            this.tsbtnInsertVariable.Size = new System.Drawing.Size(13, 22);
+            // 
             // tslImageFormat
             // 
             this.tslImageFormat.Name = "tslImageFormat";
@@ -426,51 +485,47 @@
             // 
             this.tsmiOpenFolder.Name = "tsmiOpenFolder";
             this.tsmiOpenFolder.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.tsmiOpenFolder.Size = new System.Drawing.Size(256, 22);
+            this.tsmiOpenFolder.Size = new System.Drawing.Size(211, 22);
             this.tsmiOpenFolder.Text = "Open folder(&D)";
             this.tsmiOpenFolder.Click += new System.EventHandler(this.tsmiOpenFolder_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(253, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(208, 6);
             // 
             // tsmiHelp
             // 
             this.tsmiHelp.Name = "tsmiHelp";
-            this.tsmiHelp.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.tsmiHelp.Size = new System.Drawing.Size(256, 22);
+            this.tsmiHelp.Size = new System.Drawing.Size(211, 22);
             this.tsmiHelp.Text = "Help(&H)";
             this.tsmiHelp.Click += new System.EventHandler(this.tsmiHelp_Click);
             // 
             // tsmiAbout
             // 
             this.tsmiAbout.Name = "tsmiAbout";
-            this.tsmiAbout.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.A)));
-            this.tsmiAbout.Size = new System.Drawing.Size(256, 22);
+            this.tsmiAbout.Size = new System.Drawing.Size(211, 22);
             this.tsmiAbout.Text = "About CapCap(&A)";
             this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(253, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(208, 6);
             // 
             // tsmiExit
             // 
             this.tsmiExit.Name = "tsmiExit";
             this.tsmiExit.ShortcutKeyDisplayString = "";
-            this.tsmiExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.tsmiExit.Size = new System.Drawing.Size(256, 22);
+            this.tsmiExit.Size = new System.Drawing.Size(211, 22);
             this.tsmiExit.Text = "Exit(&X)";
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
             // MenuItemTest
             // 
             this.MenuItemTest.Name = "MenuItemTest";
-            this.MenuItemTest.Size = new System.Drawing.Size(256, 22);
-            this.MenuItemTest.Text = "(test)";
+            this.MenuItemTest.Size = new System.Drawing.Size(211, 22);
+            this.MenuItemTest.Text = "(Debug: test)";
             this.MenuItemTest.Visible = false;
             this.MenuItemTest.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
@@ -524,6 +579,18 @@
             this.panelHelp.Size = new System.Drawing.Size(200, 100);
             this.panelHelp.TabIndex = 14;
             // 
+            // webHelp
+            // 
+            this.webHelp.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webHelp.IsWebBrowserContextMenuEnabled = false;
+            this.webHelp.Location = new System.Drawing.Point(25, 0);
+            this.webHelp.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webHelp.Name = "webHelp";
+            this.webHelp.ScriptErrorsSuppressed = true;
+            this.webHelp.Size = new System.Drawing.Size(175, 100);
+            this.webHelp.TabIndex = 0;
+            this.webHelp.WebBrowserShortcutsEnabled = false;
+            // 
             // tsHelp
             // 
             this.tsHelp.BackColor = System.Drawing.Color.White;
@@ -549,32 +616,32 @@
             this.tsReturnToMainPanel.ToolTipText = "Return";
             this.tsReturnToMainPanel.Click += new System.EventHandler(this.tsReturnToMainPanel_Click);
             // 
-            // label_Version
+            // panelHotKey
             // 
-            this.label_Version.AutoSize = true;
-            this.label_Version.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_Version.Location = new System.Drawing.Point(255, 40);
-            this.label_Version.Name = "label_Version";
-            this.label_Version.Size = new System.Drawing.Size(39, 20);
-            this.label_Version.TabIndex = 10;
-            this.label_Version.Text = "Beta";
+            this.panelHotKey.BackColor = System.Drawing.SystemColors.Control;
+            this.panelHotKey.Controls.Add(this.labNewHotKey);
+            this.panelHotKey.Location = new System.Drawing.Point(218, 153);
+            this.panelHotKey.Name = "panelHotKey";
+            this.panelHotKey.Size = new System.Drawing.Size(303, 193);
+            this.panelHotKey.TabIndex = 15;
             // 
-            // webHelp
+            // labNewHotKey
             // 
-            this.webHelp.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webHelp.IsWebBrowserContextMenuEnabled = false;
-            this.webHelp.Location = new System.Drawing.Point(25, 0);
-            this.webHelp.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webHelp.Name = "webHelp";
-            this.webHelp.Size = new System.Drawing.Size(175, 100);
-            this.webHelp.TabIndex = 0;
-            this.webHelp.WebBrowserShortcutsEnabled = false;
+            this.labNewHotKey.AutoSize = true;
+            this.labNewHotKey.Font = new System.Drawing.Font("微软雅黑", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labNewHotKey.Location = new System.Drawing.Point(50, 82);
+            this.labNewHotKey.Name = "labNewHotKey";
+            this.labNewHotKey.Size = new System.Drawing.Size(223, 38);
+            this.labNewHotKey.TabIndex = 0;
+            this.labNewHotKey.Text = "labNewHotKey";
+            this.labNewHotKey.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.panelHotKey);
             this.Controls.Add(this.panelHelp);
             this.Controls.Add(this.panelAbout);
             this.Controls.Add(this.panelMain);
@@ -603,6 +670,8 @@
             this.panelHelp.PerformLayout();
             this.tsHelp.ResumeLayout(false);
             this.tsHelp.PerformLayout();
+            this.panelHotKey.ResumeLayout(false);
+            this.panelHotKey.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -641,7 +710,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem settings_Sound;
         private System.Windows.Forms.ToolStripMenuItem settings_Notification;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripSeparator tsSeparatorBeforeStatus;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem settingsBMP;
         private System.Windows.Forms.ToolStripMenuItem settingsGIF;
@@ -660,6 +729,13 @@
         private System.Windows.Forms.ToolStrip tsHelp;
         private System.Windows.Forms.ToolStripButton tsReturnToMainPanel;
         private System.Windows.Forms.Label label_Version;
+        private System.Windows.Forms.Panel panelHotKey;
+        private System.Windows.Forms.Label labNewHotKey;
+        private System.Windows.Forms.ToolStripButton tsbtnNewHotKey;
+        private System.Windows.Forms.ToolStripMenuItem tsmiShowAds;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripDropDownButton tsbtnInsertVariable;
     }
 }
 

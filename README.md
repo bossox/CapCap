@@ -91,7 +91,7 @@ For example, if a **Name Pattern** text is
 CapImage_<Year>-<Month>-<Day>_<#>
 ```
 
-and today is October 3rd, 2017. **Next Number** is 15. Then the next screenshot image file will be named as `CapImage_2017-10-3_15`.
+and today is October 3rd, 2017. **Next Number** is 15. Then the next screenshot image file will be named as `CapImage_2017-10-3_15`, and its extensions.
 
 > **Notice**
 >
@@ -124,7 +124,7 @@ and today is October 3rd, 2017. **Next Number** is 15. Then the next screenshot 
 
 - **Improve:** multithread screen capture.
 - **Improve:** code refactoring.
-- **Improve:** user experience optimization (UI, logic)
+- **Improve:** user experience optimization (UI, logic).
 - **Improve:** use different audio feedbacks to distinguish success from fail.
 - **Improve:** automatically save and load settings.
 - **Improve:** record exception detail.

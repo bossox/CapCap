@@ -70,5 +70,29 @@ namespace CapCap.Properties {
                 this["image_format"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Alt + W")]
+        public string hotkey {
+            get {
+                return ((string)(this["hotkey"]));
+            }
+            set {
+                this["hotkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ads {
+            get {
+                return ((bool)(this["ads"]));
+            }
+            set {
+                this["ads"] = value;
+            }
+        }
     }
 }

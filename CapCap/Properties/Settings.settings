@@ -14,5 +14,11 @@
     <Setting Name="image_format" Type="System.String" Scope="User">
       <Value Profile="(Default)">JPEG</Value>
     </Setting>
+    <Setting Name="hotkey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Alt + W</Value>
+    </Setting>
+    <Setting Name="ads" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

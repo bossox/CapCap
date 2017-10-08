@@ -72,7 +72,13 @@ namespace HotKeys
             set
             {
                 if (AllowModification)
+                {
                     _Ctrl = value;
+                    if (value)
+                        Modifiers |= Modifier.Ctrl;
+                    else
+                        Modifiers &= ~Modifier.Ctrl;
+                }
                 else
                     throw new Exception("Modification disallowed for the hotkey is already registered.");
             }
@@ -88,7 +94,13 @@ namespace HotKeys
             set
             {
                 if (AllowModification)
+                {
                     _Alt = value;
+                    if (value)
+                        Modifiers |= Modifier.Alt;
+                    else
+                        Modifiers &= ~Modifier.Alt;
+                }
                 else
                     throw new Exception("Modification disallowed for the hotkey is already registered.");
             }
@@ -104,7 +116,13 @@ namespace HotKeys
             set
             {
                 if (AllowModification)
+                {
                     _Shift = value;
+                    if (value)
+                        Modifiers |= Modifier.Shift;
+                    else
+                        Modifiers &= ~Modifier.Shift;
+                }
                 else
                     throw new Exception("Modification disallowed for the hotkey is already registered.");
             }
@@ -120,7 +138,13 @@ namespace HotKeys
             set
             {
                 if (AllowModification)
+                {
                     _Win = value;
+                    if (value)
+                        Modifiers |= Modifier.Win;
+                    else
+                        Modifiers &= ~Modifier.Win;
+                }
                 else
                     throw new Exception("Modification disallowed for the hotkey is already registered.");
             }
@@ -171,7 +195,7 @@ namespace HotKeys
             Key = key;
         }
 
-        ~HotKey() { DestroyHandle(); }
+        ~HotKey() { if (Registered) Unregister(); DestroyHandle(); }
 
         // Create handle to receive Windows message.
         private void Initiate() { CreateHandle(new CreateParams()); }
@@ -179,7 +203,7 @@ namespace HotKeys
         // Filter out HotKey message and raise event.
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == WM_HOTKEY)
+            if (m.Msg == WM_HOTKEY && Registered)
             {
                 OnPressed?.Invoke(this, new HotKeyEventArgs(Ctrl, Alt, Shift, Win, Key));
             }

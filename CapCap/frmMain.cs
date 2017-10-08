@@ -8,12 +8,14 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using HotKeys;
+using System.Linq;
 
 namespace CapCap
 {
     public partial class frmMain : Form
     {
-        // Debug: Show (test) menu item.
+        #region Debug
+        // Debug: Show (Debug: test) menu item.
         private bool _isDebugMode = false;
         public bool isDebugMode
         {
@@ -33,6 +35,8 @@ namespace CapCap
             nPattern.Number = int.Parse(tstbNumber.Text);
             MessageBox.Show(nPattern.Convert(tstbNamePattern.Text));
         }
+        #endregion
+
         ////////////////////////////////////////////////////////////////////////////////
 
         private delegate void ScreenShotEventHandler(ScreenShotInfo info);
@@ -57,6 +61,13 @@ namespace CapCap
 
         private bool isWelcomeScreen = true;
 
+        private bool isHotKeySet = false;
+        private bool isSettingHotKey = false;
+        private const int WM_KEYDOWN = 0x0100;
+        private const int WM_KEYUP = 0x0101;
+        private const int WM_SYSKEYDOWN = 0x0104;
+        private const int WM_SYSKEYUP = 0x0105;
+
         public frmMain()
         {
             InitializeComponent();
@@ -68,6 +79,8 @@ namespace CapCap
         private void frmMain_Load(object sender, EventArgs e)
         {
             // Initiation
+            loadSettings();
+
             // LV
             LV.Columns.Add("No.", 35);
             LV.Columns.Add("Filename", 354);
@@ -80,7 +93,6 @@ namespace CapCap
             // tstb
             tstbNamePattern.Text = "CapImg_<year>-<month>-<day>_<hour>-<minute>-<second>_<#>";
             tstbNumber.Text = nPattern.Number.ToString();
-            loadSettings();
 
             tstbNamePattern.Visible = false;
             tstbNumber.Visible = false;
@@ -89,16 +101,17 @@ namespace CapCap
             tsSeparatorOfNumber.Visible = false;
             tslNumber.Visible = false;
 
+            tsbtnInsertVariable.Visible = false;
+
+            // tsbtnInsertVariable
+            loadVariableToMenu();
+
             // panelMain
             panelMain.Dock = DockStyle.Fill;
             panelMain.BringToFront();
 
             // NOTI
             NOTI.Visible = true;
-
-            // Register hotkey, Alt + W by default.
-            hotkey.Register();
-            hotkey.OnPressed += hotkey_OnPressed;
 
             // About
             panelAbout.Dock = DockStyle.Fill;
@@ -122,11 +135,58 @@ namespace CapCap
             picRUC80.Left = (panelRUC80.Width - picRUC80.Width) / 2;
             picRUC80.Top = (panelRUC80.Height - picRUC80.Height) / 2;
 
+            // Panel of new HotKey
+            panelHotKey.Dock = DockStyle.Fill;
+            centralizePanelHotKey();
+
             // Parallel
             OnScreenShotCaptured += ScreenShot_OnScreenShotCaptured;
 
             // RUC 80 Auto show.
-            showRUC80();
+            if (Properties.Settings.Default.ads)
+                if (DateTime.Now.Year == 2017)
+                    showRUC80();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (!isSettingHotKey)
+                return base.ProcessCmdKey(ref msg, keyData);
+
+            if (!isAllowedKey(keyData))
+                return base.ProcessCmdKey(ref msg, keyData);
+
+            // Normal keys
+            if (msg.Msg == WM_KEYDOWN || msg.Msg== WM_SYSKEYDOWN)
+            {
+                if (isHotKeySet)
+                {
+                    return true;
+                }
+                else
+                {
+                    processKeyDown(keyData);
+                    return base.ProcessCmdKey(ref msg, keyData);
+                }
+            }
+            else if (msg.Msg == WM_KEYUP || msg.Msg == WM_SYSKEYUP)
+            {
+                // Seems like, code here is useless.
+                // Don't know why, the Msg is always 256 (WM_KEYDOWN, WM_KEYFIRST)
+                if (isHotKeySet)
+                {
+                    if (isSettingHotKey)
+                        processKeyUp(keyData);
+                    return true;
+                }
+                else
+                {
+                    processKeyUp(keyData);
+                    return base.ProcessCmdKey(ref msg, keyData);
+                }
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void NOTI_MouseClick(object sender, MouseEventArgs e)
@@ -161,7 +221,7 @@ namespace CapCap
             if (LV.SelectedItems.Count != 0)
                 tslabel_Status.Text = getFileName(LV.SelectedItems[0].SubItems[1].Text);
             else
-                tslabel_Status.Text = "";
+                tslabel_Status.Text = "Ready.";
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -178,6 +238,7 @@ namespace CapCap
         {
             centralizePanelInnerAbout();
             centralizePanelRUC80();
+            centralizePanelHotKey();
         }
 
         private void tsmiExit_Click(object sender, EventArgs e)
@@ -208,6 +269,7 @@ namespace CapCap
                 tslImageFormat.Visible = true;
                 tsSeparatorOfNumber.Visible = true;
                 tslNumber.Visible = true;
+                tsbtnInsertVariable.Visible = true;
             }
         }
 
@@ -223,6 +285,9 @@ namespace CapCap
 
         private void hotkey_OnPressed(object sender, HotKeyEventArgs e)
         {
+            if (isSettingHotKey)
+                return;
+
             panelMain.BringToFront();
             takeTheBloodyShot();
         }
@@ -244,7 +309,9 @@ namespace CapCap
             if (!isExiting)
             {
                 e.Cancel = true;
-                this.Hide();
+
+                if (!isSettingHotKey)
+                    this.Hide();
             }
             else
             {
@@ -269,11 +336,17 @@ namespace CapCap
             System.Diagnostics.Process.Start("http://weibo.com/BOSoftwareService");
         }
 
+        private void tsmiVariable_Click(object sender, EventArgs e)
+        {
+            var item = sender as ToolStripMenuItem;
+            var text = item.Text;
+
+            insertVariable(text);
+        }
         #region Custom Method: Auxiliary
         private void showRUC80()
         {
-            if (DateTime.Now.Year == 2017 && DateTime.Now.Month == 10 && DateTime.Now.Day <= 15)
-                panelRUC80.BringToFront();
+            panelRUC80.BringToFront();
         }
 
         private void loadSettings()
@@ -283,6 +356,8 @@ namespace CapCap
             settings_Sound.Checked = Properties.Settings.Default.play_sound;
             convertCode2ImageFormat(Properties.Settings.Default.image_format);
             tslImageFormat.Text = $".{convertImageFormat2Code()}";
+            convertStringToHotKey(Properties.Settings.Default.hotkey);
+            tsmiShowAds.Checked = Properties.Settings.Default.ads;
         }
 
         private void saveSettings()
@@ -291,6 +366,8 @@ namespace CapCap
             Properties.Settings.Default.notify = settings_Notification.Checked;
             Properties.Settings.Default.play_sound = settings_Sound.Checked;
             Properties.Settings.Default.image_format = convertImageFormat2Code();
+            Properties.Settings.Default.hotkey = tsbtnNewHotKey.Text;
+            Properties.Settings.Default.ads = tsmiShowAds.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -336,6 +413,43 @@ namespace CapCap
             return "JPEG";
         }
 
+        private void convertStringToHotKey(string value)
+        {
+            tsbtnNewHotKey.Text = value;
+            labNewHotKey.Text = value;
+
+            var keys = value.Replace(" ", "").Split('+').ToList();
+
+            if (keys.Contains("Ctrl"))
+            {
+                hotkey.Ctrl = true;
+                keys.Remove("Ctrl");
+            }
+
+            if (keys.Contains("Shift"))
+            {
+                hotkey.Shift = true;
+                keys.Remove("Shift");
+            }
+
+            if (keys.Contains("Alt"))
+            {
+                hotkey.Alt = true;
+                keys.Remove("Alt");
+            }
+
+            hotkey.Key = convertStringToKey(keys[0]);
+
+            hotkey.Register();
+            hotkey.OnPressed += hotkey_OnPressed;
+        }
+
+        private Keys convertStringToKey(string value)
+        {
+            Keys key = Auxiliary.GetKeyFromKeyCodeString(value);
+            return key == Keys.None ? Keys.W : key;
+        }
+
         private string getFolderName(string path)
         {
             if (System.IO.Directory.GetDirectoryRoot(path) != path)
@@ -353,6 +467,12 @@ namespace CapCap
         {
             picRUC80.Left = (panelRUC80.Width - picRUC80.Width) / 2;
             picRUC80.Top = (panelRUC80.Height - picRUC80.Height) / 2;
+        }
+
+        private void centralizePanelHotKey()
+        {
+            labNewHotKey.Left = (panelHotKey.Width - labNewHotKey.Width) / 2;
+            labNewHotKey.Top = (panelHotKey.Height - labNewHotKey.Height) / 2;
         }
 
         private void showAbout()
@@ -423,6 +543,106 @@ namespace CapCap
             settingsPNG.Checked = settingsPNG.Text == code;
             settingsTIFF.Checked = settingsTIFF.Text == code;
             tslImageFormat.Text = $".{code}";
+        }
+
+        private void processKeyDown(Keys keyData)
+        {
+            labNewHotKey.ForeColor = Color.Black;
+            labNewHotKey.Text = Auxiliary.GetCombinationFromKeyData(keyData);
+            centralizePanelHotKey();
+            
+            if (pressedNormalKey(keyData))
+                trySetNewHotKey(keyData);
+        }
+
+        private void processKeyUp(Keys keyData)
+        {
+            // Due to Windows Message issue, code here will never run.
+            if (keyData == Keys.None)
+            {
+                panelMain.BringToFront();
+                isSettingHotKey = false;
+                isHotKeySet = false;
+            }
+        }
+
+        private bool pressedNormalKey(Keys keyData)
+        {
+            var result = keyData.ToString().Replace(" ", "");
+            result = result.Replace("ShiftKey,", "").Replace("Menu,", "").Replace("ControlKey,", "")
+                .Replace("Shift", "").Replace("Control", "").Replace("Alt", "").Replace(",", "");
+            return result.Length > 0 ? true : false;
+        }
+
+        private void trySetNewHotKey(Keys keyData)
+        {
+            isHotKeySet = true;
+
+            hotkey.Ctrl = keyData.HasFlag(Keys.Control);
+            hotkey.Alt = keyData.HasFlag(Keys.Alt);
+            hotkey.Shift = keyData.HasFlag(Keys.Shift);
+
+            hotkey.Key = keyData & ~Keys.Shift & ~Keys.Alt & ~Keys.Control;
+
+            try
+            {
+                hotkey.Register();
+
+                tsbtnNewHotKey.Text = labNewHotKey.Text;
+                panelMain.BringToFront();
+                isSettingHotKey = false;
+            }
+            catch (Exception ex)
+            {
+                labNewHotKey.ForeColor = Color.Red;
+                isHotKeySet = false;
+            }
+            finally
+            {
+                isHotKeySet = false;
+            }
+        }
+
+        private void loadVariableToMenu()
+        {
+            foreach(string text in nPattern.GetVariables())
+            {
+                var item = new ToolStripMenuItem(text);
+                item.Click += tsmiVariable_Click;
+                tsbtnInsertVariable.DropDownItems.Add(item);
+            }
+        }
+
+        private void insertVariable(string variable)
+        {
+            var tb = tstbNamePattern;
+            var insertpoint = tb.SelectionStart;
+            tb.Select(0, insertpoint);
+            var prefix = tb.SelectedText;
+            tb.Select(insertpoint, tb.TextLength - insertpoint);
+            var postfix = tb.SelectedText;
+            tb.Text = $"{prefix}{variable}{postfix}";
+            tb.SelectionStart = insertpoint + variable.Length;
+        }
+
+        private bool isAllowedKey(Keys keyData)
+        {
+            var keyCodes = filterKeyData(keyData);
+
+            foreach (var keyCode in keyCodes)
+            {
+                if (!Auxiliary.AllowKey(keyCode))
+                    return false;
+            }
+
+            return true;
+        }
+
+        private List<string> filterKeyData(Keys keyData)
+        {
+            string result = keyData.ToString().Replace(" ", "");
+            result = result.Replace("Menu,", "").Replace("ControlKey,", "").Replace("ShiftKey,", "");
+            return result.Split(',').ToList();
         }
         #endregion
 
@@ -503,6 +723,8 @@ namespace CapCap
             addRecord(info.FullName, info.Success);
             incrementNextNumber();
             notify(info.FileName, info.Success);
+
+            tslabel_Status.Text = $"Screen capture {(info.Success ? "success" : "fail")}ed.";
 
             if (vTasks.Count > 0)
                 vTasks.Remove(vTasks[0]);
@@ -585,6 +807,14 @@ namespace CapCap
         private void tsReturnToMainPanel_Click(object sender, EventArgs e)
         {
             panelMain.BringToFront();
+        }
+
+        private void tsbtnNewHotKey_Click(object sender, EventArgs e)
+        {
+            centralizePanelHotKey();
+            isSettingHotKey = true;
+            panelHotKey.BringToFront();
+            hotkey.Unregister();
         }
     }
 }
