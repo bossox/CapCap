@@ -12,6 +12,7 @@ namespace CapCap
         public string SaveFolder { get; set; } = string.Empty;
         public string NamePattern { get; set; } = string.Empty;
         public string Number { get; set; } = string.Empty;
+        public bool Overwrite { get; set; } = false;
         public ImageFormat Format { get; set; } = ImageFormat.Jpeg;
 
         #region WinAPI
@@ -26,13 +27,14 @@ namespace CapCap
         }
         #endregion
 
-        public ScreenShot(bool cursor, string folder, string pattern, string number, ImageFormat format)
+        public ScreenShot(bool cursor, string folder, string pattern, string number, ImageFormat format, bool overwrite)
         {
             CaptureCursor = cursor;
             SaveFolder = folder;
             NamePattern = pattern;
             Number = number;
             Format = format;
+            Overwrite = overwrite;
         }
 
         public ScreenShotInfo CaptureAndSave()
@@ -68,13 +70,20 @@ namespace CapCap
             try
             {
                 string filename = getFullname();
+
+                if (System.IO.File.Exists(filename) && !Overwrite)
+                    return saveRenamedImage(img, filename, 2);
+
                 img.Save(filename, Format);
-                img.Dispose();
                 return filename;
             }
             catch (Exception exp)
             {
-                return $"[Exception:{exp.Message}]";
+                return $"[{exp.Message}]";
+            }
+            finally
+            {
+                img.Dispose();
             }
         }
 
@@ -82,6 +91,29 @@ namespace CapCap
         {
             var nPattern = new NamePattern(NamePattern, int.Parse(Number));
             return string.Format(@"{0}\{1}.{2}", SaveFolder, nPattern.Convert(), Format.ToString().ToUpper());
+        }
+
+        private string saveRenamedImage(Image img, string fullname, int number)
+        {
+            try
+            {
+                string filename = fullname.Substring(0, fullname.Length - Format.ToString().Length - 1);
+                filename += $" ({number.ToString()}).{Format.ToString().ToUpper()}";
+
+                if (System.IO.File.Exists(filename))
+                    return saveRenamedImage(img, fullname, number + 1);
+                else
+                    img.Save(filename, Format);
+
+                return filename;
+            }catch(Exception exp)
+            {
+                return $"[Exception:{exp.Message}]";
+            }
+            finally
+            {
+                img.Dispose();
+            }
         }
     }
 

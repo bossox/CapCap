@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using HotKeys;
 using System.Linq;
+using System.Resources;
 
 namespace CapCap
 {
@@ -68,6 +69,20 @@ namespace CapCap
         private const int WM_SYSKEYDOWN = 0x0104;
         private const int WM_SYSKEYUP = 0x0105;
 
+        private bool isHotKeyConflict = false;
+
+        internal Dictionary<string, string> LangPack = Localization.EN_US.LanguagePack;
+        private string vLanguage = "EN_US";
+        private string vStatusCode = "Ready";
+        /*
+         * None
+         * Ready
+         * FileMissing
+         */
+
+        private delegate void WelcomeCloseedEventHandler();
+        private event WelcomeCloseedEventHandler OnWelcomeClosed;
+
         public frmMain()
         {
             InitializeComponent();
@@ -79,19 +94,23 @@ namespace CapCap
         private void frmMain_Load(object sender, EventArgs e)
         {
             // Initiation
+            OnWelcomeClosed += FrmMain_OnWelcomeClosed;
+
+            // Load Settings
             loadSettings();
+            loadApplicationInfo();
 
             // LV
             LV.Columns.Add("No.", 35);
-            LV.Columns.Add("Filename", 354);
-            LV.Columns.Add("Time", 120);
+            LV.Columns.Add("Filename", 348);
+            LV.Columns.Add("Time", 126);
             LV.Columns.Add("Status", 55);
 
             LV.FullRowSelect = true;
             LV.Dock = DockStyle.Fill;
 
             // tstb
-            tstbNamePattern.Text = "CapImg_<year>-<month>-<day>_<hour>-<minute>-<second>_<#>";
+            tstbNamePattern.Text = "CapImg_<year>-<month>-<day>_<hour>-<minute>-<second>_<3#>";
             tstbNumber.Text = nPattern.Number.ToString();
 
             tstbNamePattern.Visible = false;
@@ -142,22 +161,47 @@ namespace CapCap
             // Parallel
             OnScreenShotCaptured += ScreenShot_OnScreenShotCaptured;
 
+            // Language
+            switchLanguage(vLanguage);
+
             // RUC 80 Auto show.
             if (Properties.Settings.Default.ads)
                 if (DateTime.Now.Year == 2017)
                     showRUC80();
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        private void FrmMain_OnWelcomeClosed()
         {
+            if (isHotKeyConflict)
+                tsbtnNewHotKey.PerformClick();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        { 
             if (!isSettingHotKey)
                 return base.ProcessCmdKey(ref msg, keyData);
+
+            if (keyData.HasFlag(Keys.Escape) || keyData.HasFlag(Keys.Enter))
+            {
+                isSettingHotKey = false;
+                try
+                {
+                    hotkey.Register();
+                    panelMain.BringToFront();
+                }
+                catch (Exception ex)
+                {
+                    lab_NewHotKey.ForeColor = Color.Red;
+                    isSettingHotKey = true;
+                }
+                return true;
+            }
 
             if (!isAllowedKey(keyData))
                 return base.ProcessCmdKey(ref msg, keyData);
 
             // Normal keys
-            if (msg.Msg == WM_KEYDOWN || msg.Msg== WM_SYSKEYDOWN)
+            if (msg.Msg == WM_KEYDOWN || msg.Msg == WM_SYSKEYDOWN)
             {
                 if (isHotKeySet)
                 {
@@ -166,7 +210,6 @@ namespace CapCap
                 else
                 {
                     processKeyDown(keyData);
-                    return base.ProcessCmdKey(ref msg, keyData);
                 }
             }
             else if (msg.Msg == WM_KEYUP || msg.Msg == WM_SYSKEYUP)
@@ -219,9 +262,21 @@ namespace CapCap
         private void LV_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (LV.SelectedItems.Count != 0)
-                tslabel_Status.Text = getFileName(LV.SelectedItems[0].SubItems[1].Text);
+            {
+                var fullname = LV.SelectedItems[0].SubItems[1].Text;
+                if (File.Exists(fullname))
+                    tslab_Status.Text = Auxiliary.GetFileName(fullname);
+                else
+                {
+                    tslab_Status.Text = LangPack["tslab_Status_FileMissing"];
+                    vStatusCode = "FileMissing";
+                }
+            }
             else
-                tslabel_Status.Text = "Ready.";
+            {
+                tslab_Status.Text = LangPack["tslab_Status_Ready"];
+                vStatusCode = "Ready";
+            }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -351,23 +406,38 @@ namespace CapCap
 
         private void loadSettings()
         {
-            settings_Cursor.Checked = Properties.Settings.Default.capture_cursor;
-            settings_Notification.Checked = Properties.Settings.Default.notify;
-            settings_Sound.Checked = Properties.Settings.Default.play_sound;
+            tsmi_Cursor.Checked = Properties.Settings.Default.capture_cursor;
+            tsmi_Notification.Checked = Properties.Settings.Default.notify;
+            tsmi_Sound.Checked = Properties.Settings.Default.play_sound;
             convertCode2ImageFormat(Properties.Settings.Default.image_format);
             tslImageFormat.Text = $".{convertImageFormat2Code()}";
             convertStringToHotKey(Properties.Settings.Default.hotkey);
-            tsmiShowAds.Checked = Properties.Settings.Default.ads;
+            tsmi_ShowAds.Checked = Properties.Settings.Default.ads;
+
+            // Overwrite existing file
+            tsmi_OverWrite.Checked = Properties.Settings.Default.overwrite_existing_file;
+            tsmi_ReName.Checked = !tsmi_OverWrite.Checked;
+
+            // Language
+            vLanguage = Properties.Settings.Default.language;
         }
 
         private void saveSettings()
         {
-            Properties.Settings.Default.capture_cursor = settings_Cursor.Checked;
-            Properties.Settings.Default.notify = settings_Notification.Checked;
-            Properties.Settings.Default.play_sound = settings_Sound.Checked;
+            Properties.Settings.Default.capture_cursor = tsmi_Cursor.Checked;
+            Properties.Settings.Default.notify = tsmi_Notification.Checked;
+            Properties.Settings.Default.play_sound = tsmi_Sound.Checked;
             Properties.Settings.Default.image_format = convertImageFormat2Code();
             Properties.Settings.Default.hotkey = tsbtnNewHotKey.Text;
-            Properties.Settings.Default.ads = tsmiShowAds.Checked;
+            Properties.Settings.Default.ads = tsmi_ShowAds.Checked;
+
+            // Overwrite existing file
+            Properties.Settings.Default.overwrite_existing_file = tsmi_OverWrite.Checked;
+
+            // Language
+            Properties.Settings.Default.language = vLanguage;
+
+            // Save settings
             Properties.Settings.Default.Save();
         }
 
@@ -376,38 +446,38 @@ namespace CapCap
             switch (code)
             {
                 case "BMP":
-                    settingsBMP.Checked = true;
+                    tsmi_BMP.Checked = true;
                     break;
                 case "GIF":
-                    settingsGIF.Checked = true;
+                    tsmi_GIF.Checked = true;
                     break;
                 case "JPEG":
-                    settingsJPEG.Checked = true;
+                    tsmi_JPEG.Checked = true;
                     break;
                 case "PNG":
-                    settingsPNG.Checked = true;
+                    tsmi_PNG.Checked = true;
                     break;
                 case "TIFF":
-                    settingsTIFF.Checked = true;
+                    tsmi_TIFF.Checked = true;
                     break;
             }
         }
 
         private string convertImageFormat2Code()
         {
-            if (settingsBMP.Checked)
+            if (tsmi_BMP.Checked)
                 return "BMP";
 
-            if (settingsGIF.Checked)
+            if (tsmi_GIF.Checked)
                 return "GIF";
 
-            if (settingsJPEG.Checked)
+            if (tsmi_JPEG.Checked)
                 return "JPEG";
 
-            if (settingsPNG.Checked)
+            if (tsmi_PNG.Checked)
                 return "PNG";
 
-            if (settingsTIFF.Checked)
+            if (tsmi_TIFF.Checked)
                 return "TIFF";
 
             return "JPEG";
@@ -416,7 +486,7 @@ namespace CapCap
         private void convertStringToHotKey(string value)
         {
             tsbtnNewHotKey.Text = value;
-            labNewHotKey.Text = value;
+            lab_NewHotKey.Text = value;
 
             var keys = value.Replace(" ", "").Split('+').ToList();
 
@@ -439,9 +509,17 @@ namespace CapCap
             }
 
             hotkey.Key = convertStringToKey(keys[0]);
-
-            hotkey.Register();
             hotkey.OnPressed += hotkey_OnPressed;
+
+            try
+            {
+                hotkey.Register();
+            }
+            catch (Exception ex)
+            {
+                isHotKeyConflict = true;
+            }
+
         }
 
         private Keys convertStringToKey(string value)
@@ -471,8 +549,8 @@ namespace CapCap
 
         private void centralizePanelHotKey()
         {
-            labNewHotKey.Left = (panelHotKey.Width - labNewHotKey.Width) / 2;
-            labNewHotKey.Top = (panelHotKey.Height - labNewHotKey.Height) / 2;
+            lab_NewHotKey.Left = (panelHotKey.Width - lab_NewHotKey.Width) / 2;
+            lab_NewHotKey.Top = (panelHotKey.Height - lab_NewHotKey.Height) / 2;
         }
 
         private void showAbout()
@@ -530,27 +608,22 @@ namespace CapCap
             Application.Exit();
         }
 
-        private string getFileName(string path)
-        {
-            return path.Substring(path.LastIndexOf('\\') + 1);
-        }
-
         private void switchImageFormat(string code)
         {
-            settingsBMP.Checked = settingsBMP.Text == code;
-            settingsGIF.Checked = settingsGIF.Text == code;
-            settingsJPEG.Checked = settingsJPEG.Text == code;
-            settingsPNG.Checked = settingsPNG.Text == code;
-            settingsTIFF.Checked = settingsTIFF.Text == code;
+            tsmi_BMP.Checked = tsmi_BMP.Text == code;
+            tsmi_GIF.Checked = tsmi_GIF.Text == code;
+            tsmi_JPEG.Checked = tsmi_JPEG.Text == code;
+            tsmi_PNG.Checked = tsmi_PNG.Text == code;
+            tsmi_TIFF.Checked = tsmi_TIFF.Text == code;
             tslImageFormat.Text = $".{code}";
         }
 
         private void processKeyDown(Keys keyData)
         {
-            labNewHotKey.ForeColor = Color.Black;
-            labNewHotKey.Text = Auxiliary.GetCombinationFromKeyData(keyData);
+            lab_NewHotKey.ForeColor = Color.Black;
+            lab_NewHotKey.Text = Auxiliary.GetCombinationFromKeyData(keyData);
             centralizePanelHotKey();
-            
+
             if (pressedNormalKey(keyData))
                 trySetNewHotKey(keyData);
         }
@@ -588,13 +661,13 @@ namespace CapCap
             {
                 hotkey.Register();
 
-                tsbtnNewHotKey.Text = labNewHotKey.Text;
+                tsbtnNewHotKey.Text = lab_NewHotKey.Text;
                 panelMain.BringToFront();
                 isSettingHotKey = false;
             }
             catch (Exception ex)
             {
-                labNewHotKey.ForeColor = Color.Red;
+                lab_NewHotKey.ForeColor = Color.Red;
                 isHotKeySet = false;
             }
             finally
@@ -605,7 +678,7 @@ namespace CapCap
 
         private void loadVariableToMenu()
         {
-            foreach(string text in nPattern.GetVariables())
+            foreach (string text in nPattern.GetVariables())
             {
                 var item = new ToolStripMenuItem(text);
                 item.Click += tsmiVariable_Click;
@@ -644,6 +717,102 @@ namespace CapCap
             result = result.Replace("Menu,", "").Replace("ControlKey,", "").Replace("ShiftKey,", "");
             return result.Split(',').ToList();
         }
+
+        private void loadApplicationInfo()
+        {
+            label_Version.Text = Application.ProductVersion;
+            Text += $" {Application.ProductVersion.Remove(3)}";
+        }
+
+        private void updateOverWrite(bool overwrite)
+        {
+            if (overwrite)
+            {
+                tsmi_OverWrite.Checked = true;
+                tsmi_ReName.Checked = false;
+            }
+            else
+            {
+                tsmi_OverWrite.Checked = false;
+                tsmi_ReName.Checked = true;
+            }
+        }
+
+        private void switchLanguage(string lang)
+        {
+            vLanguage = lang;
+            switch (lang)
+            {
+                case "EN_US":
+                    LangPack = Localization.EN_US.LanguagePack;
+                    break;
+                case "ZH_CN":
+                    LangPack = Localization.ZH_CN.LanguagePack;
+                    break;
+            }
+            updateUILanguage();
+            updateLanguageMenuItemCheckState();
+        }
+
+        private void updateUILanguage()
+        {
+            tsbtnFolder.Text = LangPack["tsbtn_Folder"];
+
+            tsddbMainMenu.Text = LangPack["tsddb_MainMenu"];
+            tsmiOpenFolder.Text = LangPack["tsmi_OpenFolder"];
+            tsmi_ClearHistory.Text = LangPack["tsmi_ClearHistory"];
+            tsmiHelp.Text = LangPack["tsmi_Help"];
+            tsmiAbout.Text = LangPack["tsmi_About"];
+            tsmiExit.Text = LangPack["tsmi_Exit"];
+
+            tsddbSettings.Text = LangPack["tsddb_Settings"];
+            tsmi_ShowAds.Text = LangPack["tsmi_ShowAds"];
+            tsmi_Language.Text = LangPack["tsmi_Language"];
+            tsmi_Cursor.Text = LangPack["tsmi_Cursor"];
+            tsmi_Notification.Text = LangPack["tsmi_Notification"];
+            tsmi_Sound.Text = LangPack["tsmi_Sound"];
+            tsmi_ReName.Text = LangPack["tsmi_Rename"];
+            tsmi_OverWrite.Text = LangPack["tsmi_Overwrite"];
+
+            LV.Columns[1].Text = LangPack["LV_Filename"];
+            LV.Columns[2].Text = LangPack["LV_Time"];
+            LV.Columns[3].Text = LangPack["LV_Status"];
+
+            cmsmiExit.Text = LangPack["tsmi_Exit"];
+            cmsmiOpenFolder.Text = LangPack["tsmi_OpenFolder"];
+
+            // Update tslab_Status
+            switch (vStatusCode)
+            {
+                case "None":
+                    break;
+                case "Ready":
+                    tslab_Status.Text = LangPack["tslab_Status_Ready"];
+                    break;
+                case "FileMissing":
+                    tslab_Status.Text = LangPack["tslab_Status_FileMissing"];
+                    break;
+            }
+        }
+
+        private void updateLanguageMenuItemCheckState()
+        {
+            foreach (var item in tsmi_Language.DropDownItems)
+            {
+                var mi = item as ToolStripMenuItem;
+                mi.Checked = false;
+            }
+
+            switch (vLanguage)
+            {
+                case "EN_US":
+                    tsmi_Lang_EN_US.Checked = true;
+                    break;
+                case "ZH_CN":
+                    tsmi_Lang_ZH_CN.Checked = true;
+                    break;
+            }
+        }
         #endregion
 
         #region Custom Method: Screen Capturing
@@ -652,7 +821,7 @@ namespace CapCap
         {
             if (!isSettingsCorrect())
             {
-                MessageBox.Show("There's something wrong in settings.", "CapCap", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(LangPack["MsgBox_InvalidSettings"], "CapCap", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -660,7 +829,7 @@ namespace CapCap
             ImageFormat format = getImageFormat();
 
             // Take screen shot.
-            var task = new Task(() => captureScreen(settings_Cursor.Checked, FBD.SelectedPath, tstbNamePattern.Text, vNextNumber++.ToString(), format));
+            var task = new Task(() => captureScreen(tsmi_Cursor.Checked, FBD.SelectedPath, tstbNamePattern.Text, vNextNumber++.ToString(), format));
             task.Start();
 
             vTasks.Add(task);
@@ -670,19 +839,19 @@ namespace CapCap
         {
             if (!isPrefixLegal(tstbNamePattern.Text))
             {
-                addRecord("[Error: Invalid prefix.]", false);
+                addRecord("LV_Filename_InvalidNamePattern", false);
                 return false;
             }
 
             if (!isNextNumberLegal(tstbNumber.Text))
             {
-                addRecord("[Error: Invalid next number.]", false);
+                addRecord(LangPack["LV_Filename_InvalidNumber"], false);
                 return false;
             }
 
             if (!Directory.Exists(FBD.SelectedPath))
             {
-                addRecord("[Error: Invalid folder.]", false);
+                addRecord(LangPack["LV_Filename_InvalidFolder"], false);
                 return false;
             }
 
@@ -691,19 +860,19 @@ namespace CapCap
 
         private ImageFormat getImageFormat()
         {
-            if (settingsBMP.Checked)
+            if (tsmi_BMP.Checked)
                 return ImageFormat.Bmp;
 
-            if (settingsGIF.Checked)
+            if (tsmi_GIF.Checked)
                 return ImageFormat.Gif;
 
-            if (settingsJPEG.Checked)
+            if (tsmi_JPEG.Checked)
                 return ImageFormat.Jpeg;
 
-            if (settingsPNG.Checked)
+            if (tsmi_PNG.Checked)
                 return ImageFormat.Png;
 
-            if (settingsTIFF.Checked)
+            if (tsmi_TIFF.Checked)
                 return ImageFormat.Tiff;
 
             return ImageFormat.Jpeg;
@@ -711,7 +880,7 @@ namespace CapCap
 
         private void captureScreen(bool cursor, string folder, string pattern, string number, ImageFormat format)
         {
-            var screenshot = new ScreenShot(cursor, folder, pattern, number, format);
+            var screenshot = new ScreenShot(cursor, folder, pattern, number, format, tsmi_OverWrite.Checked);
             if (InvokeRequired)
                 Invoke(OnScreenShotCaptured, screenshot.CaptureAndSave());
             else
@@ -724,7 +893,8 @@ namespace CapCap
             incrementNextNumber();
             notify(info.FileName, info.Success);
 
-            tslabel_Status.Text = $"Screen capture {(info.Success ? "success" : "fail")}ed.";
+            tslab_Status.Text = string.Format(LangPack["tslab_Status_ScreenCaptureResult"],
+                info.Success ? LangPack["word_Successed"] : LangPack["word_Failed"]);
 
             if (vTasks.Count > 0)
                 vTasks.Remove(vTasks[0]);
@@ -733,9 +903,16 @@ namespace CapCap
         private void addRecord(string filename, bool success)
         {
             LV.Items.Add(vTotalNumber.ToString());
+
+            // Check if exception occured
+            if (!success)
+            {
+                filename = string.Format(LangPack["LV_Filename_OtherException"], filename.Substring(1, filename.Length - 2));
+            }
+
             LV.Items[LV.Items.Count - 1].SubItems.Add(filename);
             LV.Items[LV.Items.Count - 1].SubItems.Add(string.Format("{0}", DateTime.Now));
-            LV.Items[LV.Items.Count - 1].SubItems.Add(success ? "Saved" : "Failed");
+            LV.Items[LV.Items.Count - 1].SubItems.Add(success ? LangPack["LV_Status_Success"] : LangPack["LV_Status_Failed"]);
             vTotalNumber += 1;
             LV.TopItem = LV.Items[LV.Items.Count - 1];
         }
@@ -748,10 +925,10 @@ namespace CapCap
 
         private void notify(string filename, bool success)
         {
-            if (settings_Sound.Checked)
+            if (tsmi_Sound.Checked)
                 playSound(success);
 
-            if (settings_Notification.Checked)
+            if (tsmi_Notification.Checked)
             {
                 sendNotification(filename, success);
             }
@@ -765,7 +942,8 @@ namespace CapCap
 
         private void sendNotification(string filename, bool success)
         {
-            string info = string.Format("Screenshot {0} {1}", filename, success ? "saved." : "failed.");
+            string info = string.Format("{0} {1} {2}", LangPack["Screenshot"], filename,
+                success ? LangPack["LV_Status_Success"] : LangPack["LV_Status_Failed"]);
             NOTI.ShowBalloonTip(2000, "CapCap", string.Format("{0}", info), success ? ToolTipIcon.Info : ToolTipIcon.Error);
         }
         #endregion
@@ -790,13 +968,16 @@ namespace CapCap
             }
             else
                 panelAbout.BringToFront();
+
+            OnWelcomeClosed();
+            isHotKeyConflict = false;
         }
 
         private void tsmiHelp_Click(object sender, EventArgs e)
         {
             if (!File.Exists(Application.StartupPath + "\\Readme.html"))
             {
-                MessageBox.Show("Readme.html file is missing.", "CapCap", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(LangPack["tsmi_Help_ReadmeMissing"], "CapCap", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -814,7 +995,53 @@ namespace CapCap
             centralizePanelHotKey();
             isSettingHotKey = true;
             panelHotKey.BringToFront();
-            hotkey.Unregister();
+            if (hotkey.Registered)
+                hotkey.Unregister();
+        }
+
+        private void frmMain_Activated(object sender, EventArgs e)
+        {
+            if (isSettingHotKey)
+            {
+                lab_NewHotKey.Text = LangPack["lab_NewHotKey_PressToSet"];
+                centralizePanelHotKey();
+            }
+        }
+
+        private void panelHotKey_Click(object sender, EventArgs e)
+        {
+            lab_NewHotKey.Text = LangPack["lab_NewHotKey_PressToSet"];
+            centralizePanelHotKey();
+        }
+
+        private void tsmiOverWrite_Click(object sender, EventArgs e)
+        {
+            updateOverWrite(true);
+        }
+
+        private void tsmiReName_Click(object sender, EventArgs e)
+        {
+            updateOverWrite(false);
+        }
+
+        private void tsmiLanguagePack_Click(object sender, EventArgs e)
+        {
+            var menu_item = sender as ToolStripMenuItem;
+            switch (menu_item.Text)
+            {
+                case "English":
+                    switchLanguage("EN_US");
+                    break;
+                case "简体中文":
+                    switchLanguage("ZH_CN");
+                    break;
+            }
+        }
+
+        private void tsmi_ClearHistory_Click(object sender, EventArgs e)
+        {
+            LV.Items.Clear();
+            vTotalNumber = 1;
         }
     }
 }

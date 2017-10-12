@@ -20,5 +20,11 @@
     <Setting Name="ads" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="overwrite_existing_file" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="language" Type="System.String" Scope="User">
+      <Value Profile="(Default)">EN_US</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

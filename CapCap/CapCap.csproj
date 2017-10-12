@@ -93,6 +93,8 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="HotKeys.cs" />
+    <Compile Include="Localization\EN_US.cs" />
+    <Compile Include="Localization\ZH_CN.cs" />
     <Compile Include="NamePattern.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

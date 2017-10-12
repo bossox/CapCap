@@ -89,12 +89,27 @@ namespace CapCap
 
         private string _convert(string pattern)
         {
+            // Pad number convertion
+            pattern = convertPadNumber(pattern);
+
+            // Normal convertion
             var ms = Regex.Matches(pattern, @"<[^<>]*>");
             foreach (var m in ms)
             {
                 var key = m.ToString().ToLower();
                 if (dicCodeTable.ContainsKey(key))
                     pattern = pattern.Replace(m.ToString(), dicCodeTable[key].Invoke());
+            }
+            return pattern;
+        }
+
+        private string convertPadNumber(string pattern)
+        {
+            var ms = Regex.Matches(pattern, @"<\d+#>");
+            foreach(var m in ms)
+            {
+                var number = int.Parse(m.ToString().Substring(1, m.ToString().Length - 3));
+                pattern = pattern.Replace(m.ToString(), Number.ToString().PadLeft(number, '0'));
             }
             return pattern;
         }

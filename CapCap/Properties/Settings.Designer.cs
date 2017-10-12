@@ -94,5 +94,29 @@ namespace CapCap.Properties {
                 this["ads"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool overwrite_existing_file {
+            get {
+                return ((bool)(this["overwrite_existing_file"]));
+            }
+            set {
+                this["overwrite_existing_file"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("EN_US")]
+        public string language {
+            get {
+                return ((string)(this["language"]));
+            }
+            set {
+                this["language"] = value;
+            }
+        }
     }
 }
