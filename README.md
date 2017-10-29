@@ -1,4 +1,4 @@
-> **Boss Ox** / 2017.10.12  / Beijing @RUC
+> **Boss Ox** / 2017.10.29  / Beijing @RUC
 
 # CapCap
 
@@ -6,7 +6,7 @@ Capture full screen and save the image automatically by pressing hotkey, silentl
 
 ---
 
-Latest Version: 1.2
+Latest Version: 1.3
 
 System Requirement: Windows NT, .NET 4.5.2 and above, 2 MB HDD
 
@@ -137,7 +137,7 @@ In version 1.2, we've added an advanced syntax for `<#>`. Now you can input a nu
 - Double click on a screenshot record to open the image with software registered as system default handler, if it still exists.
 - Click `Menu` / `Open folder` menu or press `Ctrl + O` in application to open up the folder in Windows Explorer. You can see the results there.
 - If you do not want to see the RUC80 anniversary logo on startup, uncheck `Menu` / `RUC80 welcome` menu.
-- You can change the UI language by selecting different language in `Menu` / `Language` menu. Currently, EN-US and ZH-CN are supported.
+- You can change the UI language by selecting different language in `Settings` / `Language` menu. Currently, EN-US and ZH-CN are supported.
 - You can clear the history list by clicking `Menu` / `Clear history` menu. Actual image files will not be affected.
 - All settings will be saved and loaded completely automatically.
 
@@ -158,6 +158,15 @@ In version 1.2, we've added an advanced syntax for `<#>`. Now you can input a nu
   - Cannot overwrite file when occupied.
 
 ## Update log
+
+#### 2017.10.29 / 1.3
+
+- **Add:** Beautiful icons all around the software.
+- **Improve:** Compression quality of JPEG file raised to 96%.
+- **Improve:** ZH-CN as default language.
+- **Improve:** More options in popup menu from tray.
+- **Fix:** Unavailable shortcut key written in popup menu from tray.
+- **Fix:** Inaccuracy information in About panel.
 
 #### 2017.10.12 / 1.2
 

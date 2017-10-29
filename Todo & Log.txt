@@ -1,0 +1,22 @@
+﻿管理截图和文件夹整理
+鼠标移动至指定区域截图
+
+ToolTip 的中文模式
+文件无法覆盖时，采用重命名模式（文件写保护）
+历史记录的右键菜单
+
+
+
+-----------------
+[Update]
+
+1.3:
+96% quality of jpeg export.
+Icons.
+ZH-CN as default language.
+PopupMenu with App info and Icon.
+Fixed unavailable command text "(D)" in popupmenu.
+Fixed inaccuracy information in About panel.
+
+Earlier:
+I almost forgot.

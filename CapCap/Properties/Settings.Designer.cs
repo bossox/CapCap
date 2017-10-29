@@ -61,7 +61,7 @@ namespace CapCap.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("JPEG")]
+        [global::System.Configuration.DefaultSettingValueAttribute("PNG")]
         public string image_format {
             get {
                 return ((string)(this["image_format"]));
@@ -109,7 +109,7 @@ namespace CapCap.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("EN_US")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ZH_CN")]
         public string language {
             get {
                 return ((string)(this["language"]));

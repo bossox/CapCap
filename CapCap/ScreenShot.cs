@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
+using System.Collections.Generic;
 
 namespace CapCap
 {
@@ -13,7 +14,17 @@ namespace CapCap
         public string NamePattern { get; set; } = string.Empty;
         public string Number { get; set; } = string.Empty;
         public bool Overwrite { get; set; } = false;
-        public ImageFormat Format { get; set; } = ImageFormat.Jpeg;
+
+        private ImageFormat _Format = ImageFormat.Jpeg;
+        public ImageFormat Format
+        {
+            get { return _Format; }
+            set
+            {
+                _Format = value;
+                MIMEType = dictMIMEType[value];
+            }
+        }
 
         #region WinAPI
         [DllImport("user32.dll")]
@@ -26,6 +37,16 @@ namespace CapCap
             public Point ptScreenPos;
         }
         #endregion
+
+        private string MIMEType = "image/png";
+        private Dictionary<ImageFormat, string> dictMIMEType = new Dictionary<ImageFormat, string>()
+        {
+            {ImageFormat.Bmp, "image/bmp" },
+            {ImageFormat.Gif, "image/gif" },
+            {ImageFormat.Jpeg, "image/jpeg" },
+            {ImageFormat.Png, "image/png" },
+            {ImageFormat.Tiff, "image/tiff" },
+        };
 
         public ScreenShot(bool cursor, string folder, string pattern, string number, ImageFormat format, bool overwrite)
         {
@@ -74,7 +95,11 @@ namespace CapCap
                 if (System.IO.File.Exists(filename) && !Overwrite)
                     return saveRenamedImage(img, filename, 2);
 
-                img.Save(filename, Format);
+                var EPs = new EncoderParameters(1);
+                var EP = new EncoderParameter(Encoder.Quality, 96L);
+                EPs.Param[0] = EP;
+
+                img.Save(filename, GetEncoderInfo(), EPs);
                 return filename;
             }
             catch (Exception exp)
@@ -106,7 +131,8 @@ namespace CapCap
                     img.Save(filename, Format);
 
                 return filename;
-            }catch(Exception exp)
+            }
+            catch (Exception exp)
             {
                 return $"[Exception:{exp.Message}]";
             }
@@ -114,6 +140,18 @@ namespace CapCap
             {
                 img.Dispose();
             }
+        }
+
+        private ImageCodecInfo GetEncoderInfo()
+        {
+            // from MSDN
+            ImageCodecInfo[] encoders = ImageCodecInfo.GetImageEncoders();
+            foreach (var encoder in encoders)
+            {
+                if (encoder.MimeType == MIMEType)
+                    return encoder;
+            }
+            return null;
         }
     }
 

@@ -39,6 +39,9 @@ namespace CapCap.Localization
             {"tsmi_ClearHistory", "清除历史记录(&C)"},
             {"word_Successed", "成功"},
             {"word_Failed", "失败"},
+            {"CMS_Exit", "退出"},
+            {"CMS_OpenFolder", "打开文件夹"},
+            {"CMS_About", "关于"},
         };
     }
 }

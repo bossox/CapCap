@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using HotKeys;
 using System.Linq;
 using System.Resources;
+using System.Diagnostics;
 
 namespace CapCap
 {
@@ -98,6 +99,7 @@ namespace CapCap
 
             // Load Settings
             loadSettings();
+            loadIcons();
             loadApplicationInfo();
 
             // LV
@@ -136,12 +138,12 @@ namespace CapCap
             panelAbout.Dock = DockStyle.Fill;
 
             label1.Left = (panelInnerAbout.Width - label1.Width) / 2;
-            label2.Left = (panelInnerAbout.Width - label2.Width) / 2;
+            label_Author.Left = (panelInnerAbout.Width - label_Author.Width) / 2;
             label3.Left = (panelInnerAbout.Width - label3.Width) / 2;
             lnkWeibo.Left = (panelInnerAbout.Width - lnkWeibo.Width) / 2;
             btnCloseAboutPanel.Left = (panelInnerAbout.Width - btnCloseAboutPanel.Width) / 2;
 
-            lnkRUC80.Left = label2.Right + 5;
+            lnkRUC80.Left = label_Author.Right + 5;
 
             centralizePanelInnerAbout();
 
@@ -177,7 +179,7 @@ namespace CapCap
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        { 
+        {
             if (!isSettingHotKey)
                 return base.ProcessCmdKey(ref msg, keyData);
 
@@ -311,7 +313,7 @@ namespace CapCap
             var result = FBD.ShowDialog();
             if (result == DialogResult.OK)
             {
-                tsbtnFolder.Text = getFolderName(FBD.SelectedPath) + "\\";
+                tsbtnFolder.Text = Auxiliary.GetFolderName(FBD.SelectedPath) + "\\";
                 isFolderSelected = true;
 
                 if (!Directory.Exists(FBD.SelectedPath))
@@ -488,27 +490,13 @@ namespace CapCap
             tsbtnNewHotKey.Text = value;
             lab_NewHotKey.Text = value;
 
-            var keys = value.Replace(" ", "").Split('+').ToList();
+            var keys = Auxiliary.GetKeysFromString(value);
 
-            if (keys.Contains("Ctrl"))
-            {
-                hotkey.Ctrl = true;
-                keys.Remove("Ctrl");
-            }
+            hotkey.Ctrl |= keys.HasFlag(Keys.Control);
+            hotkey.Shift |= keys.HasFlag(Keys.Shift);
+            hotkey.Alt |= keys.HasFlag(Keys.Alt);
+            hotkey.Key = keys & ~Keys.Control & ~Keys.Shift & ~Keys.Alt;
 
-            if (keys.Contains("Shift"))
-            {
-                hotkey.Shift = true;
-                keys.Remove("Shift");
-            }
-
-            if (keys.Contains("Alt"))
-            {
-                hotkey.Alt = true;
-                keys.Remove("Alt");
-            }
-
-            hotkey.Key = convertStringToKey(keys[0]);
             hotkey.OnPressed += hotkey_OnPressed;
 
             try
@@ -519,20 +507,6 @@ namespace CapCap
             {
                 isHotKeyConflict = true;
             }
-
-        }
-
-        private Keys convertStringToKey(string value)
-        {
-            Keys key = Auxiliary.GetKeyFromKeyCodeString(value);
-            return key == Keys.None ? Keys.W : key;
-        }
-
-        private string getFolderName(string path)
-        {
-            if (System.IO.Directory.GetDirectoryRoot(path) != path)
-                path = path.Substring(path.LastIndexOf('\\') + 1);
-            return path;
         }
 
         private void centralizePanelInnerAbout()
@@ -700,28 +674,24 @@ namespace CapCap
 
         private bool isAllowedKey(Keys keyData)
         {
-            var keyCodes = filterKeyData(keyData);
+            var keyCodes = Auxiliary.FilterKeyDataToList(keyData);
 
             foreach (var keyCode in keyCodes)
-            {
                 if (!Auxiliary.AllowKey(keyCode))
                     return false;
-            }
 
             return true;
-        }
-
-        private List<string> filterKeyData(Keys keyData)
-        {
-            string result = keyData.ToString().Replace(" ", "");
-            result = result.Replace("Menu,", "").Replace("ControlKey,", "").Replace("ShiftKey,", "");
-            return result.Split(',').ToList();
         }
 
         private void loadApplicationInfo()
         {
             label_Version.Text = Application.ProductVersion;
-            Text += $" {Application.ProductVersion.Remove(3)}";
+            Text = $"CapCap {Application.ProductVersion.Remove(3)}";
+
+            label_Author.Text = $"Boss Ox / {Resource.ReleaseDate} / Beijing";
+
+            cmslbl_CapCap.Text = Text;
+            cmslbl_Author.Text = label_Author.Text;
         }
 
         private void updateOverWrite(bool overwrite)
@@ -736,6 +706,7 @@ namespace CapCap
                 tsmi_OverWrite.Checked = false;
                 tsmi_ReName.Checked = true;
             }
+            updateSettingsIcon();
         }
 
         private void switchLanguage(string lang)
@@ -778,8 +749,9 @@ namespace CapCap
             LV.Columns[2].Text = LangPack["LV_Time"];
             LV.Columns[3].Text = LangPack["LV_Status"];
 
-            cmsmiExit.Text = LangPack["tsmi_Exit"];
-            cmsmiOpenFolder.Text = LangPack["tsmi_OpenFolder"];
+            cmsmiExit.Text = LangPack["CMS_Exit"];
+            cmsmiOpenFolder.Text = LangPack["CMS_OpenFolder"];
+            cmsmiAbout.Text = LangPack["CMS_About"];
 
             // Update tslab_Status
             switch (vStatusCode)
@@ -812,6 +784,35 @@ namespace CapCap
                     tsmi_Lang_ZH_CN.Checked = true;
                     break;
             }
+        }
+
+        private void loadIcons()
+        {
+            tsbtnFolder.Image = Resource.save.ToBitmap();
+            tsddbMainMenu.Image = Resource.menu.ToBitmap();
+
+            tsddbSettings.Image = Resource.setting.ToBitmap();
+            tsbtnNewHotKey.Image = Resource.hotkey.ToBitmap();
+
+            tsmiExit.Image = Resource.exit.ToBitmap();
+            tsmiOpenFolder.Image = Resource.folder.ToBitmap();
+            tsmi_ClearHistory.Image = Resource.clear.ToBitmap();
+            tsmi_Language.Image = Resource.language.ToBitmap();
+
+            cmsmiOpenFolder.Image = tsmiOpenFolder.Image;
+            cmsmiExit.Image = tsmiExit.Image;
+
+            updateSettingsIcon();
+        }
+
+        private void updateSettingsIcon()
+        {
+            tsmi_ShowAds.Image = tsmi_ShowAds.Checked ? null : Resource.RUC80.ToBitmap();
+            tsmi_Cursor.Image = tsmi_Cursor.Checked ? null : Resource.cursor.ToBitmap();
+            tsmi_Notification.Image = tsmi_Notification.Checked ? null : Resource.notification.ToBitmap();
+            tsmi_Sound.Image = tsmi_Sound.Checked ? null : Resource.sound.ToBitmap();
+            tsmi_ReName.Image = tsmi_ReName.Checked ? null : Resource.rename.ToBitmap();
+            tsmi_OverWrite.Image = tsmi_OverWrite.Checked ? null : Resource.overwrite.ToBitmap();
         }
         #endregion
 
@@ -1042,6 +1043,33 @@ namespace CapCap
         {
             LV.Items.Clear();
             vTotalNumber = 1;
+        }
+
+        private void tsmi_Cursor_Click(object sender, EventArgs e)
+        {
+            updateSettingsIcon();
+        }
+
+        private void tsmi_Notification_Click(object sender, EventArgs e)
+        {
+            updateSettingsIcon();
+        }
+
+        private void tsmi_Sound_Click(object sender, EventArgs e)
+        {
+            updateSettingsIcon();
+        }
+
+        private void tsmi_ShowAds_Click(object sender, EventArgs e)
+        {
+            updateSettingsIcon();
+        }
+
+        private void cmsmiAbout_Click(object sender, EventArgs e)
+        {
+            tsmiAbout.PerformClick();
+            this.Show();
+            this.Activate();
         }
     }
 }

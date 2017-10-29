@@ -249,5 +249,36 @@ namespace CapCap
         private static bool Shift(this Keys keyData) { return keyData.HasFlag(Keys.Shift); }
 
         private static bool Alt(this Keys keyData) { return keyData.HasFlag(Keys.Alt); }
+
+        private static Keys GetKeyFromString(string keydata)
+        {
+            // Input:   K; Control: F1
+            // Output:  Keys.K; Keys.Control; Keys.F1
+            var dict = new Dictionary<string, Keys>();
+            foreach (var value in Enum.GetValues(typeof(Keys)))
+                if (!dict.ContainsKey(Enum.GetName(typeof(Keys), value)))
+                    dict.Add(Enum.GetName(typeof(Keys), value), (Keys)value);
+
+            if (keydata == "Ctrl")
+                keydata = "Control";
+
+            if (dict.ContainsKey(keydata))
+                return dict[keydata];
+            else
+                return Keys.None;
+        }
+
+        public static Keys GetKeysFromString(string keydata, char delimiter = '+')
+        {
+            // Input:   "Ctrl + Shift + Alt + K"
+            // Output:  Keys.Control | Keys.Shift | Keys.Alt | Keys.K
+            var components = keydata.Replace(" ", "").Split(delimiter).ToList();
+            var result = Keys.None;
+
+            foreach (var component in components)
+                result |= GetKeyFromString(component);
+
+            return result;
+        }
     }
 }

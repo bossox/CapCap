@@ -153,6 +153,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Black 16.ico" />
+    <None Include="Resources\Black 16.ico" />
+    <None Include="Resources\save.ico" />
+    <None Include="Resources\hotkey.ico" />
+    <None Include="Resources\menu.ico" />
+    <None Include="Resources\setting.ico" />
+    <None Include="Resources\notification.ico" />
+    <None Include="Resources\RUC80.ico" />
+    <None Include="Resources\sound.ico" />
+    <None Include="Resources\rename.ico" />
+    <None Include="Resources\overwrite.ico" />
+    <None Include="Resources\language.ico" />
+    <None Include="Resources\cursor.ico" />
+    <None Include="Resources\folder.ico" />
+    <None Include="Resources\exit.ico" />
+    <None Include="Resources\clear.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

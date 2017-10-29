@@ -12,7 +12,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="image_format" Type="System.String" Scope="User">
-      <Value Profile="(Default)">JPEG</Value>
+      <Value Profile="(Default)">PNG</Value>
     </Setting>
     <Setting Name="hotkey" Type="System.String" Scope="User">
       <Value Profile="(Default)">Alt + W</Value>
@@ -24,7 +24,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="language" Type="System.String" Scope="User">
-      <Value Profile="(Default)">EN_US</Value>
+      <Value Profile="(Default)">ZH_CN</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -33,8 +33,12 @@
             this.FBD = new System.Windows.Forms.FolderBrowserDialog();
             this.NOTI = new System.Windows.Forms.NotifyIcon(this.components);
             this.CMS = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cmsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmslbl_CapCap = new System.Windows.Forms.ToolStripLabel();
+            this.cmslbl_Author = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.cmsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.panelAbout = new System.Windows.Forms.Panel();
             this.panelInnerAbout = new System.Windows.Forms.Panel();
@@ -42,7 +46,7 @@
             this.lnkRUC80 = new System.Windows.Forms.Label();
             this.lnkWeibo = new System.Windows.Forms.LinkLabel();
             this.btnCloseAboutPanel = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.label_Author = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
@@ -76,8 +80,11 @@
             this.tstbNamePattern = new System.Windows.Forms.ToolStripTextBox();
             this.tsbtnInsertVariable = new System.Windows.Forms.ToolStripDropDownButton();
             this.tslImageFormat = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.tsddbMainMenu = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmi_ClearHistory = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,13 +97,11 @@
             this.panelRUC80 = new System.Windows.Forms.Panel();
             this.picRUC80 = new System.Windows.Forms.PictureBox();
             this.panelHelp = new System.Windows.Forms.Panel();
+            this.webHelp = new System.Windows.Forms.WebBrowser();
             this.tsHelp = new System.Windows.Forms.ToolStrip();
             this.tsReturnToMainPanel = new System.Windows.Forms.ToolStripButton();
             this.panelHotKey = new System.Windows.Forms.Panel();
             this.lab_NewHotKey = new System.Windows.Forms.Label();
-            this.webHelp = new System.Windows.Forms.WebBrowser();
-            this.tsmi_ClearHistory = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.CMS.SuspendLayout();
             this.panelAbout.SuspendLayout();
             this.panelInnerAbout.SuspendLayout();
@@ -120,28 +125,58 @@
             // CMS
             // 
             this.CMS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmsmiOpenFolder,
+            this.cmslbl_CapCap,
+            this.cmslbl_Author,
             this.toolStripSeparator4,
+            this.cmsmiOpenFolder,
+            this.cmsmiAbout,
+            this.toolStripSeparator11,
             this.cmsmiExit});
             this.CMS.Name = "CMS";
-            this.CMS.Size = new System.Drawing.Size(148, 54);
+            this.CMS.Size = new System.Drawing.Size(244, 122);
             // 
-            // cmsmiOpenFolder
+            // cmslbl_CapCap
             // 
-            this.cmsmiOpenFolder.Name = "cmsmiOpenFolder";
-            this.cmsmiOpenFolder.Size = new System.Drawing.Size(147, 22);
-            this.cmsmiOpenFolder.Text = "Open folder";
-            this.cmsmiOpenFolder.Click += new System.EventHandler(this.cmsmiOpenFolder_Click);
+            this.cmslbl_CapCap.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold);
+            this.cmslbl_CapCap.Name = "cmslbl_CapCap";
+            this.cmslbl_CapCap.Size = new System.Drawing.Size(75, 17);
+            this.cmslbl_CapCap.Text = "CapCap x.x";
+            // 
+            // cmslbl_Author
+            // 
+            this.cmslbl_Author.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmslbl_Author.Name = "cmslbl_Author";
+            this.cmslbl_Author.Size = new System.Drawing.Size(183, 17);
+            this.cmslbl_Author.Text = "Boss Ox / 2017.10.29 / Beijing";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(144, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(240, 6);
+            // 
+            // cmsmiOpenFolder
+            // 
+            this.cmsmiOpenFolder.Name = "cmsmiOpenFolder";
+            this.cmsmiOpenFolder.Size = new System.Drawing.Size(243, 22);
+            this.cmsmiOpenFolder.Text = "Open folder";
+            this.cmsmiOpenFolder.Click += new System.EventHandler(this.cmsmiOpenFolder_Click);
+            // 
+            // cmsmiAbout
+            // 
+            this.cmsmiAbout.Name = "cmsmiAbout";
+            this.cmsmiAbout.Size = new System.Drawing.Size(243, 22);
+            this.cmsmiAbout.Text = "About";
+            this.cmsmiAbout.Click += new System.EventHandler(this.cmsmiAbout_Click);
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(240, 6);
             // 
             // cmsmiExit
             // 
             this.cmsmiExit.Name = "cmsmiExit";
-            this.cmsmiExit.Size = new System.Drawing.Size(147, 22);
+            this.cmsmiExit.Size = new System.Drawing.Size(243, 22);
             this.cmsmiExit.Text = "Exit";
             this.cmsmiExit.Click += new System.EventHandler(this.cmsmiExit_Click);
             // 
@@ -159,7 +194,7 @@
             this.panelInnerAbout.Controls.Add(this.lnkRUC80);
             this.panelInnerAbout.Controls.Add(this.lnkWeibo);
             this.panelInnerAbout.Controls.Add(this.btnCloseAboutPanel);
-            this.panelInnerAbout.Controls.Add(this.label2);
+            this.panelInnerAbout.Controls.Add(this.label_Author);
             this.panelInnerAbout.Controls.Add(this.label1);
             this.panelInnerAbout.Controls.Add(this.label3);
             this.panelInnerAbout.Location = new System.Drawing.Point(12, 12);
@@ -213,16 +248,16 @@
             this.btnCloseAboutPanel.UseVisualStyleBackColor = true;
             this.btnCloseAboutPanel.Click += new System.EventHandler(this.btnCloseAboutPanel_Click);
             // 
-            // label2
+            // label_Author
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(91, 133);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(183, 17);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Boss Ox / 2017.10.08 / Beijing";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_Author.AutoSize = true;
+            this.label_Author.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_Author.Location = new System.Drawing.Point(91, 133);
+            this.label_Author.Name = "label_Author";
+            this.label_Author.Size = new System.Drawing.Size(183, 17);
+            this.label_Author.TabIndex = 5;
+            this.label_Author.Text = "Boss Ox / 2017.10.29 / Beijing";
+            this.label_Author.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
@@ -253,7 +288,7 @@
             this.panelMain.Controls.Add(this.ts);
             this.panelMain.Location = new System.Drawing.Point(12, 12);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(441, 123);
+            this.panelMain.Size = new System.Drawing.Size(516, 123);
             this.panelMain.TabIndex = 12;
             // 
             // LV
@@ -279,13 +314,12 @@
             this.tslab_Status});
             this.ss.Location = new System.Drawing.Point(0, 100);
             this.ss.Name = "ss";
-            this.ss.Size = new System.Drawing.Size(441, 23);
+            this.ss.Size = new System.Drawing.Size(516, 23);
             this.ss.TabIndex = 13;
             this.ss.Text = "statusStrip1";
             // 
             // tsddbSettings
             // 
-            this.tsddbSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsddbSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_ShowAds,
             this.tsmi_Language,
@@ -306,7 +340,7 @@
             this.tsddbSettings.Image = ((System.Drawing.Image)(resources.GetObject("tsddbSettings.Image")));
             this.tsddbSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsddbSettings.Name = "tsddbSettings";
-            this.tsddbSettings.Size = new System.Drawing.Size(67, 21);
+            this.tsddbSettings.Size = new System.Drawing.Size(83, 21);
             this.tsddbSettings.Text = "Settings";
             // 
             // tsmi_ShowAds
@@ -315,6 +349,7 @@
             this.tsmi_ShowAds.Name = "tsmi_ShowAds";
             this.tsmi_ShowAds.Size = new System.Drawing.Size(170, 22);
             this.tsmi_ShowAds.Text = "RUC80 welcome";
+            this.tsmi_ShowAds.Click += new System.EventHandler(this.tsmi_ShowAds_Click);
             // 
             // tsmi_Language
             // 
@@ -329,7 +364,7 @@
             // 
             this.tsmi_Lang_EN_US.CheckOnClick = true;
             this.tsmi_Lang_EN_US.Name = "tsmi_Lang_EN_US";
-            this.tsmi_Lang_EN_US.Size = new System.Drawing.Size(152, 22);
+            this.tsmi_Lang_EN_US.Size = new System.Drawing.Size(124, 22);
             this.tsmi_Lang_EN_US.Text = "English";
             this.tsmi_Lang_EN_US.Click += new System.EventHandler(this.tsmiLanguagePack_Click);
             // 
@@ -337,7 +372,7 @@
             // 
             this.tsmi_Lang_ZH_CN.CheckOnClick = true;
             this.tsmi_Lang_ZH_CN.Name = "tsmi_Lang_ZH_CN";
-            this.tsmi_Lang_ZH_CN.Size = new System.Drawing.Size(152, 22);
+            this.tsmi_Lang_ZH_CN.Size = new System.Drawing.Size(124, 22);
             this.tsmi_Lang_ZH_CN.Text = "简体中文";
             this.tsmi_Lang_ZH_CN.Click += new System.EventHandler(this.tsmiLanguagePack_Click);
             // 
@@ -352,6 +387,7 @@
             this.tsmi_Cursor.Name = "tsmi_Cursor";
             this.tsmi_Cursor.Size = new System.Drawing.Size(170, 22);
             this.tsmi_Cursor.Text = "Cursor";
+            this.tsmi_Cursor.Click += new System.EventHandler(this.tsmi_Cursor_Click);
             // 
             // toolStripSeparator5
             // 
@@ -364,6 +400,7 @@
             this.tsmi_Notification.Name = "tsmi_Notification";
             this.tsmi_Notification.Size = new System.Drawing.Size(170, 22);
             this.tsmi_Notification.Text = "Notification";
+            this.tsmi_Notification.Click += new System.EventHandler(this.tsmi_Notification_Click);
             // 
             // tsmi_Sound
             // 
@@ -371,6 +408,7 @@
             this.tsmi_Sound.Name = "tsmi_Sound";
             this.tsmi_Sound.Size = new System.Drawing.Size(170, 22);
             this.tsmi_Sound.Text = "Sound";
+            this.tsmi_Sound.Click += new System.EventHandler(this.tsmi_Sound_Click);
             // 
             // toolStripSeparator6
             // 
@@ -450,11 +488,10 @@
             // 
             // tsbtnNewHotKey
             // 
-            this.tsbtnNewHotKey.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsbtnNewHotKey.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnNewHotKey.Image")));
             this.tsbtnNewHotKey.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtnNewHotKey.Name = "tsbtnNewHotKey";
-            this.tsbtnNewHotKey.Size = new System.Drawing.Size(54, 21);
+            this.tsbtnNewHotKey.Size = new System.Drawing.Size(70, 21);
             this.tsbtnNewHotKey.Text = "HotKey";
             this.tsbtnNewHotKey.ToolTipText = "Click here to customize Hotkey";
             this.tsbtnNewHotKey.Click += new System.EventHandler(this.tsbtnNewHotKey_Click);
@@ -478,23 +515,23 @@
             this.tstbNamePattern,
             this.tsbtnInsertVariable,
             this.tslImageFormat,
+            this.toolStripSeparator10,
             this.tsddbMainMenu,
             this.tsSeparatorOfNumber,
             this.tslNumber,
             this.tstbNumber});
             this.ts.Location = new System.Drawing.Point(0, 0);
             this.ts.Name = "ts";
-            this.ts.Size = new System.Drawing.Size(441, 25);
+            this.ts.Size = new System.Drawing.Size(516, 25);
             this.ts.TabIndex = 11;
             this.ts.Text = "toolStrip1";
             // 
             // tsbtnFolder
             // 
-            this.tsbtnFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsbtnFolder.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnFolder.Image")));
             this.tsbtnFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtnFolder.Name = "tsbtnFolder";
-            this.tsbtnFolder.Size = new System.Drawing.Size(49, 22);
+            this.tsbtnFolder.Size = new System.Drawing.Size(65, 22);
             this.tsbtnFolder.Text = "Folder";
             this.tsbtnFolder.ToolTipText = "Save images to this folder";
             this.tsbtnFolder.Click += new System.EventHandler(this.tsbtnFolder_Click);
@@ -521,10 +558,16 @@
             this.tslImageFormat.Size = new System.Drawing.Size(32, 22);
             this.tslImageFormat.Text = ".JPG";
             // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
+            // 
             // tsddbMainMenu
             // 
             this.tsddbMainMenu.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tsddbMainMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsddbMainMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsddbMainMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiOpenFolder,
             this.toolStripSeparator9,
@@ -538,7 +581,8 @@
             this.tsddbMainMenu.Image = ((System.Drawing.Image)(resources.GetObject("tsddbMainMenu.Image")));
             this.tsddbMainMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsddbMainMenu.Name = "tsddbMainMenu";
-            this.tsddbMainMenu.Size = new System.Drawing.Size(54, 22);
+            this.tsddbMainMenu.ShowDropDownArrow = false;
+            this.tsddbMainMenu.Size = new System.Drawing.Size(20, 22);
             this.tsddbMainMenu.Text = "Menu";
             // 
             // tsmiOpenFolder
@@ -548,6 +592,18 @@
             this.tsmiOpenFolder.Size = new System.Drawing.Size(211, 22);
             this.tsmiOpenFolder.Text = "Open folder(&D)";
             this.tsmiOpenFolder.Click += new System.EventHandler(this.tsmiOpenFolder_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(208, 6);
+            // 
+            // tsmi_ClearHistory
+            // 
+            this.tsmi_ClearHistory.Name = "tsmi_ClearHistory";
+            this.tsmi_ClearHistory.Size = new System.Drawing.Size(211, 22);
+            this.tsmi_ClearHistory.Text = "Clear history(&C)";
+            this.tsmi_ClearHistory.Click += new System.EventHandler(this.tsmi_ClearHistory_Click);
             // 
             // toolStripSeparator3
             // 
@@ -575,6 +631,7 @@
             // 
             // tsmiExit
             // 
+            this.tsmiExit.ImageTransparentColor = System.Drawing.Color.White;
             this.tsmiExit.Name = "tsmiExit";
             this.tsmiExit.ShortcutKeyDisplayString = "";
             this.tsmiExit.Size = new System.Drawing.Size(211, 22);
@@ -639,6 +696,18 @@
             this.panelHelp.Size = new System.Drawing.Size(200, 100);
             this.panelHelp.TabIndex = 14;
             // 
+            // webHelp
+            // 
+            this.webHelp.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webHelp.IsWebBrowserContextMenuEnabled = false;
+            this.webHelp.Location = new System.Drawing.Point(25, 0);
+            this.webHelp.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webHelp.Name = "webHelp";
+            this.webHelp.ScriptErrorsSuppressed = true;
+            this.webHelp.Size = new System.Drawing.Size(175, 100);
+            this.webHelp.TabIndex = 0;
+            this.webHelp.WebBrowserShortcutsEnabled = false;
+            // 
             // tsHelp
             // 
             this.tsHelp.BackColor = System.Drawing.Color.White;
@@ -685,30 +754,6 @@
             this.lab_NewHotKey.Text = "labNewHotKey";
             this.lab_NewHotKey.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lab_NewHotKey.Click += new System.EventHandler(this.panelHotKey_Click);
-            // 
-            // webHelp
-            // 
-            this.webHelp.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webHelp.IsWebBrowserContextMenuEnabled = false;
-            this.webHelp.Location = new System.Drawing.Point(25, 0);
-            this.webHelp.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webHelp.Name = "webHelp";
-            this.webHelp.ScriptErrorsSuppressed = true;
-            this.webHelp.Size = new System.Drawing.Size(175, 100);
-            this.webHelp.TabIndex = 0;
-            this.webHelp.WebBrowserShortcutsEnabled = false;
-            // 
-            // tsmi_ClearHistory
-            // 
-            this.tsmi_ClearHistory.Name = "tsmi_ClearHistory";
-            this.tsmi_ClearHistory.Size = new System.Drawing.Size(211, 22);
-            this.tsmi_ClearHistory.Text = "Clear history(&C)";
-            this.tsmi_ClearHistory.Click += new System.EventHandler(this.tsmi_ClearHistory_Click);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(208, 6);
             // 
             // frmMain
             // 
@@ -761,7 +806,7 @@
         private System.Windows.Forms.Panel panelAbout;
         private System.Windows.Forms.Panel panelInnerAbout;
         private System.Windows.Forms.Button btnCloseAboutPanel;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label_Author;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panelMain;
@@ -819,6 +864,11 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_Lang_ZH_CN;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripMenuItem tsmi_ClearHistory;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripMenuItem cmsmiAbout;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+        private System.Windows.Forms.ToolStripLabel cmslbl_CapCap;
+        private System.Windows.Forms.ToolStripLabel cmslbl_Author;
     }
 }
 
