@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.FBD = new System.Windows.Forms.FolderBrowserDialog();
             this.NOTI = new System.Windows.Forms.NotifyIcon(this.components);
-            this.CMS = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsSysTray = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmslbl_CapCap = new System.Windows.Forms.ToolStripLabel();
             this.cmslbl_Author = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -42,13 +42,15 @@
             this.cmsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.panelAbout = new System.Windows.Forms.Panel();
             this.panelInnerAbout = new System.Windows.Forms.Panel();
-            this.label_Version = new System.Windows.Forms.Label();
+            this.lnkEmail = new System.Windows.Forms.LinkLabel();
+            this.pbLogo = new System.Windows.Forms.PictureBox();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.lnkRUC80 = new System.Windows.Forms.Label();
             this.lnkWeibo = new System.Windows.Forms.LinkLabel();
             this.btnCloseAboutPanel = new System.Windows.Forms.Button();
-            this.label_Author = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lblAuthor = new System.Windows.Forms.Label();
+            this.lblCapCap = new System.Windows.Forms.Label();
+            this.lblDescription = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
             this.LV = new System.Windows.Forms.ListView();
             this.ss = new System.Windows.Forms.StatusStrip();
@@ -80,7 +82,6 @@
             this.tstbNamePattern = new System.Windows.Forms.ToolStripTextBox();
             this.tsbtnInsertVariable = new System.Windows.Forms.ToolStripDropDownButton();
             this.tslImageFormat = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.tsddbMainMenu = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
@@ -91,6 +92,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemTest = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.tsSeparatorOfNumber = new System.Windows.Forms.ToolStripSeparator();
             this.tslNumber = new System.Windows.Forms.ToolStripLabel();
             this.tstbNumber = new System.Windows.Forms.ToolStripTextBox();
@@ -102,9 +104,47 @@
             this.tsReturnToMainPanel = new System.Windows.Forms.ToolStripButton();
             this.panelHotKey = new System.Windows.Forms.Panel();
             this.lab_NewHotKey = new System.Windows.Forms.Label();
-            this.CMS.SuspendLayout();
+            this.cmsFile = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsFile_lblFilename = new System.Windows.Forms.ToolStripLabel();
+            this.cmsFile_sep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmsFile_miPreview = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFile_miOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFile_miOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFile_sep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmsFile_miClearHistory = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFile_sep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmsFile_miCopyImage = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFile_miCopyFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFile_sep4 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmsFile_miMore = new System.Windows.Forms.ToolStripMenuItem();
+            this.panelPreview = new System.Windows.Forms.Panel();
+            this.pb_Preview = new System.Windows.Forms.PictureBox();
+            this.cmsPreview = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsPreview_lblFilename = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmsPreview_miCopyImage = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPreview_miCopyFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmsPreview_miLockTop = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPreview_miMaximize = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmsPreview_miOpacity100 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPreview_miOpacity75 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPreview_miOpacity50 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPreview_miOpacity25 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmsPreview_miReturn = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPreview_lblCapCap = new System.Windows.Forms.ToolStripLabel();
+            this.cmsPreview_lblInfo = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmsPreview_miZoomIn = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPreview_miZoomOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPreview_miPrevious = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPreview_miNext = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsSysTray.SuspendLayout();
             this.panelAbout.SuspendLayout();
             this.panelInnerAbout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.panelMain.SuspendLayout();
             this.ss.SuspendLayout();
             this.ts.SuspendLayout();
@@ -113,6 +153,10 @@
             this.panelHelp.SuspendLayout();
             this.tsHelp.SuspendLayout();
             this.panelHotKey.SuspendLayout();
+            this.cmsFile.SuspendLayout();
+            this.panelPreview.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_Preview)).BeginInit();
+            this.cmsPreview.SuspendLayout();
             this.SuspendLayout();
             // 
             // NOTI
@@ -122,9 +166,9 @@
             this.NOTI.Visible = true;
             this.NOTI.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NOTI_MouseClick);
             // 
-            // CMS
+            // cmsSysTray
             // 
-            this.CMS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsSysTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmslbl_CapCap,
             this.cmslbl_Author,
             this.toolStripSeparator4,
@@ -132,8 +176,8 @@
             this.cmsmiAbout,
             this.toolStripSeparator11,
             this.cmsmiExit});
-            this.CMS.Name = "CMS";
-            this.CMS.Size = new System.Drawing.Size(244, 122);
+            this.cmsSysTray.Name = "CMS";
+            this.cmsSysTray.Size = new System.Drawing.Size(244, 122);
             // 
             // cmslbl_CapCap
             // 
@@ -185,32 +229,55 @@
             this.panelAbout.Controls.Add(this.panelInnerAbout);
             this.panelAbout.Location = new System.Drawing.Point(343, 153);
             this.panelAbout.Name = "panelAbout";
-            this.panelAbout.Size = new System.Drawing.Size(354, 205);
+            this.panelAbout.Size = new System.Drawing.Size(461, 284);
             this.panelAbout.TabIndex = 11;
             // 
             // panelInnerAbout
             // 
-            this.panelInnerAbout.Controls.Add(this.label_Version);
+            this.panelInnerAbout.Controls.Add(this.lnkEmail);
+            this.panelInnerAbout.Controls.Add(this.pbLogo);
+            this.panelInnerAbout.Controls.Add(this.lblVersion);
             this.panelInnerAbout.Controls.Add(this.lnkRUC80);
             this.panelInnerAbout.Controls.Add(this.lnkWeibo);
             this.panelInnerAbout.Controls.Add(this.btnCloseAboutPanel);
-            this.panelInnerAbout.Controls.Add(this.label_Author);
-            this.panelInnerAbout.Controls.Add(this.label1);
-            this.panelInnerAbout.Controls.Add(this.label3);
-            this.panelInnerAbout.Location = new System.Drawing.Point(12, 12);
+            this.panelInnerAbout.Controls.Add(this.lblAuthor);
+            this.panelInnerAbout.Controls.Add(this.lblCapCap);
+            this.panelInnerAbout.Controls.Add(this.lblDescription);
+            this.panelInnerAbout.Location = new System.Drawing.Point(3, 3);
             this.panelInnerAbout.Name = "panelInnerAbout";
-            this.panelInnerAbout.Size = new System.Drawing.Size(377, 239);
+            this.panelInnerAbout.Size = new System.Drawing.Size(449, 278);
             this.panelInnerAbout.TabIndex = 4;
             // 
-            // label_Version
+            // lnkEmail
             // 
-            this.label_Version.AutoSize = true;
-            this.label_Version.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_Version.Location = new System.Drawing.Point(255, 40);
-            this.label_Version.Name = "label_Version";
-            this.label_Version.Size = new System.Drawing.Size(39, 20);
-            this.label_Version.TabIndex = 10;
-            this.label_Version.Text = "Beta";
+            this.lnkEmail.AutoSize = true;
+            this.lnkEmail.Location = new System.Drawing.Point(170, 135);
+            this.lnkEmail.Name = "lnkEmail";
+            this.lnkEmail.Size = new System.Drawing.Size(167, 12);
+            this.lnkEmail.TabIndex = 12;
+            this.lnkEmail.TabStop = true;
+            this.lnkEmail.Text = "BO_SoftwareService@yeah.net";
+            this.lnkEmail.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkEmail_LinkClicked);
+            // 
+            // pbLogo
+            // 
+            this.pbLogo.Location = new System.Drawing.Point(10, 15);
+            this.pbLogo.Name = "pbLogo";
+            this.pbLogo.Size = new System.Drawing.Size(128, 128);
+            this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbLogo.TabIndex = 11;
+            this.pbLogo.TabStop = false;
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblVersion.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblVersion.Location = new System.Drawing.Point(5, 194);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(39, 20);
+            this.lblVersion.TabIndex = 10;
+            this.lblVersion.Text = "Beta";
             // 
             // lnkRUC80
             // 
@@ -219,7 +286,7 @@
             this.lnkRUC80.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lnkRUC80.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lnkRUC80.ForeColor = System.Drawing.Color.White;
-            this.lnkRUC80.Location = new System.Drawing.Point(280, 133);
+            this.lnkRUC80.Location = new System.Drawing.Point(174, 69);
             this.lnkRUC80.Name = "lnkRUC80";
             this.lnkRUC80.Size = new System.Drawing.Size(55, 17);
             this.lnkRUC80.TabIndex = 9;
@@ -228,19 +295,19 @@
             // 
             // lnkWeibo
             // 
-            this.lnkWeibo.Location = new System.Drawing.Point(3, 150);
+            this.lnkWeibo.AutoSize = true;
+            this.lnkWeibo.Location = new System.Drawing.Point(170, 169);
             this.lnkWeibo.Name = "lnkWeibo";
-            this.lnkWeibo.Size = new System.Drawing.Size(371, 22);
+            this.lnkWeibo.Size = new System.Drawing.Size(119, 12);
             this.lnkWeibo.TabIndex = 8;
             this.lnkWeibo.TabStop = true;
             this.lnkWeibo.Text = "@BO-SoftwareService";
-            this.lnkWeibo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lnkWeibo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkWeibo_LinkClicked);
             // 
             // btnCloseAboutPanel
             // 
             this.btnCloseAboutPanel.AutoSize = true;
-            this.btnCloseAboutPanel.Location = new System.Drawing.Point(152, 187);
+            this.btnCloseAboutPanel.Location = new System.Drawing.Point(177, 233);
             this.btnCloseAboutPanel.Name = "btnCloseAboutPanel";
             this.btnCloseAboutPanel.Size = new System.Drawing.Size(75, 23);
             this.btnCloseAboutPanel.TabIndex = 7;
@@ -248,38 +315,36 @@
             this.btnCloseAboutPanel.UseVisualStyleBackColor = true;
             this.btnCloseAboutPanel.Click += new System.EventHandler(this.btnCloseAboutPanel_Click);
             // 
-            // label_Author
+            // lblAuthor
             // 
-            this.label_Author.AutoSize = true;
-            this.label_Author.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_Author.Location = new System.Drawing.Point(91, 133);
-            this.label_Author.Name = "label_Author";
-            this.label_Author.Size = new System.Drawing.Size(183, 17);
-            this.label_Author.TabIndex = 5;
-            this.label_Author.Text = "Boss Ox / 2017.10.29 / Beijing";
-            this.label_Author.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAuthor.AutoSize = true;
+            this.lblAuthor.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblAuthor.Location = new System.Drawing.Point(169, 103);
+            this.lblAuthor.Name = "lblAuthor";
+            this.lblAuthor.Size = new System.Drawing.Size(206, 20);
+            this.lblAuthor.TabIndex = 5;
+            this.lblAuthor.Text = "Boss Ox / 2017.10.29 / Beijing";
             // 
-            // label1
+            // lblCapCap
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(130, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(119, 36);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "CapCap";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCapCap.AutoSize = true;
+            this.lblCapCap.Font = new System.Drawing.Font("微软雅黑", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblCapCap.Location = new System.Drawing.Point(3, 150);
+            this.lblCapCap.Name = "lblCapCap";
+            this.lblCapCap.Size = new System.Drawing.Size(119, 36);
+            this.lblCapCap.TabIndex = 4;
+            this.lblCapCap.Text = "CapCap";
+            this.lblCapCap.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label3
+            // lblDescription
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(52, 79);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(275, 42);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Screen capturing with auto saving.\r\nIncredibly easier than ever beffore.";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDescription.AutoSize = true;
+            this.lblDescription.Font = new System.Drawing.Font("微软雅黑", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblDescription.Location = new System.Drawing.Point(168, 19);
+            this.lblDescription.Name = "lblDescription";
+            this.lblDescription.Size = new System.Drawing.Size(307, 48);
+            this.lblDescription.TabIndex = 6;
+            this.lblDescription.Text = "Screen capturing with auto saving.\r\nIncredibly easier than ever beffore.";
             // 
             // panelMain
             // 
@@ -288,7 +353,7 @@
             this.panelMain.Controls.Add(this.ts);
             this.panelMain.Location = new System.Drawing.Point(12, 12);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(516, 123);
+            this.panelMain.Size = new System.Drawing.Size(417, 123);
             this.panelMain.TabIndex = 12;
             // 
             // LV
@@ -303,6 +368,8 @@
             this.LV.View = System.Windows.Forms.View.Details;
             this.LV.SelectedIndexChanged += new System.EventHandler(this.LV_SelectedIndexChanged);
             this.LV.DoubleClick += new System.EventHandler(this.LV_DoubleClick);
+            this.LV.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LV_KeyDown);
+            this.LV.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LV_MouseUp);
             // 
             // ss
             // 
@@ -314,7 +381,8 @@
             this.tslab_Status});
             this.ss.Location = new System.Drawing.Point(0, 100);
             this.ss.Name = "ss";
-            this.ss.Size = new System.Drawing.Size(516, 23);
+            this.ss.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
+            this.ss.Size = new System.Drawing.Size(417, 23);
             this.ss.TabIndex = 13;
             this.ss.Text = "statusStrip1";
             // 
@@ -349,7 +417,6 @@
             this.tsmi_ShowAds.Name = "tsmi_ShowAds";
             this.tsmi_ShowAds.Size = new System.Drawing.Size(170, 22);
             this.tsmi_ShowAds.Text = "RUC80 welcome";
-            this.tsmi_ShowAds.Click += new System.EventHandler(this.tsmi_ShowAds_Click);
             // 
             // tsmi_Language
             // 
@@ -387,7 +454,6 @@
             this.tsmi_Cursor.Name = "tsmi_Cursor";
             this.tsmi_Cursor.Size = new System.Drawing.Size(170, 22);
             this.tsmi_Cursor.Text = "Cursor";
-            this.tsmi_Cursor.Click += new System.EventHandler(this.tsmi_Cursor_Click);
             // 
             // toolStripSeparator5
             // 
@@ -400,7 +466,6 @@
             this.tsmi_Notification.Name = "tsmi_Notification";
             this.tsmi_Notification.Size = new System.Drawing.Size(170, 22);
             this.tsmi_Notification.Text = "Notification";
-            this.tsmi_Notification.Click += new System.EventHandler(this.tsmi_Notification_Click);
             // 
             // tsmi_Sound
             // 
@@ -408,7 +473,6 @@
             this.tsmi_Sound.Name = "tsmi_Sound";
             this.tsmi_Sound.Size = new System.Drawing.Size(170, 22);
             this.tsmi_Sound.Text = "Sound";
-            this.tsmi_Sound.Click += new System.EventHandler(this.tsmi_Sound_Click);
             // 
             // toolStripSeparator6
             // 
@@ -515,14 +579,14 @@
             this.tstbNamePattern,
             this.tsbtnInsertVariable,
             this.tslImageFormat,
-            this.toolStripSeparator10,
             this.tsddbMainMenu,
+            this.toolStripSeparator10,
             this.tsSeparatorOfNumber,
             this.tslNumber,
             this.tstbNumber});
             this.ts.Location = new System.Drawing.Point(0, 0);
             this.ts.Name = "ts";
-            this.ts.Size = new System.Drawing.Size(516, 25);
+            this.ts.Size = new System.Drawing.Size(417, 25);
             this.ts.TabIndex = 11;
             this.ts.Text = "toolStrip1";
             // 
@@ -557,12 +621,6 @@
             this.tslImageFormat.Name = "tslImageFormat";
             this.tslImageFormat.Size = new System.Drawing.Size(32, 22);
             this.tslImageFormat.Text = ".JPG";
-            // 
-            // toolStripSeparator10
-            // 
-            this.toolStripSeparator10.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
             // 
             // tsddbMainMenu
             // 
@@ -645,6 +703,12 @@
             this.MenuItemTest.Text = "(Debug: test)";
             this.MenuItemTest.Visible = false;
             this.MenuItemTest.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
             // 
             // tsSeparatorOfNumber
             // 
@@ -755,17 +819,330 @@
             this.lab_NewHotKey.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lab_NewHotKey.Click += new System.EventHandler(this.panelHotKey_Click);
             // 
+            // cmsFile
+            // 
+            this.cmsFile.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsFile_lblFilename,
+            this.cmsFile_sep1,
+            this.cmsFile_miPreview,
+            this.cmsFile_miOpen,
+            this.cmsFile_miOpenFolder,
+            this.cmsFile_sep2,
+            this.cmsFile_miClearHistory,
+            this.cmsFile_sep3,
+            this.cmsFile_miCopyImage,
+            this.cmsFile_miCopyFile,
+            this.cmsFile_sep4,
+            this.cmsFile_miMore});
+            this.cmsFile.Name = "cmsFile";
+            this.cmsFile.Size = new System.Drawing.Size(232, 224);
+            // 
+            // cmsFile_lblFilename
+            // 
+            this.cmsFile_lblFilename.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Italic);
+            this.cmsFile_lblFilename.Name = "cmsFile_lblFilename";
+            this.cmsFile_lblFilename.Size = new System.Drawing.Size(101, 17);
+            this.cmsFile_lblFilename.Text = "cmslbl_Filename";
+            // 
+            // cmsFile_sep1
+            // 
+            this.cmsFile_sep1.Name = "cmsFile_sep1";
+            this.cmsFile_sep1.Size = new System.Drawing.Size(188, 6);
+            // 
+            // cmsFile_miPreview
+            // 
+            this.cmsFile_miPreview.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold);
+            this.cmsFile_miPreview.Name = "cmsFile_miPreview";
+            this.cmsFile_miPreview.ShortcutKeyDisplayString = "DblClick";
+            this.cmsFile_miPreview.Size = new System.Drawing.Size(231, 22);
+            this.cmsFile_miPreview.Text = "Preview";
+            this.cmsFile_miPreview.Click += new System.EventHandler(this.cmsFile_miPreview_Click);
+            // 
+            // cmsFile_miOpen
+            // 
+            this.cmsFile_miOpen.Name = "cmsFile_miOpen";
+            this.cmsFile_miOpen.ShortcutKeyDisplayString = "Shift+DblClick";
+            this.cmsFile_miOpen.Size = new System.Drawing.Size(231, 22);
+            this.cmsFile_miOpen.Text = "Open";
+            this.cmsFile_miOpen.Click += new System.EventHandler(this.cmsFile_miOpen_Click);
+            // 
+            // cmsFile_miOpenFolder
+            // 
+            this.cmsFile_miOpenFolder.Name = "cmsFile_miOpenFolder";
+            this.cmsFile_miOpenFolder.ShortcutKeyDisplayString = "Ctrl+DblClick";
+            this.cmsFile_miOpenFolder.Size = new System.Drawing.Size(231, 22);
+            this.cmsFile_miOpenFolder.Text = "Open folder";
+            this.cmsFile_miOpenFolder.Click += new System.EventHandler(this.cmsFile_miOpenFolder_Click);
+            // 
+            // cmsFile_sep2
+            // 
+            this.cmsFile_sep2.Name = "cmsFile_sep2";
+            this.cmsFile_sep2.Size = new System.Drawing.Size(188, 6);
+            // 
+            // cmsFile_miClearHistory
+            // 
+            this.cmsFile_miClearHistory.Name = "cmsFile_miClearHistory";
+            this.cmsFile_miClearHistory.Size = new System.Drawing.Size(191, 22);
+            this.cmsFile_miClearHistory.Text = "Clear history";
+            this.cmsFile_miClearHistory.Click += new System.EventHandler(this.cmsFile_miClearHistory_Click);
+            // 
+            // cmsFile_sep3
+            // 
+            this.cmsFile_sep3.Name = "cmsFile_sep3";
+            this.cmsFile_sep3.Size = new System.Drawing.Size(188, 6);
+            // 
+            // cmsFile_miCopyImage
+            // 
+            this.cmsFile_miCopyImage.Name = "cmsFile_miCopyImage";
+            this.cmsFile_miCopyImage.ShortcutKeyDisplayString = "Ctrl+C";
+            this.cmsFile_miCopyImage.Size = new System.Drawing.Size(231, 22);
+            this.cmsFile_miCopyImage.Text = "Copy image";
+            this.cmsFile_miCopyImage.Click += new System.EventHandler(this.cmsFile_miCopyImage_Click);
+            // 
+            // cmsFile_miCopyFile
+            // 
+            this.cmsFile_miCopyFile.Name = "cmsFile_miCopyFile";
+            this.cmsFile_miCopyFile.ShortcutKeyDisplayString = "Ctrl+Shift+C";
+            this.cmsFile_miCopyFile.Size = new System.Drawing.Size(231, 22);
+            this.cmsFile_miCopyFile.Text = "Copy file";
+            this.cmsFile_miCopyFile.Click += new System.EventHandler(this.cmsFile_miCopyFile_Click);
+            // 
+            // cmsFile_sep4
+            // 
+            this.cmsFile_sep4.Name = "cmsFile_sep4";
+            this.cmsFile_sep4.Size = new System.Drawing.Size(188, 6);
+            // 
+            // cmsFile_miMore
+            // 
+            this.cmsFile_miMore.Name = "cmsFile_miMore";
+            this.cmsFile_miMore.Size = new System.Drawing.Size(191, 22);
+            this.cmsFile_miMore.Text = "More...";
+            this.cmsFile_miMore.Click += new System.EventHandler(this.cmsFile_miMore_Click);
+            // 
+            // panelPreview
+            // 
+            this.panelPreview.Controls.Add(this.pb_Preview);
+            this.panelPreview.Location = new System.Drawing.Point(435, 12);
+            this.panelPreview.Name = "panelPreview";
+            this.panelPreview.Size = new System.Drawing.Size(72, 57);
+            this.panelPreview.TabIndex = 16;
+            // 
+            // pb_Preview
+            // 
+            this.pb_Preview.Location = new System.Drawing.Point(3, 3);
+            this.pb_Preview.Name = "pb_Preview";
+            this.pb_Preview.Size = new System.Drawing.Size(62, 50);
+            this.pb_Preview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pb_Preview.TabIndex = 0;
+            this.pb_Preview.TabStop = false;
+            this.pb_Preview.Click += new System.EventHandler(this.pb_Preview_Click);
+            this.pb_Preview.DoubleClick += new System.EventHandler(this.pb_Preview_DoubleClick);
+            this.pb_Preview.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_Preview_MouseDown);
+            this.pb_Preview.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pb_Preview_MouseMove);
+            this.pb_Preview.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_Preview_MouseUp);
+            // 
+            // cmsPreview
+            // 
+            this.cmsPreview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsPreview_lblCapCap,
+            this.cmsPreview_lblInfo,
+            this.cmsPreview_lblFilename,
+            this.toolStripSeparator15,
+            this.cmsPreview_miCopyImage,
+            this.cmsPreview_miCopyFile,
+            this.toolStripSeparator16,
+            this.cmsPreview_miZoomIn,
+            this.cmsPreview_miZoomOut,
+            this.cmsPreview_miPrevious,
+            this.cmsPreview_miNext,
+            this.toolStripSeparator12,
+            this.cmsPreview_miLockTop,
+            this.cmsPreview_miMaximize,
+            this.toolStripSeparator13,
+            this.cmsPreview_miOpacity100,
+            this.cmsPreview_miOpacity75,
+            this.cmsPreview_miOpacity50,
+            this.cmsPreview_miOpacity25,
+            this.toolStripSeparator14,
+            this.cmsPreview_miReturn});
+            this.cmsPreview.Name = "cmsPreview";
+            this.cmsPreview.Size = new System.Drawing.Size(207, 380);
+            this.cmsPreview.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this.cmsPreview_Closed);
+            // 
+            // cmsPreview_lblFilename
+            // 
+            this.cmsPreview_lblFilename.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Italic);
+            this.cmsPreview_lblFilename.ForeColor = System.Drawing.Color.Green;
+            this.cmsPreview_lblFilename.Name = "cmsPreview_lblFilename";
+            this.cmsPreview_lblFilename.Size = new System.Drawing.Size(145, 17);
+            this.cmsPreview_lblFilename.Text = "cmsPreview_lblFilename";
+            // 
+            // toolStripSeparator15
+            // 
+            this.toolStripSeparator15.Name = "toolStripSeparator15";
+            this.toolStripSeparator15.Size = new System.Drawing.Size(203, 6);
+            // 
+            // cmsPreview_miCopyImage
+            // 
+            this.cmsPreview_miCopyImage.Name = "cmsPreview_miCopyImage";
+            this.cmsPreview_miCopyImage.ShortcutKeyDisplayString = "";
+            this.cmsPreview_miCopyImage.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.cmsPreview_miCopyImage.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miCopyImage.Text = "Copy image";
+            this.cmsPreview_miCopyImage.Click += new System.EventHandler(this.cmsPreview_miCopy_Click);
+            // 
+            // cmsPreview_miCopyFile
+            // 
+            this.cmsPreview_miCopyFile.Name = "cmsPreview_miCopyFile";
+            this.cmsPreview_miCopyFile.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.C)));
+            this.cmsPreview_miCopyFile.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miCopyFile.Text = "Copy file";
+            this.cmsPreview_miCopyFile.Click += new System.EventHandler(this.cmsPreview_miCopyFile_Click);
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(203, 6);
+            // 
+            // cmsPreview_miLockTop
+            // 
+            this.cmsPreview_miLockTop.CheckOnClick = true;
+            this.cmsPreview_miLockTop.Name = "cmsPreview_miLockTop";
+            this.cmsPreview_miLockTop.ShortcutKeyDisplayString = "`";
+            this.cmsPreview_miLockTop.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miLockTop.Text = "Lock on top";
+            this.cmsPreview_miLockTop.Click += new System.EventHandler(this.cmsPreview_miLockTop_Click);
+            // 
+            // cmsPreview_miMaximize
+            // 
+            this.cmsPreview_miMaximize.CheckOnClick = true;
+            this.cmsPreview_miMaximize.Name = "cmsPreview_miMaximize";
+            this.cmsPreview_miMaximize.ShortcutKeyDisplayString = "Space";
+            this.cmsPreview_miMaximize.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miMaximize.Text = "Maximize";
+            this.cmsPreview_miMaximize.Click += new System.EventHandler(this.cmsPreview_miMaximize_Click);
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(203, 6);
+            // 
+            // cmsPreview_miOpacity100
+            // 
+            this.cmsPreview_miOpacity100.CheckOnClick = true;
+            this.cmsPreview_miOpacity100.Name = "cmsPreview_miOpacity100";
+            this.cmsPreview_miOpacity100.ShortcutKeyDisplayString = "1";
+            this.cmsPreview_miOpacity100.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miOpacity100.Tag = "100";
+            this.cmsPreview_miOpacity100.Text = "100%";
+            this.cmsPreview_miOpacity100.Click += new System.EventHandler(this.cmsPreview_miOpacity_Click);
+            // 
+            // cmsPreview_miOpacity75
+            // 
+            this.cmsPreview_miOpacity75.CheckOnClick = true;
+            this.cmsPreview_miOpacity75.Name = "cmsPreview_miOpacity75";
+            this.cmsPreview_miOpacity75.ShortcutKeyDisplayString = "2";
+            this.cmsPreview_miOpacity75.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miOpacity75.Tag = "75";
+            this.cmsPreview_miOpacity75.Text = "75%";
+            this.cmsPreview_miOpacity75.Click += new System.EventHandler(this.cmsPreview_miOpacity_Click);
+            // 
+            // cmsPreview_miOpacity50
+            // 
+            this.cmsPreview_miOpacity50.CheckOnClick = true;
+            this.cmsPreview_miOpacity50.Name = "cmsPreview_miOpacity50";
+            this.cmsPreview_miOpacity50.ShortcutKeyDisplayString = "3";
+            this.cmsPreview_miOpacity50.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miOpacity50.Tag = "50";
+            this.cmsPreview_miOpacity50.Text = "50%";
+            this.cmsPreview_miOpacity50.Click += new System.EventHandler(this.cmsPreview_miOpacity_Click);
+            // 
+            // cmsPreview_miOpacity25
+            // 
+            this.cmsPreview_miOpacity25.CheckOnClick = true;
+            this.cmsPreview_miOpacity25.Name = "cmsPreview_miOpacity25";
+            this.cmsPreview_miOpacity25.ShortcutKeyDisplayString = "4";
+            this.cmsPreview_miOpacity25.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miOpacity25.Tag = "25";
+            this.cmsPreview_miOpacity25.Text = "25%";
+            this.cmsPreview_miOpacity25.Click += new System.EventHandler(this.cmsPreview_miOpacity_Click);
+            // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            this.toolStripSeparator14.Size = new System.Drawing.Size(203, 6);
+            // 
+            // cmsPreview_miReturn
+            // 
+            this.cmsPreview_miReturn.Name = "cmsPreview_miReturn";
+            this.cmsPreview_miReturn.ShortcutKeyDisplayString = "Escape";
+            this.cmsPreview_miReturn.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miReturn.Text = "Return";
+            this.cmsPreview_miReturn.Click += new System.EventHandler(this.cmsPreview_miReturn_Click);
+            // 
+            // cmsPreview_lblCapCap
+            // 
+            this.cmsPreview_lblCapCap.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold);
+            this.cmsPreview_lblCapCap.Name = "cmsPreview_lblCapCap";
+            this.cmsPreview_lblCapCap.Size = new System.Drawing.Size(75, 17);
+            this.cmsPreview_lblCapCap.Text = "CapCap x.x";
+            // 
+            // cmsPreview_lblInfo
+            // 
+            this.cmsPreview_lblInfo.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            this.cmsPreview_lblInfo.Name = "cmsPreview_lblInfo";
+            this.cmsPreview_lblInfo.Size = new System.Drawing.Size(117, 17);
+            this.cmsPreview_lblInfo.Text = "cmsPreview_lblInfo";
+            // 
+            // toolStripSeparator16
+            // 
+            this.toolStripSeparator16.Name = "toolStripSeparator16";
+            this.toolStripSeparator16.Size = new System.Drawing.Size(203, 6);
+            // 
+            // cmsPreview_miZoomIn
+            // 
+            this.cmsPreview_miZoomIn.Name = "cmsPreview_miZoomIn";
+            this.cmsPreview_miZoomIn.ShortcutKeyDisplayString = "↑";
+            this.cmsPreview_miZoomIn.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miZoomIn.Text = "Zoom in";
+            this.cmsPreview_miZoomIn.Click += new System.EventHandler(this.cmsPreview_miZoomIn_Click);
+            // 
+            // cmsPreview_miZoomOut
+            // 
+            this.cmsPreview_miZoomOut.Name = "cmsPreview_miZoomOut";
+            this.cmsPreview_miZoomOut.ShortcutKeyDisplayString = "↓";
+            this.cmsPreview_miZoomOut.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miZoomOut.Text = "Zoom out";
+            this.cmsPreview_miZoomOut.Click += new System.EventHandler(this.cmsPreview_miZoomOut_Click);
+            // 
+            // cmsPreview_miPrevious
+            // 
+            this.cmsPreview_miPrevious.Name = "cmsPreview_miPrevious";
+            this.cmsPreview_miPrevious.ShortcutKeyDisplayString = "←";
+            this.cmsPreview_miPrevious.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miPrevious.Text = "Previous";
+            this.cmsPreview_miPrevious.Click += new System.EventHandler(this.cmsPreview_miPrevious_Click);
+            // 
+            // cmsPreview_miNext
+            // 
+            this.cmsPreview_miNext.Name = "cmsPreview_miNext";
+            this.cmsPreview_miNext.ShortcutKeyDisplayString = "→";
+            this.cmsPreview_miNext.Size = new System.Drawing.Size(206, 22);
+            this.cmsPreview_miNext.Text = "Next";
+            this.cmsPreview_miNext.Click += new System.EventHandler(this.cmsPreview_miNext_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 361);
+            this.ClientSize = new System.Drawing.Size(883, 554);
+            this.Controls.Add(this.panelPreview);
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.panelHotKey);
             this.Controls.Add(this.panelHelp);
             this.Controls.Add(this.panelAbout);
             this.Controls.Add(this.panelRUC80);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -773,11 +1150,13 @@
             this.Activated += new System.EventHandler(this.frmMain_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
-            this.CMS.ResumeLayout(false);
+            this.cmsSysTray.ResumeLayout(false);
             this.panelAbout.ResumeLayout(false);
             this.panelInnerAbout.ResumeLayout(false);
             this.panelInnerAbout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
             this.ss.ResumeLayout(false);
@@ -792,6 +1171,10 @@
             this.tsHelp.PerformLayout();
             this.panelHotKey.ResumeLayout(false);
             this.panelHotKey.PerformLayout();
+            this.cmsFile.ResumeLayout(false);
+            this.panelPreview.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pb_Preview)).EndInit();
+            this.cmsPreview.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -799,16 +1182,16 @@
         #endregion
         private System.Windows.Forms.FolderBrowserDialog FBD;
         private System.Windows.Forms.NotifyIcon NOTI;
-        private System.Windows.Forms.ContextMenuStrip CMS;
+        private System.Windows.Forms.ContextMenuStrip cmsSysTray;
         private System.Windows.Forms.ToolStripMenuItem cmsmiOpenFolder;
         private System.Windows.Forms.ToolStripMenuItem cmsmiExit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.Panel panelAbout;
         private System.Windows.Forms.Panel panelInnerAbout;
         private System.Windows.Forms.Button btnCloseAboutPanel;
-        private System.Windows.Forms.Label label_Author;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblAuthor;
+        private System.Windows.Forms.Label lblCapCap;
+        private System.Windows.Forms.Label lblDescription;
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.ListView LV;
         private System.Windows.Forms.ToolStrip ts;
@@ -848,7 +1231,7 @@
         private System.Windows.Forms.WebBrowser webHelp;
         private System.Windows.Forms.ToolStrip tsHelp;
         private System.Windows.Forms.ToolStripButton tsReturnToMainPanel;
-        private System.Windows.Forms.Label label_Version;
+        private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.Panel panelHotKey;
         private System.Windows.Forms.Label lab_NewHotKey;
         private System.Windows.Forms.ToolStripButton tsbtnNewHotKey;
@@ -869,6 +1252,45 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.ToolStripLabel cmslbl_CapCap;
         private System.Windows.Forms.ToolStripLabel cmslbl_Author;
+        private System.Windows.Forms.PictureBox pbLogo;
+        private System.Windows.Forms.ContextMenuStrip cmsFile;
+        private System.Windows.Forms.ToolStripLabel cmsFile_lblFilename;
+        private System.Windows.Forms.ToolStripSeparator cmsFile_sep1;
+        private System.Windows.Forms.ToolStripMenuItem cmsFile_miPreview;
+        private System.Windows.Forms.ToolStripMenuItem cmsFile_miOpen;
+        private System.Windows.Forms.ToolStripMenuItem cmsFile_miOpenFolder;
+        private System.Windows.Forms.ToolStripSeparator cmsFile_sep2;
+        private System.Windows.Forms.ToolStripMenuItem cmsFile_miClearHistory;
+        private System.Windows.Forms.ToolStripSeparator cmsFile_sep3;
+        private System.Windows.Forms.ToolStripMenuItem cmsFile_miCopyImage;
+        private System.Windows.Forms.ToolStripMenuItem cmsFile_miCopyFile;
+        private System.Windows.Forms.ToolStripSeparator cmsFile_sep4;
+        private System.Windows.Forms.ToolStripMenuItem cmsFile_miMore;
+        private System.Windows.Forms.Panel panelPreview;
+        private System.Windows.Forms.PictureBox pb_Preview;
+        private System.Windows.Forms.ContextMenuStrip cmsPreview;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miCopyImage;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miLockTop;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miReturn;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miMaximize;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miOpacity100;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miOpacity75;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miOpacity50;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miOpacity25;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+        private System.Windows.Forms.ToolStripLabel cmsPreview_lblFilename;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miCopyFile;
+        private System.Windows.Forms.LinkLabel lnkEmail;
+        private System.Windows.Forms.ToolStripLabel cmsPreview_lblCapCap;
+        private System.Windows.Forms.ToolStripLabel cmsPreview_lblInfo;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miZoomIn;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miZoomOut;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miPrevious;
+        private System.Windows.Forms.ToolStripMenuItem cmsPreview_miNext;
     }
 }
 

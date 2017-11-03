@@ -1,4 +1,4 @@
-> **Boss Ox** / 2017.10.29  / Beijing @RUC
+> **Boss Ox** / 2017.10.31  / Beijing @RUC
 
 # CapCap
 
@@ -6,7 +6,7 @@ Capture full screen and save the image automatically by pressing hotkey, silentl
 
 ---
 
-Latest Version: 1.3
+Latest Version: 1.4
 
 System Requirement: Windows NT, .NET 4.5.2 and above, 2 MB HDD
 
@@ -158,6 +158,13 @@ In version 1.2, we've added an advanced syntax for `<#>`. Now you can input a nu
   - Cannot overwrite file when occupied.
 
 ## Update log
+
+#### 2017.10.31 / 1.4
+
+- **Add:** Visual hotkey feedback. Now when pressing hotkey, the change hotkey button will flash green to indicate a successful hotkey hit.
+- **Improve:** Brand new, marvelous software logo.
+- **Improve:** Redesigned About panel, with logo and white background.
+- **Fix:** Description info in About panel comes in multi-languages.
 
 #### 2017.10.29 / 1.3
 

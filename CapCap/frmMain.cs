@@ -34,12 +34,20 @@ namespace CapCap
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            nPattern.Number = int.Parse(tstbNumber.Text);
-            MessageBox.Show(nPattern.Convert(tstbNamePattern.Text));
+            NOTI.Icon = Resource.Icon_SysTrayCapture;
+            System.Threading.Thread.Sleep(250);
+            NOTI.Icon = Resource.Icon_Systray;
+
+            GC.Collect();
         }
         #endregion
 
         ////////////////////////////////////////////////////////////////////////////////
+
+        // Windows API
+        [DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(int vKey);
+        private const int vShift = 10;
 
         private delegate void ScreenShotEventHandler(ScreenShotInfo info);
         private event ScreenShotEventHandler OnScreenShotCaptured;
@@ -84,6 +92,26 @@ namespace CapCap
         private delegate void WelcomeCloseedEventHandler();
         private event WelcomeCloseedEventHandler OnWelcomeClosed;
 
+        // for cmsFile right click menu
+        private string vSelectedFileName = "";
+
+        // for preview resize form back
+        private int vFormWidth = 0, vFormHeight = 0;
+        private int vFormLeft = 0, vFormTop = 0;
+
+        // for pb_Preview drag and move window
+        private int vOldX = 0, vOldY = 0;
+        private bool preventClickEvent = false;
+
+        // for blocking hotkey press from preview.
+        private bool isPreviewing = false;
+
+        // Software Mode, for hotkey blocking.
+        private enum SoftwareMode { Default, Main, Preview, About, RUC80, Hotkey, Manage }
+        private SoftwareMode Mode = SoftwareMode.Main;
+
+        private enum StatusStyle { Normal, Good, Bad }
+
         public frmMain()
         {
             InitializeComponent();
@@ -91,6 +119,14 @@ namespace CapCap
             ///////////////////////////////
 
             initAutosave();
+
+            // Resize form.
+            Size = new Size(600, 400);
+
+            // Load Logo and Icon
+            this.Icon = Resource.Icon_Logo;
+            pbLogo.Image = Resource.Image_Logo;
+            NOTI.Icon = Resource.Icon_Systray;
         }
         private void frmMain_Load(object sender, EventArgs e)
         {
@@ -136,15 +172,9 @@ namespace CapCap
 
             // About
             panelAbout.Dock = DockStyle.Fill;
+            panelAbout.BackColor = Color.White;
 
-            label1.Left = (panelInnerAbout.Width - label1.Width) / 2;
-            label_Author.Left = (panelInnerAbout.Width - label_Author.Width) / 2;
-            label3.Left = (panelInnerAbout.Width - label3.Width) / 2;
-            lnkWeibo.Left = (panelInnerAbout.Width - lnkWeibo.Width) / 2;
-            btnCloseAboutPanel.Left = (panelInnerAbout.Width - btnCloseAboutPanel.Width) / 2;
-
-            lnkRUC80.Left = label_Author.Right + 5;
-
+            ResetPanelInnerAbout();
             centralizePanelInnerAbout();
 
             // Help
@@ -159,6 +189,11 @@ namespace CapCap
             // Panel of new HotKey
             panelHotKey.Dock = DockStyle.Fill;
             centralizePanelHotKey();
+
+            // Panel of Preview
+            panelPreview.Dock = DockStyle.Fill;
+            pb_Preview.Dock = DockStyle.Fill;
+            pb_Preview.MouseWheel += pb_Preview_MouseWheel;
 
             // Parallel
             OnScreenShotCaptured += ScreenShot_OnScreenShotCaptured;
@@ -180,6 +215,12 @@ namespace CapCap
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            if (isPreviewing)
+            {
+                pb_Preview_KeyEvent(msg, keyData);
+                return base.ProcessCmdKey(ref msg, keyData);
+            }
+
             if (!isSettingHotKey)
                 return base.ProcessCmdKey(ref msg, keyData);
 
@@ -250,7 +291,7 @@ namespace CapCap
             }
             else if (e.Button == MouseButtons.Right)
             {
-                CMS.Show(Control.MousePosition);
+                cmsSysTray.Show(Control.MousePosition);
             }
         }
 
@@ -267,16 +308,17 @@ namespace CapCap
             {
                 var fullname = LV.SelectedItems[0].SubItems[1].Text;
                 if (File.Exists(fullname))
-                    tslab_Status.Text = Auxiliary.GetFileName(fullname);
+                    SetStatus(Auxiliary.GetFileName(fullname));
                 else
                 {
-                    tslab_Status.Text = LangPack["tslab_Status_FileMissing"];
+                    SetStatus(LangPack["tslab_Status_FileMissing"], StatusStyle.Bad);
                     vStatusCode = "FileMissing";
                 }
+                vSelectedFileName = fullname;
             }
             else
             {
-                tslab_Status.Text = LangPack["tslab_Status_Ready"];
+                SetStatus(LangPack["tslab_Status_Ready"]);
                 vStatusCode = "Ready";
             }
         }
@@ -345,14 +387,41 @@ namespace CapCap
             if (isSettingHotKey)
                 return;
 
+            if (isPreviewing)
+            {
+                cmsPreview_miReturn.PerformClick();
+            }
+
+            doHotKeyColorFeedback();
+            ToggleSysTrayIcon();
+
             panelMain.BringToFront();
             takeTheBloodyShot();
         }
 
         private void LV_DoubleClick(object sender, EventArgs e)
         {
-            if (System.IO.File.Exists(LV.SelectedItems[0].SubItems[1].Text))
-                System.Diagnostics.Process.Start(LV.SelectedItems[0].SubItems[1].Text);
+            if (LV.SelectedItems.Count == 0) return;
+            if (File.Exists(LV.SelectedItems[0].SubItems[1].Text))
+            {
+                var shift = GetAsyncKeyState((int)Keys.ShiftKey);
+                var ctrl = GetAsyncKeyState((int)Keys.ControlKey);
+                if (shift == 0 && ctrl == 0)
+                {
+                    pb_Preview.Image = Image.FromFile(LV.SelectedItems[0].SubItems[1].Text);
+                    panelPreview.BringToFront();
+                    ResizeFormFitImage();
+                    isPreviewing = true;
+                }
+                else if (shift != 0 && ctrl == 0)
+                {
+                    cmsFile_miOpen.PerformClick();
+                }
+                else if (shift == 0 && ctrl != 0)
+                {
+                    cmsFile_miOpenFolder.PerformClick();
+                }
+            }
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -685,13 +754,15 @@ namespace CapCap
 
         private void loadApplicationInfo()
         {
-            label_Version.Text = Application.ProductVersion;
+            lblVersion.Text = Application.ProductVersion;
             Text = $"CapCap {Application.ProductVersion.Remove(3)}";
 
-            label_Author.Text = $"Boss Ox / {Resource.ReleaseDate} / Beijing";
+            lblAuthor.Text = $"Boss Ox / {Resource.ReleaseDate} / Beijing";
 
             cmslbl_CapCap.Text = Text;
-            cmslbl_Author.Text = label_Author.Text;
+            cmslbl_Author.Text = lblAuthor.Text;
+
+            cmsPreview_lblCapCap.Text = Text;
         }
 
         private void updateOverWrite(bool overwrite)
@@ -706,7 +777,6 @@ namespace CapCap
                 tsmi_OverWrite.Checked = false;
                 tsmi_ReName.Checked = true;
             }
-            updateSettingsIcon();
         }
 
         private void switchLanguage(string lang)
@@ -749,9 +819,37 @@ namespace CapCap
             LV.Columns[2].Text = LangPack["LV_Time"];
             LV.Columns[3].Text = LangPack["LV_Status"];
 
-            cmsmiExit.Text = LangPack["CMS_Exit"];
-            cmsmiOpenFolder.Text = LangPack["CMS_OpenFolder"];
-            cmsmiAbout.Text = LangPack["CMS_About"];
+            cmsmiExit.Text = LangPack["cmsSysTray_Exit"];
+            cmsmiOpenFolder.Text = LangPack["cmsSysTray_OpenFolder"];
+            cmsmiAbout.Text = LangPack["cmsSysTray_About"];
+
+            btnCloseAboutPanel.Text = LangPack["btnCloseAboutPanel"];
+            lblDescription.Text = LangPack["lbl_AboutDescription"];
+
+            ResetPanelInnerAbout();
+
+            // File context menu.
+            cmsFile_miPreview.Text = LangPack["cmsFile_miPreview"];
+            cmsFile_miPreview.ShortcutKeyDisplayString = LangPack["word_DblClick"];
+            cmsFile_miOpen.Text = LangPack["cmsFile_miOpen"];
+            cmsFile_miOpen.ShortcutKeyDisplayString = $"Shift+{LangPack["word_DblClick"]}";
+            cmsFile_miOpenFolder.Text = LangPack["cmsFile_miOpenFolder"];
+            cmsFile_miOpenFolder.ShortcutKeyDisplayString = $"Ctrl+{LangPack["word_DblClick"]}";
+            cmsFile_miClearHistory.Text = LangPack["cmsFile_miClearHistory"];
+            cmsFile_miCopyImage.Text = LangPack["cmsFile_miCopyImage"];
+            cmsFile_miCopyFile.Text = LangPack["cmsFile_miCopyFile"];
+            cmsFile_miMore.Text = LangPack["cmsFile_miMore"];
+
+            // Preview context menu
+            cmsPreview_miCopyImage.Text = LangPack["cmsPreview_miCopyImage"];
+            cmsPreview_miCopyFile.Text = LangPack["cmsPreview_miCopyFile"];
+            cmsPreview_miZoomIn.Text = LangPack["cmsPreview_miZoomIn"];
+            cmsPreview_miZoomOut.Text = LangPack["cmsPreview_miZoomOut"];
+            cmsPreview_miPrevious.Text = LangPack["cmsPreview_miPrevious"];
+            cmsPreview_miNext.Text = LangPack["cmsPreview_miNext"];
+            cmsPreview_miLockTop.Text = LangPack["cmsPreview_miLockTop"];
+            cmsPreview_miMaximize.Text = LangPack["cmsPreview_miMaximize"];
+            cmsPreview_miReturn.Text = LangPack["cmsPreview_miReturn"];
 
             // Update tslab_Status
             switch (vStatusCode)
@@ -759,10 +857,10 @@ namespace CapCap
                 case "None":
                     break;
                 case "Ready":
-                    tslab_Status.Text = LangPack["tslab_Status_Ready"];
+                    SetStatus(LangPack["tslab_Status_Ready"], StatusStyle.Normal);
                     break;
                 case "FileMissing":
-                    tslab_Status.Text = LangPack["tslab_Status_FileMissing"];
+                    SetStatus(LangPack["tslab_Status_FileMissing"], StatusStyle.Bad);
                     break;
             }
         }
@@ -788,31 +886,57 @@ namespace CapCap
 
         private void loadIcons()
         {
-            tsbtnFolder.Image = Resource.save.ToBitmap();
-            tsddbMainMenu.Image = Resource.menu.ToBitmap();
+            // Icon in main ToolBar.
+            tsbtnFolder.Image = Resource.Icon_Save.ToBitmap();
+            tsddbMainMenu.Image = Resource.Icon_MainMenu.ToBitmap();
 
-            tsddbSettings.Image = Resource.setting.ToBitmap();
-            tsbtnNewHotKey.Image = Resource.hotkey.ToBitmap();
+            // Icon in main StatusBar.
+            tsddbSettings.Image = Resource.Icon_Settings.ToBitmap();
+            tsbtnNewHotKey.Image = Resource.Icon_Hotkey.ToBitmap();
 
-            tsmiExit.Image = Resource.exit.ToBitmap();
-            tsmiOpenFolder.Image = Resource.folder.ToBitmap();
-            tsmi_ClearHistory.Image = Resource.clear.ToBitmap();
-            tsmi_Language.Image = Resource.language.ToBitmap();
+            // Icon in SysTray context menu.
+            cmsmiOpenFolder.Image = Resource.Icon_Folder.ToBitmap();
+            cmsmiExit.Image = Resource.Icon_Exit.ToBitmap();
 
-            cmsmiOpenFolder.Image = tsmiOpenFolder.Image;
-            cmsmiExit.Image = tsmiExit.Image;
+            // Icon in Main menu
+            tsmiOpenFolder.Image = Resource.Icon_Folder.ToBitmap();
+            tsmi_ClearHistory.Image = Resource.Icon_Clear.ToBitmap();
+            tsmiExit.Image = Resource.Icon_Exit.ToBitmap();
 
-            updateSettingsIcon();
+            // Icon in Settings menu.
+            tsmi_ShowAds.Image = Resource.Icon_RUC80.ToBitmap();
+            tsmi_Language.Image = Resource.Icon_Language.ToBitmap();
+            tsmi_Cursor.Image = Resource.Icon_Cursor.ToBitmap();
+            tsmi_Notification.Image = Resource.Icon_Notification.ToBitmap();
+            tsmi_Sound.Image = Resource.Icon_Sound.ToBitmap();
+            tsmi_ReName.Image = Resource.Icon_Rename.ToBitmap();
+            tsmi_OverWrite.Image = Resource.Icon_Overwrite.ToBitmap();
+
+            // Icon in file context menu.
+            cmsFile_miPreview.Image = Resource.Icon_Preview.ToBitmap();
+            cmsFile_miOpen.Image = Resource.Icon_OpenWith.ToBitmap();
+            cmsFile_miOpenFolder.Image = Resource.Icon_Folder.ToBitmap();
+            cmsFile_miClearHistory.Image = Resource.Icon_Clear.ToBitmap();
+            cmsFile_miCopyImage.Image = Resource.Icon_Image.ToBitmap();
+            cmsFile_miCopyFile.Image = Resource.Icon_ImageFile.ToBitmap();
+            cmsFile_miMore.Image = Resource.Icon_Forward.ToBitmap();
+
+            // Icon in preview context menu.
+            cmsPreview_miCopyImage.Image = Resource.Icon_Image.ToBitmap();
+            cmsPreview_miCopyFile.Image = Resource.Icon_ImageFile.ToBitmap();
+            cmsPreview_miLockTop.Image = Resource.Icon_TopMost.ToBitmap();
+            cmsPreview_miMaximize.Image = Resource.Icon_Maximize.ToBitmap();
+            cmsPreview_miOpacity100.Image = Resource.Icon_Opacity.ToBitmap();
+            cmsPreview_miReturn.Image = Resource.Icon_Return.ToBitmap();
         }
 
-        private void updateSettingsIcon()
+        private async void doHotKeyColorFeedback()
         {
-            tsmi_ShowAds.Image = tsmi_ShowAds.Checked ? null : Resource.RUC80.ToBitmap();
-            tsmi_Cursor.Image = tsmi_Cursor.Checked ? null : Resource.cursor.ToBitmap();
-            tsmi_Notification.Image = tsmi_Notification.Checked ? null : Resource.notification.ToBitmap();
-            tsmi_Sound.Image = tsmi_Sound.Checked ? null : Resource.sound.ToBitmap();
-            tsmi_ReName.Image = tsmi_ReName.Checked ? null : Resource.rename.ToBitmap();
-            tsmi_OverWrite.Image = tsmi_OverWrite.Checked ? null : Resource.overwrite.ToBitmap();
+            tsbtnNewHotKey.BackColor = Color.YellowGreen;
+
+            await Task.Delay(300);
+
+            tsbtnNewHotKey.BackColor = SystemColors.Control;
         }
         #endregion
 
@@ -894,8 +1018,9 @@ namespace CapCap
             incrementNextNumber();
             notify(info.FileName, info.Success);
 
-            tslab_Status.Text = string.Format(LangPack["tslab_Status_ScreenCaptureResult"],
+            var status = string.Format(LangPack["tslab_Status_ScreenCaptureResult"],
                 info.Success ? LangPack["word_Successed"] : LangPack["word_Failed"]);
+            SetStatus(status, StatusStyle.Normal);
 
             if (vTasks.Count > 0)
                 vTasks.Remove(vTasks[0]);
@@ -915,7 +1040,8 @@ namespace CapCap
             LV.Items[LV.Items.Count - 1].SubItems.Add(string.Format("{0}", DateTime.Now));
             LV.Items[LV.Items.Count - 1].SubItems.Add(success ? LangPack["LV_Status_Success"] : LangPack["LV_Status_Failed"]);
             vTotalNumber += 1;
-            LV.TopItem = LV.Items[LV.Items.Count - 1];
+            if (WindowState != FormWindowState.Minimized)
+                LV.TopItem = LV.Items[LV.Items.Count - 1];
         }
 
         private void incrementNextNumber()
@@ -935,7 +1061,7 @@ namespace CapCap
             }
         }
 
-        private void playSound(bool success)
+        private async void playSound(bool success)
         {
             soundplayer.Stream = success ? Resource.yes : Resource.no;
             soundplayer.Play();
@@ -1043,26 +1169,7 @@ namespace CapCap
         {
             LV.Items.Clear();
             vTotalNumber = 1;
-        }
-
-        private void tsmi_Cursor_Click(object sender, EventArgs e)
-        {
-            updateSettingsIcon();
-        }
-
-        private void tsmi_Notification_Click(object sender, EventArgs e)
-        {
-            updateSettingsIcon();
-        }
-
-        private void tsmi_Sound_Click(object sender, EventArgs e)
-        {
-            updateSettingsIcon();
-        }
-
-        private void tsmi_ShowAds_Click(object sender, EventArgs e)
-        {
-            updateSettingsIcon();
+            SetStatus(LangPack["tslab_Status_HistoryCleared"], StatusStyle.Good);
         }
 
         private void cmsmiAbout_Click(object sender, EventArgs e)
@@ -1070,6 +1177,509 @@ namespace CapCap
             tsmiAbout.PerformClick();
             this.Show();
             this.Activate();
+        }
+
+        private void LV_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+                if (LV.SelectedItems.Count > 0)
+                    ShowCMSFile(LV.SelectedItems[0].SubItems[1].Text, e.X, e.Y);
+        }
+
+        private void ShowCMSFile(string filename, int X, int Y)
+        {
+            // Switch menu content depends on file existence.
+            var fileExists = File.Exists(filename);
+            cmsFile_miPreview.Visible = fileExists;
+            cmsFile_miOpen.Visible = fileExists;
+            cmsFile_miOpenFolder.Visible = fileExists;
+            cmsFile_sep2.Visible = fileExists;
+            cmsFile_sep3.Visible = fileExists;
+            cmsFile_miCopyImage.Visible = fileExists;
+            cmsFile_miCopyFile.Visible = fileExists;
+
+            // Display file name.
+            cmsFile_lblFilename.Text = Auxiliary.GetFileName(filename);
+            cmsFile.PerformLayout();
+
+            // Show menu.
+            cmsFile.Show(LV, X, Y);
+        }
+
+        private void cmsFile_miOpen_Click(object sender, EventArgs e)
+        {
+            OpenFile(vSelectedFileName);
+        }
+
+        private void OpenFile(string filename)
+        {
+            System.Diagnostics.Process.Start(filename);
+        }
+
+        private void cmsFile_miOpenFolder_Click(object sender, EventArgs e)
+        {
+            OpenFile(Auxiliary.GetFolder(vSelectedFileName));
+        }
+
+        private void cmsFile_miClearHistory_Click(object sender, EventArgs e)
+        {
+            tsmi_ClearHistory.PerformClick();
+        }
+
+        private void cmsFile_miCopyImage_Click(object sender, EventArgs e)
+        {
+            var image = Bitmap.FromFile(vSelectedFileName);
+            Clipboard.SetImage(image);
+            SetStatus(LangPack["tslab_Status_ImageCopied"], StatusStyle.Good);
+        }
+
+        private void cmsFile_miCopyFile_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetFileDropList(new System.Collections.Specialized.StringCollection() { vSelectedFileName });
+            SetStatus(LangPack["tslab_Status_FileCopied"], StatusStyle.Good);
+        }
+
+        private void pb_Preview_Click(object sender, EventArgs e)
+        {
+            if (preventClickEvent || cmsPreview_miLockTop.Checked || WindowState == FormWindowState.Maximized)
+                return;
+
+            cmsPreview_miReturn.PerformClick();
+        }
+
+        private void SetStatus(string content, StatusStyle style = StatusStyle.Normal)
+        {
+            tslab_Status.Text = content;
+
+            switch (style)
+            {
+                case StatusStyle.Good: tslab_Status.ForeColor = Color.Green; break;
+                case StatusStyle.Normal: tslab_Status.ForeColor = Color.Black; break;
+                case StatusStyle.Bad: tslab_Status.ForeColor = Color.Red; break;
+            }
+        }
+
+        private void ResizeFormFitImage()
+        {
+            var screenHeight = Screen.PrimaryScreen.Bounds.Height;
+            var screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            var ratioScreen = (float)screenWidth / screenHeight;
+
+            var pbHeight = pb_Preview.Height;
+            var pbWidth = pb_Preview.Width;
+            var ratioPB = (float)pbWidth / pbHeight;
+
+            var ratio = ratioScreen / ratioPB;
+
+            var newFormHeight = 0;
+            var newFormWidth = 0;
+
+            if (ratio == 1) // Perfect match.
+            {
+                newFormHeight = this.Height;
+                newFormWidth = this.Width;
+            }
+            else // Otherwise.
+            {
+                newFormHeight = (int)Math.Round(this.Width / ratioScreen);
+                newFormWidth = this.Width;
+            }
+
+            vFormHeight = this.Height;
+            vFormWidth = this.Width;
+            vFormLeft = this.Left;
+            vFormTop = this.Top;
+
+            // Resize form.
+            this.MinimumSize = new Size(0, 0);
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.Height = newFormHeight;
+            this.Width = newFormWidth;
+
+            this.BackColor = Color.FromArgb(255, 1, 0, 0);
+            this.TransparencyKey = this.BackColor;
+            this.AllowTransparency = true;
+        }
+
+        private void pb_Preview_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && WindowState == FormWindowState.Normal)
+            {
+                this.Left += e.X - vOldX;
+                this.Top += e.Y - vOldY;
+                vFormLeft += e.X - vOldX;
+                vFormTop += e.Y - vOldY;
+                preventClickEvent = true;
+            }
+        }
+
+        private void pb_Preview_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                preventClickEvent = WindowState == FormWindowState.Normal ? false : true;
+            else if (e.Button == MouseButtons.Middle)
+            {
+                WindowState = WindowState == FormWindowState.Normal ? FormWindowState.Maximized : FormWindowState.Normal;
+                preventClickEvent = WindowState == FormWindowState.Normal ? false : true;
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                cmsPreview_lblInfo.Text = string.Format(LangPack["cmsPreview_lblInfo"], LV.SelectedItems[0].Index + 1, LV.Items.Count);
+                cmsPreview_miPrevious.Enabled = LV.SelectedItems[0].Index == 0 ? false : true;
+                cmsPreview_miNext.Enabled = LV.SelectedItems[0].Index == LV.Items.Count - 1 ? false : true;
+                cmsPreview_miZoomIn.Enabled = WindowState == FormWindowState.Normal ? true : false;
+                cmsPreview_miZoomOut.Enabled = WindowState == FormWindowState.Normal ? true : false;
+                cmsPreview_lblFilename.Text = Auxiliary.GetFileName(vSelectedFileName);
+                cmsPreview_miMaximize.Checked = WindowState == FormWindowState.Maximized;
+                cmsPreview.PerformLayout();
+                cmsPreview.Show(pb_Preview, e.X, e.Y);
+                // Set preventClickEvent to false after context menu is closed.
+            }
+        }
+
+        private void cmsPreview_miCopy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetImage(pb_Preview.Image);
+        }
+
+        private void cmsPreview_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        {
+            preventClickEvent = false;
+        }
+
+        private void pb_Preview_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                vOldX = e.X;
+                vOldY = e.Y;
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                preventClickEvent = true;
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                preventClickEvent = true;
+            }
+        }
+
+        private void ResizeFormBack()
+        {
+            this.FormBorderStyle = FormBorderStyle.Sizable;
+            this.Left = Left + (Width - vFormWidth) / 2;
+            this.Top = Top + (Height - vFormHeight) / 2;
+            this.Height = vFormHeight;
+            this.Width = vFormWidth;
+            this.Left = vFormLeft;
+            this.Top = vFormTop;
+            this.MinimumSize = new Size(600, 400);
+
+            Left = Left < 0 ? 0 : Left;
+            Top = Top < 0 ? 0 : Top;
+
+            Left = Right > Screen.PrimaryScreen.Bounds.Width ? Screen.PrimaryScreen.Bounds.Width - Width : Left;
+            Top = Bottom > Screen.PrimaryScreen.Bounds.Height ? Screen.PrimaryScreen.WorkingArea.Height - Height : Top;
+
+            this.BackColor = SystemColors.Control;
+            this.AllowTransparency = false;
+        }
+
+        private void cmsPreview_miLockTop_Click(object sender, EventArgs e)
+        {
+            TopMost = cmsPreview_miLockTop.Checked;
+        }
+
+        private void cmsPreview_miReturn_Click(object sender, EventArgs e)
+        {
+            TopMost = false;
+            cmsPreview_miLockTop.Checked = false;
+            cmsPreview_miOpacity100.PerformClick();
+            preventClickEvent = false;
+
+            // Return to main UI and resize the form back.
+            ResizeFormBack();
+            panelMain.BringToFront();
+            pb_Preview.Image.Dispose();
+
+            isPreviewing = false;
+        }
+
+        private void pb_Preview_DoubleClick(object sender, EventArgs e)
+        {
+            WindowState = WindowState == FormWindowState.Normal ? FormWindowState.Maximized : FormWindowState.Normal;
+        }
+
+        private void cmsPreview_miMaximize_Click(object sender, EventArgs e)
+        {
+            WindowState = cmsPreview_miMaximize.Checked ? FormWindowState.Maximized : FormWindowState.Normal;
+        }
+
+        private void cmsPreview_miOpacity_Click(object sender, EventArgs e)
+        {
+            cmsPreview_miOpacity100.Checked = cmsPreview_miOpacity100 == sender;
+            cmsPreview_miOpacity75.Checked = cmsPreview_miOpacity75 == sender;
+            cmsPreview_miOpacity50.Checked = cmsPreview_miOpacity50 == sender;
+            cmsPreview_miOpacity25.Checked = cmsPreview_miOpacity25 == sender;
+            Opacity = (float)int.Parse(((ToolStripMenuItem)sender).Tag.ToString()) / 100;
+        }
+
+        private void pb_Preview_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (WindowState == FormWindowState.Normal)
+                ResizeFormOnMouseWheel(e.Delta, e.X, e.Y);
+        }
+
+        private void cmsFile_miMore_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Functionality under development.\nComing soon.",
+                Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void cmsFile_miPreview_Click(object sender, EventArgs e)
+        {
+            LV_DoubleClick(this, null);
+        }
+
+        private void frmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Why it doesn't work here when pressing keys in pb_Preview ?
+            //MessageBox.Show(e.KeyCode.ToString());
+        }
+
+        private void ResizeFormOnMouseWheel(int delta, int x, int y)
+        {
+            // Calculate parameters.
+            int unit = 60;
+            int step = delta / 120;
+
+            int oldWidth = this.Width;
+            int oldHeight = this.Height;
+
+            float ratio = (float)this.Width / this.Height;
+
+            int newWidth = Width + unit * step;
+            int newHeight = (int)Math.Round(newWidth / ratio);
+
+            // If too small, prevent zoom out (smaller).
+            if (newWidth >= 300 || delta >= 0)
+            {
+                // Zoom: Height, Width.
+                Size = new Size(newWidth, newHeight);
+            }
+
+            float left_proportion = (float)x / oldWidth;
+            float top_proportion = (float)y / oldHeight;
+
+            // Reposition: Left, Top.
+            Location = new Point(Left - (int)Math.Round((Width - oldWidth) * left_proportion),
+                    Top - (int)Math.Round((Height - oldHeight) * top_proportion));
+        }
+
+        private async void ToggleSysTrayIcon()
+        {
+            NOTI.Icon = Resource.Icon_SysTrayCapture;
+            await Task.Delay(300);
+            NOTI.Icon = Resource.Icon_Systray;
+        }
+
+        private void pb_Preview_KeyEvent(Message msg, Keys keyData)
+        {
+            if (msg.Msg == WM_KEYDOWN)
+            {
+                // Methods that can be invoked anytime.
+                switch (keyData.ToString())
+                {
+                    case "Left": PreviewImageOffset(-1); break;
+                    case "Right": PreviewImageOffset(1); break;
+                    case "Escape": // Return to main panel with Escape.
+                        if (WindowState == FormWindowState.Maximized)
+                            WindowState = FormWindowState.Normal;
+                        else if (WindowState == FormWindowState.Normal)
+                            cmsPreview_miReturn.PerformClick();
+                        break;
+                    case "Space": // Toggle window state between normal and maximized with Space.
+                        WindowState = WindowState == FormWindowState.Normal ? FormWindowState.Maximized : FormWindowState.Normal;
+                        break;
+                    case "C, Control": // Copy image with Ctrl + C.
+                        cmsPreview_miCopyImage.PerformClick();
+                        break;
+                    case "C, Shift, Control": // Copy file with Ctrl + Shift + C.
+                        cmsPreview_miCopyFile.PerformClick();
+                        break;
+                    case "Oemtilde": // TopMost with ` (Tilde).
+                        cmsPreview_miLockTop.PerformClick();
+                        break;
+                    case "D1": // 100% opacity with 1.
+                        cmsPreview_miOpacity100.PerformClick();
+                        break;
+                    case "D2": // 75% opacity with 2.
+                        cmsPreview_miOpacity75.PerformClick();
+                        break;
+                    case "D3": // 50% opacity with 3.
+                        cmsPreview_miOpacity50.PerformClick();
+                        break;
+                    case "D4": // 25% opacity with 4.
+                        cmsPreview_miOpacity25.PerformClick();
+                        break;
+                    default:
+                        //MessageBox.Show(keyData.ToString());
+                        break;
+                }
+
+                // Following methods should not be invoked when Maximized.
+                if (WindowState == FormWindowState.Maximized) return;
+                switch (keyData.ToString())
+                {
+                    case "Up": Zoom(120); break;
+                    case "Down": Zoom(-120); break;
+                }
+            }
+        }
+
+        private void PreviewImageOffset(int offset)
+        {
+            int currentIndex = LV.SelectedItems[0].Index;
+            int newIndex = currentIndex + offset;
+
+            if (newIndex >= 0 && newIndex <= LV.Items.Count - 1)
+            {
+                LV.Items[currentIndex].Selected = false;
+                LV.Items[newIndex].Selected = true;
+
+                string filename = LV.SelectedItems[0].SubItems[1].Text;
+                if (File.Exists(filename))
+                {
+                    pb_Preview.Image.Dispose();
+                    pb_Preview.Image = Image.FromFile(filename);
+                }
+                else
+                {
+                    PreviewImageOffset(offset);
+                }
+            }
+        }
+        private void Zoom(int Delta, int StepLength = 50)
+        {
+            Zoom(Delta, new Point(Width / 2, Height / 2), StepLength);
+        }
+
+        private void Zoom(int Delta, Point Center, int StepLength = 50)
+        {
+            float ratio = (float)Width / Height;
+            float left_proportion = (float)Center.X / Width;
+            float top_proportion = (float)Center.Y / Height;
+
+            int step = Delta / 120;
+
+            int oldHeight = Height;
+            int oldWidth = Width;
+
+            int newWidth = Width + StepLength * step;
+            int newHeight = (int)Math.Round(newWidth / ratio);
+
+            if (newWidth >= 300 || Delta >= 0)
+            {
+                Size = new Size(newWidth, newHeight);
+
+                Location = new Point(Left - (int)Math.Round((Width - oldWidth) * left_proportion),
+                    Top - (int)Math.Round((Height - oldHeight) * top_proportion));
+            }
+        }
+
+        private void cmsPreview_miCopyFile_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(vSelectedFileName))
+                Clipboard.SetFileDropList(new System.Collections.Specialized.StringCollection() { vSelectedFileName });
+        }
+
+        private void lnkEmail_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(@"mailto://BO_SoftwareService@yeah.net");
+        }
+
+        protected override void OnResizeBegin(EventArgs e)
+        {
+            if (isPreviewing)
+            {
+                SuspendLayout();
+                AllowTransparency = false;
+            }
+            base.OnResizeBegin(e);
+        }
+
+        private void cmsPreview_miPrevious_Click(object sender, EventArgs e)
+        {
+            PreviewImageOffset(-1);
+        }
+
+        private void cmsPreview_miNext_Click(object sender, EventArgs e)
+        {
+            PreviewImageOffset(1);
+        }
+
+        private void cmsPreview_miZoomIn_Click(object sender, EventArgs e)
+        {
+            Zoom(120);
+        }
+
+        private void LV_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyData.ToString())
+            {
+                case "C, Control":
+                    cmsFile_miCopyImage.PerformClick();
+                    break;
+                case "C, Shift, Control":
+                    cmsFile_miCopyFile.PerformClick();
+                    break;
+            }
+        }
+
+        private void cmsPreview_miZoomOut_Click(object sender, EventArgs e)
+        {
+            Zoom(-120);
+        }
+
+        protected override void OnResizeEnd(EventArgs e)
+        {
+            if (isPreviewing)
+            {
+                ResumeLayout();
+                AllowTransparency = true;
+            }
+            base.OnResizeEnd(e);
+        }
+
+        private void ResetPanelInnerAbout()
+        {
+            pbLogo.Left = 10; pbLogo.Top = 10;
+
+            lblCapCap.Left = pbLogo.Left + pbLogo.Width / 2 - lblCapCap.Width / 2;
+            lblCapCap.Top = pbLogo.Bottom + 5;
+
+            lblVersion.Left = pbLogo.Left + pbLogo.Width / 2 - lblVersion.Width / 2;
+            lblVersion.Top = lblCapCap.Bottom + 5;
+
+            lblDescription.Left = pbLogo.Right + 30;
+            lblDescription.Top = 45;
+
+            lblAuthor.Left = lblDescription.Left;
+            lblAuthor.Top = lblDescription.Bottom + 14;
+
+            lnkRUC80.Left = lblAuthor.Right + 10;
+            lnkRUC80.Top = lblAuthor.Top + 2;
+
+            lnkEmail.Left = lblDescription.Left + 2;
+            lnkEmail.Top = lblDescription.Bottom + 63;
+
+            lnkWeibo.Left = lblDescription.Left + 2;
+            lnkWeibo.Top = lnkEmail.Bottom + 10;
+
+            panelInnerAbout.Width = (lblDescription.Right > lnkRUC80.Right ?
+                lblDescription.Right : lnkRUC80.Right) + 10;
+
+            btnCloseAboutPanel.Left = (panelInnerAbout.Width - btnCloseAboutPanel.Width) / 2;
         }
     }
 }

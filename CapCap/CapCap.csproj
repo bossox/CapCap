@@ -49,7 +49,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Black 16.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\LogoIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -153,6 +153,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Black 16.ico" />
+    <None Include="Resources\CapCap Logo - Software 128.png" />
+    <None Include="Resources\maximize.ico" />
+    <None Include="Resources\imagefile.ico" />
+    <None Include="Resources\image.ico" />
+    <None Include="Resources\top.ico" />
+    <None Include="Resources\preview.ico" />
+    <None Include="Resources\open.ico" />
+    <None Include="Resources\opacity.ico" />
+    <None Include="Resources\forward.ico" />
+    <None Include="Resources\return.ico" />
+    <None Include="Resources\SysTrayCaptureIcon.ico" />
+    <None Include="Resources\LogoIcon.ico" />
+    <None Include="Resources\SysTrayIcon.ico" />
     <None Include="Resources\Black 16.ico" />
     <None Include="Resources\save.ico" />
     <None Include="Resources\hotkey.ico" />

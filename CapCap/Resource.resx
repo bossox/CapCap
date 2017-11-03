@@ -118,58 +118,94 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="clear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Clear" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\clear.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="cursor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Cursor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\cursor.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="exit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Exit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\exit.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\folder.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="hotkey" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Hotkey" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\hotkey.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="language" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Language" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\language.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="menu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_MainMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\menu.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="no" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\no.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="notification" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Notification" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\notification.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="overwrite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Overwrite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\overwrite.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="rename" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Rename" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\rename.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RUC80" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_RUC80" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\RUC80.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\save.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="setting" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\setting.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="sound" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon_Sound" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\sound.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="yes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\yes.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Black_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Black 16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ReleaseDate" xml:space="preserve">
-    <value>2017.10.29</value>
+    <value>2017.11.03</value>
+  </data>
+  <data name="Icon_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\LogoIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Systray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SysTrayIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_SysTrayCapture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SysTrayCaptureIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Forward" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\forward.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Image" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\image.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_ImageFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\imagefile.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Maximize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\maximize.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Opacity" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\opacity.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_OpenWith" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\open.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Preview" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\preview.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Return" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\return.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_TopMost" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\top.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Image_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CapCap Logo - Software 128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

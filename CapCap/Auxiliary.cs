@@ -178,6 +178,15 @@ namespace CapCap
             return fullpath;
         }
 
+        public static string GetFolder(string fullname)
+        {
+            // Input:   C:\Boss Ox\CapCap\Image.Jpg
+            // Output:  C:\Boss Ox\CapCap
+            if (System.IO.File.Exists(fullname))
+                return fullname.Substring(0, fullname.Length - GetFileName(fullname).Length);
+            return fullname;
+        }
+
         public static Keys GetKeyFromKeyCodeString(string code)
         {
             // Input:   A; D1; F1

@@ -31,17 +31,49 @@ namespace CapCap.Localization
             {"LV_Filename_InvalidFolder", "[Error: Invalid folder.]"},
             {"LV_Filename_OtherException", "[Error: {0}]"},
             {"lab_NewHotKey_PressToSet", "(Press keys to set new HotKey)"},
-            {"tslab_Status_Ready", "Ready."},
-            {"tslab_Status_FileMissing", "Selected file is missing."},
-            {"tslab_Status_ScreenCaptureResult", "Screen capture {0}."},
+            
             {"Screenshot", "Screenshot"},
             {"MsgBox_InvalidSettings", "There is something wrong in settings."},
             {"tsmi_ClearHistory", "Clear history(&C)"},
+            {"cmsSysTray_Exit", "Exit"},
+            {"cmsSysTray_OpenFolder", "Open folder"},
+            {"cmsSysTray_About", "About"},
+            {"btnCloseAboutPanel", "Okay"},
+            {"lbl_AboutDescription", "Screen capturing with auto-saving.\nIncredibly easier than ever before."},
+
+            // StatusBar information (tslab_Status).
+            {"tslab_Status_Ready", "Ready."},
+            {"tslab_Status_FileMissing", "Selected file is missing."},
+            {"tslab_Status_ScreenCaptureResult", "Screen capture {0}."},
+            {"tslab_Status_HistoryCleared", "Screenshot history cleared."},
+            {"tslab_Status_ImageCopied", "Image copied to clipboard."},
+            {"tslab_Status_FileCopied", "File copied to clipboard."},
+
+            // File context menu.
+            {"cmsFile_miPreview", "Preview"},
+            {"cmsFile_miOpen", "Open"},
+            {"cmsFile_miOpenFolder", "Open folder"},
+            {"cmsFile_miClearHistory", "Clear history"},
+            {"cmsFile_miCopyImage", "Copy image"},
+            {"cmsFile_miCopyFile", "Copy file"},
+            {"cmsFile_miMore", "More..."},
+
+            // Preview context menu.
+            {"cmsPreview_lblInfo", "Previewing {0}/{1}"},
+            {"cmsPreview_miCopyImage", "Copy image"},
+            {"cmsPreview_miCopyFile", "Copy file"},
+            {"cmsPreview_miZoomIn", "Zoom in"},
+            {"cmsPreview_miZoomOut", "Zoom out"},
+            {"cmsPreview_miPrevious", "Previous"},
+            {"cmsPreview_miNext", "Next"},
+            {"cmsPreview_miLockTop", "Lock on top"},
+            {"cmsPreview_miMaximize", "Maximize"},
+            {"cmsPreview_miReturn", "Return"},
+
+            // Words
             {"word_Successed", "successed"},
             {"word_Failed", "failed"},
-            {"CMS_Exit", "Exit"},
-            {"CMS_OpenFolder", "Open folder"},
-            {"CMS_About", "About"},
+            {"word_DblClick", "DblClick"},
         };
     }
 }
